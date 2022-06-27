@@ -1,0 +1,18 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  datasource:
+    password: 162001
+    url: jdbc:mysql://localhost:3306/exam_management
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        format_sql: true
+    show-sql: true
