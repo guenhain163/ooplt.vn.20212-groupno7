@@ -1,12 +1,13 @@
 package com.example.be.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "lecturers", schema = "exam_management")
-public class Lecturer {
+public class Lecturers {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -28,16 +29,16 @@ public class Lecturer {
     @Column(name = "work_room")
     private String workRoom;
 
-    @Basic
-    @Column(name = "module_id")
-    private Integer moduleId;
-
     @OneToMany(mappedBy = "lecturersByLecturerId")
     private Collection<ExamClassLecturerDetail> examClassLecturerDetailsById;
 
-    @ManyToOne
-    @JoinColumn(name = "module_id", referencedColumnName = "id")
-    private Module modulesByModuleId;
+    @OneToMany(mappedBy = "lecturersByLecturerId")
+    private Collection<ExamClassExaminerDetail> examClassExaminerDetailsById;
+
+    @OneToMany(mappedBy = "modulesByModuleId")
+    @Column(nullable = true)
+    @JsonManagedReference
+    private Collection<Speciality> speciality;
 
     public int getId() {
         return id;
@@ -79,40 +80,25 @@ public class Lecturer {
         this.workRoom = workRoom;
     }
 
-    public Integer getModuleId() {
-        return moduleId;
-    }
-
-    public void setModuleId(Integer moduleId) {
-        this.moduleId = moduleId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Lecturer that = (Lecturer) o;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(phone, that.phone) && Objects.equals(email, that.email) && Objects.equals(workRoom, that.workRoom) && Objects.equals(moduleId, that.moduleId);
+        Lecturers lecturers = (Lecturers) o;
+        return id == lecturers.id && Objects.equals(name, lecturers.name) && Objects.equals(phone, lecturers.phone)
+                && Objects.equals(email, lecturers.email) && Objects.equals(workRoom, lecturers.workRoom);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, phone, email, workRoom, moduleId);
+        return Objects.hash(id, name, phone, email, workRoom);
     }
 
-    public Collection<ExamClassLecturerDetail> getExamClassLecturerDetailsById() {
-        return examClassLecturerDetailsById;
-    }
-
-    public void setExamClassLecturerDetailsById(Collection<ExamClassLecturerDetail> examClassLecturerDetailsById) {
-        this.examClassLecturerDetailsById = examClassLecturerDetailsById;
-    }
-
-    public Module getModulesByModuleId() {
-        return modulesByModuleId;
-    }
-
-    public void setModulesByModuleId(Module modulesByModuleId) {
-        this.modulesByModuleId = modulesByModuleId;
-    }
+//    public Collection<ExamClassLecturerDetail> getExamClassLecturerDetailsById() {
+//        return examClassLecturerDetailsById;
+//    }
+//
+//    public void setExamClassLecturerDetailsById(Collection<ExamClassLecturerDetail> examClassLecturerDetailsById) {
+//        this.examClassLecturerDetailsById = examClassLecturerDetailsById;
+//    }
 }

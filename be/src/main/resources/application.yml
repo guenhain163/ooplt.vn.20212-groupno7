@@ -2,6 +2,9 @@ server:
   error:
     include-message: always
     include-binding-errors: always
+#  port: 8086
+#  servlet:
+#    context-path: /SpringBootRepository
 
 spring:
   datasource:
@@ -9,10 +12,21 @@ spring:
     url: jdbc:mysql://localhost:3306/exam_management
     username: root
   jpa:
+#    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
+#      ddl-auto: create-drop
     properties:
       hibernate:
-#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        id:
+          new_generator_mappings: true
         format_sql: true
+        hb2dll:
+          auto: update
     show-sql: true
+    generate-ddl: true
+  security:
+    user:
+      name: admin
+      password: admin

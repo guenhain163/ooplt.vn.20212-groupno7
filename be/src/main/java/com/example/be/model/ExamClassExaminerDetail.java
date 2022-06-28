@@ -6,18 +6,10 @@ import java.util.Objects;
 @Entity
 @Table(name = "exam_class_examiner_detail", schema = "exam_management")
 public class ExamClassExaminerDetail {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id")
     private int id;
-
-    @Basic
-    @Column(name = "exam_class_id")
-    private Integer examClassId;
-
-    @Basic
-    @Column(name = "lecturer_id")
-    private Integer lecturerId;
 
     @Basic
     @Column(name = "cost")
@@ -27,28 +19,20 @@ public class ExamClassExaminerDetail {
     @Column(name = "status")
     private Integer status;
 
+    @ManyToOne
+    @JoinColumn(name = "lecturer_id", referencedColumnName = "id", nullable = false)
+    private Lecturers lecturersByLecturerId;
+
+    @ManyToOne
+    @JoinColumn(name = "exam_class_id", referencedColumnName = "id", nullable = false)
+    private ExamClasses examClassesByExamClassId;
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Integer getExamClassId() {
-        return examClassId;
-    }
-
-    public void setExamClassId(Integer examClassId) {
-        this.examClassId = examClassId;
-    }
-
-    public Integer getLecturerId() {
-        return lecturerId;
-    }
-
-    public void setLecturerId(Integer lecturerId) {
-        this.lecturerId = lecturerId;
     }
 
     public Integer getCost() {
@@ -72,11 +56,11 @@ public class ExamClassExaminerDetail {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExamClassExaminerDetail that = (ExamClassExaminerDetail) o;
-        return id == that.id && Objects.equals(examClassId, that.examClassId) && Objects.equals(lecturerId, that.lecturerId) && Objects.equals(cost, that.cost) && Objects.equals(status, that.status);
+        return id == that.id && Objects.equals(cost, that.cost) && Objects.equals(status, that.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, examClassId, lecturerId, cost, status);
+        return Objects.hash(id, cost, status);
     }
 }

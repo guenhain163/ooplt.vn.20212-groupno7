@@ -1,5 +1,7 @@
 package com.example.be.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Collection;
@@ -7,15 +9,11 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "exam_classes", schema = "exam_management")
-public class ExamClass {
+public class ExamClasses {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
-    private int id;
-
-    @Basic
-    @Column(name = "class_id")
-    private Integer classId;
+    private Long id;
 
     @Basic
     @Column(name = "exam_shift")
@@ -45,23 +43,23 @@ public class ExamClass {
     @Column(name = "note")
     private String note;
 
-    @OneToMany(mappedBy = "examClassesByClassExamId")
+    @OneToMany(mappedBy = "examClassesByExamClassId")
     private Collection<ExamClassLecturerDetail> examClassLecturerDetailsById;
 
-    public int getId() {
+    @OneToMany(mappedBy = "examClassesByExamClassId")
+    private Collection<ExamClassExaminerDetail> examClassExaminerDetailsById;
+
+    @ManyToOne
+    @JoinColumn(name = "class_id", referencedColumnName = "id")
+    @JsonBackReference
+    private Classes classesByClassId;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getClassId() {
-        return classId;
-    }
-
-    public void setClassId(Integer classId) {
-        this.classId = classId;
     }
 
     public int getExamShift() {
@@ -124,20 +122,12 @@ public class ExamClass {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ExamClass that = (ExamClass) o;
-        return id == that.id && examShift == that.examShift && Objects.equals(classId, that.classId) && Objects.equals(date, that.date) && Objects.equals(week, that.week) && Objects.equals(openingPeriod, that.openingPeriod) && Objects.equals(room, that.room) && Objects.equals(status, that.status) && Objects.equals(note, that.note);
+        ExamClasses that = (ExamClasses) o;
+        return id == that.id && examShift == that.examShift && Objects.equals(date, that.date) && Objects.equals(week, that.week) && Objects.equals(openingPeriod, that.openingPeriod) && Objects.equals(room, that.room) && Objects.equals(status, that.status) && Objects.equals(note, that.note);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, classId, examShift, date, week, openingPeriod, room, status, note);
-    }
-
-    public Collection<ExamClassLecturerDetail> getExamClassLecturerDetailsById() {
-        return examClassLecturerDetailsById;
-    }
-
-    public void setExamClassLecturerDetailsById(Collection<ExamClassLecturerDetail> examClassLecturerDetailsById) {
-        this.examClassLecturerDetailsById = examClassLecturerDetailsById;
+        return Objects.hash(id, examShift, date, week, openingPeriod, room, status, note);
     }
 }
