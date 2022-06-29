@@ -25,6 +25,10 @@ public class Lecturers {
     @Column(name = "work_room")
     private String workRoom;
 
+    @Basic
+    @Column(name = "role")
+    private int role;
+
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private Users usersByUserId;
@@ -70,6 +74,14 @@ public class Lecturers {
 
     public void setWorkRoom(String workRoom) {
         this.workRoom = workRoom;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
     }
 
     @Override
