@@ -2,11 +2,13 @@ server:
   error:
     include-message: always
     include-binding-errors: always
-#  port: 8086
+#  port: 8080
 #  servlet:
 #    context-path: /SpringBootRepository
 
 spring:
+#  main:
+#    web-application-type: none
   datasource:
     password: 162001
     url: jdbc:mysql://localhost:3306/exam_management
@@ -30,3 +32,16 @@ spring:
     user:
       name: admin
       password: admin
+  h2:
+    console:
+      enabled: true
+
+# App Properties
+#bezkoder:
+#  app:
+#    jwtSecret: bezKoderSecretKey
+#    jwtExpirationMs: 86400000
+
+app:
+  jwt:
+    secret: abcdefghijklmnOPQRSTUVWXYZ
