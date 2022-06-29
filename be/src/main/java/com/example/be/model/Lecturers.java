@@ -22,12 +22,12 @@ public class Lecturers {
     private String phone;
 
     @Basic
-    @Column(name = "email")
-    private String email;
-
-    @Basic
     @Column(name = "work_room")
     private String workRoom;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private Users usersByUserId;
 
     @OneToMany(mappedBy = "lecturersByLecturerId")
     private Collection<ExamClassLecturerDetail> examClassLecturerDetailsById;
@@ -64,14 +64,6 @@ public class Lecturers {
         this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getWorkRoom() {
         return workRoom;
     }
@@ -86,12 +78,12 @@ public class Lecturers {
         if (o == null || getClass() != o.getClass()) return false;
         Lecturers lecturers = (Lecturers) o;
         return id == lecturers.id && Objects.equals(name, lecturers.name) && Objects.equals(phone, lecturers.phone)
-                && Objects.equals(email, lecturers.email) && Objects.equals(workRoom, lecturers.workRoom);
+                && Objects.equals(workRoom, lecturers.workRoom);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, phone, email, workRoom);
+        return Objects.hash(id, name, phone, workRoom);
     }
 
 //    public Collection<ExamClassLecturerDetail> getExamClassLecturerDetailsById() {
