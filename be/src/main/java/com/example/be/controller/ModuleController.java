@@ -1,20 +1,19 @@
 package com.example.be.controller;
 
 import com.example.be.model.Modules;
-import com.example.be.service.BaseService;
 import com.example.be.service.ModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/modules")
+@RequestMapping("/api/admin/modules")
 public class ModuleController {
     @Autowired
     private ModuleService moduleService;
@@ -24,16 +23,21 @@ public class ModuleController {
         return new ResponseEntity<>(moduleService.findAll(), HttpStatus.OK);
     }
 
+//    @GetMapping
+//    public ResponseEntity<List<Map<String, Object>>> getAllModules() {
+//        return new ResponseEntity<>(moduleService.listModules(), HttpStatus.OK);
+//    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Modules> getModule(@PathVariable Long id) {
-        Optional<Modules> categoryOptional = moduleService.findById(id);
-        return categoryOptional.map(category -> new ResponseEntity<>(category, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Optional<Modules> moduleOptional = moduleService.findById(id);
+        return moduleOptional.map(module -> new ResponseEntity<>(module, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @PostMapping
-    public ResponseEntity<Modules> createNewModule(@RequestBody Modules category) {
-        return new ResponseEntity<>(moduleService.save(category), HttpStatus.OK);
+    public ResponseEntity<Modules> createNewModule(@RequestBody Modules module) {
+        return new ResponseEntity<>(moduleService.save(module), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -42,7 +46,7 @@ public class ModuleController {
         return moduleOptional.map(module -> {
             modules.setId(module.getId());
             return new ResponseEntity<>(moduleService.save(modules), HttpStatus.OK);
-        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @DeleteMapping("/{id}")
@@ -51,6 +55,6 @@ public class ModuleController {
         return moduleOptional.map(module -> {
             moduleService.remove(id);
             return new ResponseEntity<>(module, HttpStatus.OK);
-        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 }

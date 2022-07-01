@@ -1,5 +1,9 @@
 package com.example.be.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -7,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.List;
 
 @Getter
 @Setter
@@ -34,7 +37,8 @@ public class Users implements UserDetails {
     @Column(name = "role")
     private int role;
 
-    @OneToOne(mappedBy = "usersByUserId")
+    @OneToOne(mappedBy = "users")
+    @JsonBackReference
     private Lecturers lecturers;
 
     protected static final int ROLE_USER = 1;
@@ -62,6 +66,16 @@ public class Users implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
+
+    @JsonProperty
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getRole() {
