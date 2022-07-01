@@ -1,5 +1,7 @@
 package com.example.be.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -9,7 +11,7 @@ public class ExamClassLecturerDetail {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Basic
     @Column(name = "number_student")
@@ -25,17 +27,19 @@ public class ExamClassLecturerDetail {
 
     @ManyToOne
     @JoinColumn(name = "lecturer_id", referencedColumnName = "id", nullable = false)
+    @JsonBackReference
     private Lecturers lecturersByLecturerId;
 
     @ManyToOne
     @JoinColumn(name = "exam_class_id", referencedColumnName = "id", nullable = false)
+    @JsonBackReference
     private ExamClasses examClassesByExamClassId;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

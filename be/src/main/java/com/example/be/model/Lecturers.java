@@ -1,5 +1,6 @@
 package com.example.be.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ public class Lecturers {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Basic
     @Column(name = "name")
@@ -25,18 +26,24 @@ public class Lecturers {
     @Column(name = "work_room")
     private String workRoom;
 
+    /**
+     * 0 - Examiner, 1 - Lecturer, 2 - All
+     */
     @Basic
     @Column(name = "role")
     private int role;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private Users usersByUserId;
+    @JoinColumn(name = "user_id")
+    @JsonManagedReference
+    private Users users;
 
     @OneToMany(mappedBy = "lecturersByLecturerId")
+    @JsonManagedReference
     private Collection<ExamClassLecturerDetail> examClassLecturerDetailsById;
 
     @OneToMany(mappedBy = "lecturersByLecturerId")
+    @JsonManagedReference
     private Collection<ExamClassExaminerDetail> examClassExaminerDetailsById;
 
     @OneToMany(mappedBy = "modulesByModuleId")
@@ -44,11 +51,15 @@ public class Lecturers {
     @JsonManagedReference
     private Collection<Speciality> speciality;
 
-    public int getId() {
+    public static final int ROLE_EXAMINER = 0;
+    public static final int ROLE_LECTURER = 1;
+    public static final int ROLE_ALL = 2;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

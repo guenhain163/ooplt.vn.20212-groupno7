@@ -1,5 +1,6 @@
 package com.example.be.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -27,14 +28,17 @@ public class Modules {
     @Column(name = "code", unique = true)
     private String code;
 
-    @OneToMany(mappedBy = "modulesByModuleId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "modulesByModuleId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Column(nullable = true)
-    @JsonManagedReference
+//    @JsonManagedReference
+    @JsonBackReference
+//    @javax.persistence.Transient
     private Collection<Classes> classes;
 
-    @OneToMany(mappedBy = "modulesByModuleId")
+    @OneToMany(mappedBy = "modulesByModuleId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Column(nullable = true)
-    @JsonManagedReference
+//    @JsonManagedReference
+    @JsonBackReference
     private Collection<Speciality> speciality;
 
     public Long getId() {

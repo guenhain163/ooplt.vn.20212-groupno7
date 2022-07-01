@@ -9,7 +9,7 @@ public class ExamClassExaminerDetail {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Basic
     @Column(name = "cost")
@@ -27,11 +27,11 @@ public class ExamClassExaminerDetail {
     @JoinColumn(name = "exam_class_id", referencedColumnName = "id", nullable = false)
     private ExamClasses examClassesByExamClassId;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
