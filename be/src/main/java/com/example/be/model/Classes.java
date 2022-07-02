@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -27,6 +28,10 @@ public class Classes {
     @Basic
     @Column(name = "group")
     private int group;
+
+    @Basic
+    @Column(name = "registered_exam")
+    private Date registered_exam;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="module_id")
@@ -59,5 +64,13 @@ public class Classes {
 
     public void setGroup(int group) {
         this.group = group;
+    }
+
+    public Date getRegistered_exam() {
+        return registered_exam;
+    }
+
+    public void setRegistered_exam(Date date) {
+        this.registered_exam = date;
     }
 }
