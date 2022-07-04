@@ -34,7 +34,7 @@ public class Lecturers {
     private int role;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", updatable = false, nullable = false)
     @JsonManagedReference
     private Users users;
 

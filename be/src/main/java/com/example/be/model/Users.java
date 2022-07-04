@@ -37,8 +37,9 @@ public class Users implements UserDetails {
     @Column(name = "role")
     private int role;
 
-    @OneToOne(mappedBy = "users")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "users")
     @JsonBackReference
+//    @Json
     private Lecturers lecturers;
 
     protected static final int ROLE_USER = 1;
@@ -49,7 +50,7 @@ public class Users implements UserDetails {
         super();
         this.email = email;
         this.password = password;
-        this.role = 1;
+        this.role = ROLE_ADMIN;
     }
 
     public Long getId() {
