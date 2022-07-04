@@ -1,147 +1,66 @@
 <template>
-  <el-form
-    ref="ruleForm"
-    :model="ruleForm"
-    label-width="120px"
-    class="demo-ruleForm"
-  >
-    <el-form-item :rules="rules.name" label="Activity name" prop="name">
-      <el-input v-model="ruleForm.name"></el-input>
-    </el-form-item>
-
-    <UserInput :rule="rules.name" :label="Activity"/>
-
-    <el-form-item label="Activity zone" prop="region">
-      <el-select v-model="ruleForm.region" placeholder="Activity zone">
-        <el-option label="Zone one" value="shanghai"></el-option>
-        <el-option label="Zone two" value="beijing"></el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item label="Activity time" required>
-      <el-col :span="11">
-        <el-form-item prop="date1">
-          <el-date-picker
-            v-model="ruleForm.date1"
-            type="date"
-            placeholder="Pick a date"
-            style="width: 100%"
-          ></el-date-picker>
-        </el-form-item>
-      </el-col>
-      <el-col class="line" :span="2">-</el-col>
-      <el-col :span="11">
-        <el-form-item prop="date2">
-          <el-time-picker
-            v-model="ruleForm.date2"
-            placeholder="Pick a time"
-            style="width: 100%"
-          ></el-time-picker>
-        </el-form-item>
-      </el-col>
-    </el-form-item>
-    <el-form-item label="Instant delivery" prop="delivery">
-      <el-switch v-model="ruleForm.delivery"></el-switch>
-    </el-form-item>
-    <el-form-item label="Activity type" prop="type">
-      <el-checkbox-group v-model="ruleForm.type">
-        <el-checkbox label="Online activities" name="type"></el-checkbox>
-        <el-checkbox label="Promotion activities" name="type"></el-checkbox>
-        <el-checkbox label="Offline activities" name="type"></el-checkbox>
-        <el-checkbox label="Simple brand exposure" name="type"></el-checkbox>
-      </el-checkbox-group>
-    </el-form-item>
-    <el-form-item label="Resources" prop="resource">
-      <el-radio-group v-model="ruleForm.resource">
-        <el-radio label="Sponsorship"></el-radio>
-        <el-radio label="Venue"></el-radio>
-      </el-radio-group>
-    </el-form-item>
-    <el-form-item label="Activity form" prop="desc">
-      <el-input v-model="ruleForm.desc" type="textarea"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="submitForm('ruleForm')"
-        >Create</el-button
+  <div style="height: 100vh" class="row justify-content-center">
+    <div class="w-50 row justify-content-center align-items-center">
+      <el-form
+        ref="ruleForm"
+        :model="ruleForm"
+        label-width="120px"
+        class="demo-ruleForm w-50"
       >
-      <el-button @click="resetForm('ruleForm')">Reset</el-button>
-    </el-form-item>
-  </el-form>
+        <el-form-item :rules="rules.name" label="Name" prop="name">
+          <el-input v-model="ruleForm.name"></el-input>
+        </el-form-item>
+
+        <el-form-item label="Password" prop="password" :rules="rules.password">
+          <el-input
+            v-model="ruleForm.password"
+            type="password"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('ruleForm')"
+            >Sign In</el-button
+          >
+        </el-form-item>
+      </el-form>
+    </div>
+  </div>
 </template>
 <script>
-import UserInput from '../components/user/UserInput.vue'
-
 export default {
-  components: {
-    UserInput
-  },
+  name: 'LoginPage',
   data() {
+    const validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('Please input the password'))
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass')
+        }
+        callback()
+      }
+    }
     return {
       ruleForm: {
         name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: '',
+        password: '',
       },
       rules: {
         name: [
           {
             required: true,
-            message: 'Please input Activity name',
-            trigger: 'blur',
-          },
-          {
-            min: 3,
-            max: 5,
-            message: 'Length should be 3 to 5',
+            message: 'Please input name',
             trigger: 'blur',
           },
         ],
-        region: [
+
+        password: [
+          { validator: validatePass, trigger: 'blur' },
           {
             required: true,
-            message: 'Please select Activity zone',
-            trigger: 'change',
-          },
-        ],
-        date1: [
-          {
-            type: 'date',
-            required: true,
-            message: 'Please pick a date',
-            trigger: 'change',
-          },
-        ],
-        date2: [
-          {
-            type: 'date',
-            required: true,
-            message: 'Please pick a time',
-            trigger: 'change',
-          },
-        ],
-        type: [
-          {
-            type: 'array',
-            required: true,
-            message: 'Please select at least one activity type',
-            trigger: 'change',
-          },
-        ],
-        resource: [
-          {
-            required: true,
-            message: 'Please select activity resource',
-            trigger: 'change',
-          },
-        ],
-        desc: [
-          {
-            required: true,
-            message: 'Please input activity form',
+            message: 'Please input password',
             trigger: 'blur',
           },
         ],
@@ -159,9 +78,8 @@ export default {
         }
       })
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
   },
 }
 </script>
+
+<style scoped></style>
