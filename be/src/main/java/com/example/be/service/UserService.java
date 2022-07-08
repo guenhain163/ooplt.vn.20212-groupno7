@@ -36,7 +36,12 @@ public class UserService implements UserDetailsService, BaseService<Users> {
 
     @Override
     public Users save(Users users) {
-        return null;
+        return userRepository.save(users);
+    }
+
+    @Override
+    public Users update(Users users) {
+        return userRepository.saveAndFlush(users);
     }
 
     @Override

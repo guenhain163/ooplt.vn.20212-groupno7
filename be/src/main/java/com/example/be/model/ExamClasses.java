@@ -5,53 +5,55 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "exam_classes", schema = "exam_management")
 public class ExamClasses {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @Basic
-    @Column(name = "exam_shift")
-    private int examShift;
+    @Column(name = "exam_shift", nullable = true)
+    private Integer examShift;
 
     @Basic
-    @Column(name = "date")
+    @Column(name = "date", nullable = true)
     private Date date;
 
     @Basic
-    @Column(name = "week")
+    @Column(name = "week", nullable = true, length = 255)
     private String week;
 
     @Basic
-    @Column(name = "opening_period")
+    @Column(name = "opening_period", nullable = true, length = 255)
     private String openingPeriod;
 
     @Basic
-    @Column(name = "room")
+    @Column(name = "room", nullable = true, length = 255)
     private String room;
 
     @Basic
-    @Column(name = "status")
+    @Column(name = "status", nullable = true)
     private Integer status;
 
     @Basic
-    @Column(name = "note")
+    @Column(name = "note", nullable = true, length = 255)
     private String note;
 
-    @OneToMany(mappedBy = "examClassesByExamClassId")
-    private Collection<ExamClassLecturerDetail> examClassLecturerDetailsById;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "examClassesByExamClassId")
+    private Set<ExamClassLecturerDetail> examClassLecturerDetailsById = new HashSet<>();
 
-    @OneToMany(mappedBy = "examClassesByExamClassId")
-    private Collection<ExamClassExaminerDetail> examClassExaminerDetailsById;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "examClassesByExamClassId")
+    private Set<ExamClassExaminerDetail> examClassExaminerDetailsById = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id", referencedColumnName = "id")
-    @JsonBackReference
+//    @JsonBackReference
     private Classes classesByClassId;
 
     public Long getId() {
@@ -123,11 +125,43 @@ public class ExamClasses {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExamClasses that = (ExamClasses) o;
-        return id == that.id && examShift == that.examShift && Objects.equals(date, that.date) && Objects.equals(week, that.week) && Objects.equals(openingPeriod, that.openingPeriod) && Objects.equals(room, that.room) && Objects.equals(status, that.status) && Objects.equals(note, that.note);
+        return id == that.id
+                && Objects.equals(examShift, that.examShift)
+                && Objects.equals(date, that.date)
+                && Objects.equals(week, that.week) 
+                && Objects.equals(openingPeriod, that.openingPeriod) 
+                && Objects.equals(room, that.room)
+                && Objects.equals(status, that.status)
+                && Objects.equals(note, that.note);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, examShift, date, week, openingPeriod, room, status, note);
+    }
+
+
+    public Set<ExamClassExaminerDetail> getExamClassExaminerDetailsById() {
+        return examClassExaminerDetailsById;
+    }
+
+    public void setExamClassExaminerDetailsById(Set<ExamClassExaminerDetail> examClassExaminerDetailsById) {
+        this.examClassExaminerDetailsById = examClassExaminerDetailsById;
+    }
+
+    public Set<ExamClassLecturerDetail> getExamClassLecturerDetailsById() {
+        return examClassLecturerDetailsById;
+    }
+
+    public void setExamClassLecturerDetailsById(Set<ExamClassLecturerDetail> examClassLecturerDetailsById) {
+        this.examClassLecturerDetailsById = examClassLecturerDetailsById;
+    }
+
+    public Classes getClassesByClassId() {
+        return classesByClassId;
+    }
+
+    public void setClassesByClassId(Classes classesByClassId) {
+        this.classesByClassId = classesByClassId;
     }
 }

@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class ClassService  implements BaseService<Classes> {
+public class ClassService implements BaseService<Classes> {
     @Autowired
     private ClassRepository classRepository;
 
@@ -31,6 +31,11 @@ public class ClassService  implements BaseService<Classes> {
         return classRepository.save(classes);
     }
 
+    @Override
+    public Classes update(Classes classes) {
+        return classRepository.saveAndFlush(classes);
+    }
+
     public Classes updateRegisteredClass(Date date, Long id) {
         return classRepository.updateRegisteredClass(date, id);
     }
@@ -42,8 +47,8 @@ public class ClassService  implements BaseService<Classes> {
 
     public Iterable<Classes> findByRegisteredExam(boolean registered_exam) {
         if (registered_exam) {
-            return classRepository.findByRegistered_examIsNotNull();
+            return classRepository.findByRegisteredExamIsNotNull();
         }
-        return classRepository.findByRegistered_examIsNull();
+        return classRepository.findByRegisteredExamIsNull();
     }
 }

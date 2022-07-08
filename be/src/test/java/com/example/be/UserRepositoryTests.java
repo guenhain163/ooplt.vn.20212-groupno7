@@ -20,13 +20,13 @@ public class UserRepositoryTests {
     @Test
     public void testCreateUser() {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String rawPassword = "admin";
+        String rawPassword = "123456";
         String encodedPassword = passwordEncoder.encode(rawPassword);
 
-        Users newUser = new Users("admin@gmail.com", encodedPassword);
-        System.out.println(encodedPassword);
-        Users savedUser = userRepository.save(newUser);
+        Users newUser = new Users("hanh123@gmail.com", encodedPassword);
+        Users savedUser = userRepository.saveAndFlush(newUser);
 
+        System.out.println(savedUser);
         assertThat(savedUser).isNotNull();
         assertThat(savedUser.getId()).isGreaterThan(0);
     }

@@ -13,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -26,13 +25,15 @@ public class AuthController {
     @Autowired
     private JwtTokenUtil jwtUtil;
 
-    @PostMapping("/api/auth/login")
+    @PostMapping(value = "/api/auth/login")
     public ResponseEntity<?> login(@RequestBody @Valid AuthRequest request) {
         try {
             Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getEmail(), request.getPassword())
             );
+
+            System.out.println(request.getEmail());
 
             Users user = (Users) authentication.getPrincipal();
             String accessToken = jwtUtil.generateAccessToken(user);

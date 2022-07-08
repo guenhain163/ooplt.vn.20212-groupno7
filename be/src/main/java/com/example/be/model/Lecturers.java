@@ -2,14 +2,17 @@ package com.example.be.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Lecturers {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id")
     private Long id;
@@ -33,27 +36,41 @@ public class Lecturers {
     @Column(name = "role")
     private int role;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    @JsonManagedReference
-    private Users users;
+    @Basic
+    @Column(name = "user_id")
+    private Long userId;
 
-    @OneToMany(mappedBy = "lecturersByLecturerId")
-    @JsonManagedReference
-    private Collection<ExamClassLecturerDetail> examClassLecturerDetailsById;
+    @OneToOne(targetEntity = Users.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private Users usersByUserId;
 
-    @OneToMany(mappedBy = "lecturersByLecturerId")
-    @JsonManagedReference
-    private Collection<ExamClassExaminerDetail> examClassExaminerDetailsById;
+    @OneToMany(mappedBy = "lecturersByLecturerId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<ExamClassLecturerDetail> examClassLecturerDetailsById;
 
-    @OneToMany(mappedBy = "modulesByModuleId")
-    @Column(nullable = true)
-    @JsonManagedReference
-    private Collection<Speciality> speciality;
+    @OneToMany(mappedBy = "lecturersByLecturerId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<ExamClassExaminerDetail> examClassExaminerDetailsById;
 
-    public static final int ROLE_EXAMINER = 0;
-    public static final int ROLE_LECTURER = 1;
-    public static final int ROLE_ALL = 2;
+    @OneToMany(mappedBy = "lecturersByLecturerId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<Speciality> specialitiesById = new HashSet<>();
+
+    public enum Roles {
+        EXAMINER,
+        LECTURER,
+        ALL
+    }
+
+    public Lecturers() {
+
+    }
+
+    public Lecturers(String name, String phone, String workRoom, Long userId, Integer role) {
+        this.name = name;
+        this.phone = phone;
+        this.workRoom = workRoom;
+        this.userId = userId;
+        this.role = role;
+    }
 
     public Long getId() {
         return id;
@@ -95,25 +112,56 @@ public class Lecturers {
         this.role = role;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Lecturers lecturers = (Lecturers) o;
-        return id == lecturers.id && Objects.equals(name, lecturers.name) && Objects.equals(phone, lecturers.phone)
-                && Objects.equals(workRoom, lecturers.workRoom);
+        return id == lecturers.id && role == lecturers.role && Objects.equals(name, lecturers.name) && Objects.equals(phone, lecturers.phone) && Objects.equals(workRoom, lecturers.workRoom);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, phone, workRoom);
+        return Objects.hash(id, name, phone, workRoom, role);
     }
 
-//    public Collection<ExamClassLecturerDetail> getExamClassLecturerDetailsById() {
-//        return examClassLecturerDetailsById;
-//    }
-//
-//    public void setExamClassLecturerDetailsById(Collection<ExamClassLecturerDetail> examClassLecturerDetailsById) {
-//        this.examClassLecturerDetailsById = examClassLecturerDetailsById;
-//    }
+    public Users getUsers() {
+        return usersByUserId;
+    }
+
+    public void setUsers(Users users) {
+        this.usersByUserId = users;
+    }
+
+    public Collection<ExamClassExaminerDetail> getExamClassExaminerDetailsById() {
+        return examClassExaminerDetailsById;
+    }
+
+    public void setExamClassExaminerDetailsById(Set<ExamClassExaminerDetail> examClassExaminerDetailsById) {
+        this.examClassExaminerDetailsById = examClassExaminerDetailsById;
+    }
+
+    public Collection<ExamClassLecturerDetail> getExamClassLecturerDetailsById() {
+        return examClassLecturerDetailsById;
+    }
+
+    public void setExamClassLecturerDetailsById(Set<ExamClassLecturerDetail> examClassLecturerDetailsById) {
+        this.examClassLecturerDetailsById = examClassLecturerDetailsById;
+    }
+
+    public Set<Speciality> getSpecialitiesById() {
+        return specialitiesById;
+    }
+
+    public void setSpecialitiesById(Set<Speciality> specialitiesById) {
+        this.specialitiesById = specialitiesById;
+    }
 }

@@ -4,7 +4,7 @@ server:
     include-binding-errors: always
 #  port: 8080
 #  servlet:
-#    context-path: /SpringBootRepository
+#    context-path: /api
 
 spring:
 #  main:

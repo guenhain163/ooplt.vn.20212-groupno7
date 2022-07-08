@@ -30,7 +30,7 @@ public class ExamClassLecturerDetail {
     @JsonBackReference
     private Lecturers lecturersByLecturerId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exam_class_id", referencedColumnName = "id", nullable = false)
     @JsonBackReference
     private ExamClasses examClassesByExamClassId;
@@ -72,11 +72,27 @@ public class ExamClassLecturerDetail {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExamClassLecturerDetail that = (ExamClassLecturerDetail) o;
-        return id == that.id && numberStudent == that.numberStudent && Objects.equals(cost, that.cost) && Objects.equals(status, that.status);
+        return id == that.id && Objects.equals(cost, that.cost) && Objects.equals(numberStudent, that.numberStudent) && Objects.equals(status, that.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, numberStudent, cost, status);
+        return Objects.hash(id, cost, numberStudent, status);
+    }
+
+    public ExamClasses getExamClassesByExamClassId() {
+        return examClassesByExamClassId;
+    }
+
+    public void setExamClassesByExamClassId(ExamClasses examClassesByExamClassId) {
+        this.examClassesByExamClassId = examClassesByExamClassId;
+    }
+
+    public Lecturers getLecturersByLecturerId() {
+        return lecturersByLecturerId;
+    }
+
+    public void setLecturersByLecturerId(Lecturers lecturersByLecturerId) {
+        this.lecturersByLecturerId = lecturersByLecturerId;
     }
 }

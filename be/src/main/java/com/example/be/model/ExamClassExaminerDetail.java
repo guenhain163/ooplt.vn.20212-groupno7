@@ -1,6 +1,9 @@
 package com.example.be.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -19,12 +22,14 @@ public class ExamClassExaminerDetail {
     @Column(name = "status")
     private Integer status;
 
-    @ManyToOne
-    @JoinColumn(name = "lecturer_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lecturer_id", referencedColumnName = "id")
+    @JsonBackReference
     private Lecturers lecturersByLecturerId;
 
-    @ManyToOne
-    @JoinColumn(name = "exam_class_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "exam_class_id", referencedColumnName = "id")
+    @JsonBackReference
     private ExamClasses examClassesByExamClassId;
 
     public Long getId() {
@@ -62,5 +67,21 @@ public class ExamClassExaminerDetail {
     @Override
     public int hashCode() {
         return Objects.hash(id, cost, status);
+    }
+
+    public ExamClasses getExamClassesByExamClassId() {
+        return examClassesByExamClassId;
+    }
+
+    public void setExamClassesByExamClassId(ExamClasses examClassesByExamClassId) {
+        this.examClassesByExamClassId = examClassesByExamClassId;
+    }
+
+    public Lecturers getLecturersByLecturerId() {
+        return lecturersByLecturerId;
+    }
+
+    public void setLecturersByLecturerId(Lecturers lecturersByLecturerId) {
+        this.lecturersByLecturerId = lecturersByLecturerId;
     }
 }
