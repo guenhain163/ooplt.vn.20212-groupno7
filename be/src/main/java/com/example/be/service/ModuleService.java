@@ -29,6 +29,11 @@ public class ModuleService implements BaseService<Modules> {
     }
 
     @Override
+    public Modules update(Modules modules) {
+        return moduleRepository.saveAndFlush(modules);
+    }
+
+    @Override
     public void remove(Long id) {
         moduleRepository.deleteById(id);
     }

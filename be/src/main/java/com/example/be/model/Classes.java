@@ -3,10 +3,14 @@ package com.example.be.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -29,14 +33,19 @@ public class Classes {
     @Column(name = "group")
     private int group;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Basic
+    @Column(name = "registered_exam")
+    @CreationTimestamp
+    private Date registeredExam;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="module_id")
     @JsonBackReference
     private Modules modulesByModuleId;
 
-    @OneToMany(mappedBy = "classesByClassId")
-    @JsonManagedReference
-    private Collection<ExamClasses> examClassesById;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "classesByClassId")
+//    @JsonManagedReference
+    private Set<ExamClasses> examClassesById = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -60,5 +69,21 @@ public class Classes {
 
     public void setGroup(int group) {
         this.group = group;
+    }
+
+    public Date getRegistered_exam() {
+        return registeredExam;
+    }
+
+    public void setRegistered_exam(Date date) {
+        this.registeredExam = date;
+    }
+
+    public Set<ExamClasses> getExamClasses() {
+        return examClassesById;
+    }
+
+    public void setOrderItems(Set<ExamClasses> examClasses) {
+        this.examClassesById = examClasses;
     }
 }

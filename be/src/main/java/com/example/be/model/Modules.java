@@ -6,6 +6,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,18 +31,16 @@ public class Modules {
     @Column(name = "code", unique = true)
     private String code;
 
-    @OneToMany(mappedBy = "modulesByModuleId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @Column(nullable = true)
-//    @JsonManagedReference
-    @JsonBackReference
-//    @javax.persistence.Transient
-    private Collection<Classes> classes;
+    @OneToMany(mappedBy = "modulesByModuleId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @Column(nullable = true)
+//    @JsonBackReference
+    private Set<Classes> classesById = new HashSet<>();
 
-    @OneToMany(mappedBy = "modulesByModuleId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @Column(nullable = true)
-//    @JsonManagedReference
-    @JsonBackReference
-    private Collection<Speciality> speciality;
+
+    @OneToMany(mappedBy = "modulesByModuleId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @Column(nullable = true)
+//    @JsonBackReference
+    private Set<Speciality> specialitiesById = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -63,5 +64,34 @@ public class Modules {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Modules modules = (Modules) o;
+        return id == modules.id && Objects.equals(code, modules.code) && Objects.equals(name, modules.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, code, name);
+    }
+
+    public Set<Classes> getClassesById() {
+        return classesById;
+    }
+
+    public void setOrderItems(Set<Classes> classes) {
+        this.classesById = classes;
+    }
+
+    public Collection<Speciality> getSpecialitiesById() {
+        return specialitiesById;
+    }
+
+    public void setSpecialitiesById(Set<Speciality> specialitiesById) {
+        this.specialitiesById = specialitiesById;
     }
 }

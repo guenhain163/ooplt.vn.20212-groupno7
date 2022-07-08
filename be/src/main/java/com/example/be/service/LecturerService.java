@@ -29,6 +29,11 @@ public class LecturerService implements BaseService<Lecturers> {
     }
 
     @Override
+    public Lecturers update(Lecturers lecturer) {
+        return lecturerRepository.saveAndFlush(lecturer);
+    }
+
+    @Override
     public void remove(Long id) {
         lecturerRepository.deleteById(id);
     }
