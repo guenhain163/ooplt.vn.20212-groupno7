@@ -17,6 +17,6 @@ public interface ClassRepository extends JpaRepository<Classes, Long> {
     Iterable<Classes> findByRegisteredExamIsNull();
 
     @Modifying
-    @Query("update Classes c set c.registeredExam = ?1 where c.id = ?2")
+    @Query("UPDATE Classes c SET c.registeredExam = ?1 WHERE c.id = ?2")
     Classes updateRegisteredClass(Date date, Long id);
 }

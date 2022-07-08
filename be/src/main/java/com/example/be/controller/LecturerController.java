@@ -5,6 +5,7 @@ import com.example.be.model.Lecturers;
 import com.example.be.request.LecturerRequest;
 import com.example.be.service.LecturerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -48,15 +49,15 @@ public class LecturerController {
 
     @GetMapping("/lecturers/{id}")
     public ResponseEntity<Lecturers> getLecturer(@PathVariable Long id) {
-        Optional<Lecturers> moduleOptional = lecturerService.findByIdAndRoleIn(id, LECTURER);
-        return moduleOptional.map(lecturer -> new ResponseEntity<>(lecturer, HttpStatus.OK))
+        Optional<Lecturers> lecturerOptional = lecturerService.findByIdAndRoleIn(id, LECTURER);
+        return lecturerOptional.map(lecturer -> new ResponseEntity<>(lecturer, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @GetMapping("/examiners/{id}")
     public ResponseEntity<Lecturers> getExaminer(@PathVariable Long id) {
-        Optional<Lecturers> moduleOptional = lecturerService.findByIdAndRoleIn(id, EXAMINER);
-        return moduleOptional.map(lecturer -> new ResponseEntity<>(lecturer, HttpStatus.OK))
+        Optional<Lecturers> lecturerOptional = lecturerService.findByIdAndRoleIn(id, EXAMINER);
+        return lecturerOptional.map(lecturer -> new ResponseEntity<>(lecturer, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
@@ -110,11 +111,23 @@ public class LecturerController {
     }
 
     @DeleteMapping(value = {"/lecturers/{id}", "/examiners/{id}"})
-    public ResponseEntity<Lecturers> deleteModule(@PathVariable Long id) {
+    public ResponseEntity<Lecturers> deleteLecturer(@PathVariable Long id) {
         Optional<Lecturers> lecturerOptional = lecturerService.findById(id);
         return lecturerOptional.map(lecturer -> {
             lecturerService.remove(id);
             return new ResponseEntity<>(lecturer, HttpStatus.OK);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+
+    @GetMapping(value = "/examiners/free", params = {"date", "examShift", "examClassId"})
+    public ResponseEntity<Iterable<Lecturers>> listOfExaminersIsFree(
+            @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date date,
+            @RequestParam Integer examShift,
+            @RequestParam Long examClassId
+    ) {
+        System.out.println(date);
+        System.out.println(examShift);
+        System.out.println(examClassId);
+        return new ResponseEntity<>(lecturerService.listOfExaminersIsFree(date, examShift, examClassId), HttpStatus.OK);
     }
 }

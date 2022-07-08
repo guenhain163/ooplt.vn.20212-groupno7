@@ -18,6 +18,10 @@ public class ExamClasses {
     private Long id;
 
     @Basic
+    @Column(name = "class_id")
+    private Long classId;
+
+    @Basic
     @Column(name = "exam_shift", nullable = true)
     private Integer examShift;
 
@@ -52,9 +56,27 @@ public class ExamClasses {
     private Set<ExamClassExaminerDetail> examClassExaminerDetailsById = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "class_id", referencedColumnName = "id")
+    @JoinColumn(name = "class_id", referencedColumnName = "id", insertable = false, updatable = false)
 //    @JsonBackReference
     private Classes classesByClassId;
+
+    public ExamClasses() {
+
+    }
+
+    public ExamClasses(Long classId, Integer examShift, Date date, String week, String openingPeriod, String room) {
+        this.classId = classId;
+        this.examShift = examShift;
+        this.date = date;
+        this.week = week;
+        this.openingPeriod = openingPeriod;
+        this.room = room;
+    }
+
+    public ExamClasses(Long classId, Integer examShift, Date date, String week, String openingPeriod, String room, String note) {
+        this(classId, examShift, date, week, openingPeriod, room);
+        this.note = note;
+    }
 
     public Long getId() {
         return id;
@@ -62,6 +84,14 @@ public class ExamClasses {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Long classId) {
+        this.classId = classId;
     }
 
     public int getExamShift() {
