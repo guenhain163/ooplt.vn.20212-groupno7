@@ -7,8 +7,8 @@
         label-width="120px"
         class="demo-ruleForm w-50"
       >
-        <el-form-item :rules="rules.name" label="Name" prop="name">
-          <el-input v-model="ruleForm.name"></el-input>
+        <el-form-item :rules="rules.email" label="Email" prop="email">
+          <el-input v-model="ruleForm.email"></el-input>
         </el-form-item>
 
         <el-form-item label="Password" prop="password" :rules="rules.password">
@@ -44,14 +44,14 @@ export default {
     }
     return {
       ruleForm: {
-        name: '',
+        email: '',
         password: '',
       },
       rules: {
-        name: [
+        email: [
           {
             required: true,
-            message: 'Please input name',
+            message: 'Please input email',
             trigger: 'blur',
           },
         ],
@@ -69,13 +69,33 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          alert('submit!')
+          // await this.$auth.loginWith('laravelJWT', {
+          //   data: this.ruleForm
+          // }).then((response) => {
+          //   this.notifycation()
+          // }).catch((e) => {
+          //   console.log(e)
+          // })
+
+
+          await this.$axios.post('http://localhost:8080/api/auth/login', this.ruleForm).then((response) => {
+            console.log(response)
+          }).catch((e) => {
+            console.log(e)
+          })
         } else {
           console.log('error submit!!')
           return false
         }
+      })
+    },
+    notifycation() {
+      this.$notify.success({
+        title: 'Success',
+        message: 'Login success',
+        showClose: false,
       })
     },
   },

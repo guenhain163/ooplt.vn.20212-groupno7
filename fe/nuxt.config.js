@@ -49,7 +49,7 @@ export default {
     strategies: {
       'laravelJWT': {
         provider: 'laravel/jwt',
-        url: 'http://localhost:8000',
+        url: 'http://localhost:8080',
         token: {
           property: 'access_token',
           maxAge: 60 * 60
@@ -68,7 +68,15 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+    baseURL: process.env.API_URL || ' http://localhost:8080/api',
+    debug: process.env.DEBUG || false,
+    // proxyHeaders: false,
+    // headers: {
+    //   'Access-Control-Allow-Origin': '*',
+    //   'Content-Type': 'application/json',
+    // },
+    // withCredentials: true,
+    // credentials: 'same-origin',
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
