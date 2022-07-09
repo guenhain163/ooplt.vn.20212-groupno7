@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,8 @@ import java.util.Optional;
 public class UserService implements UserDetailsService, BaseService<Users> {
     @Autowired
     private UserRepository userRepository;
+
+    private String passwordDefault = "12345678";
 
     @Override
     @Transactional
@@ -51,5 +55,13 @@ public class UserService implements UserDetailsService, BaseService<Users> {
     @Override
     public void remove(Integer id) {
         userRepository.deleteById(id);
+    }
+
+    public Users createDefault(String email) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(passwordDefault);
+
+        Users newUser = new Users(email, encodedPassword);
+        return save(newUser);
     }
 }

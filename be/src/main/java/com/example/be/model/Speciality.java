@@ -37,6 +37,11 @@ public class Speciality {
     @JsonBackReference
     private Lecturers lecturersByLecturerId;
 
+    public Speciality(Integer lectureId, Integer moduleId) {
+        this.lecturerId = lectureId;
+        this.moduleId = moduleId;
+    }
+
     public Integer getId() {
         return id;
     }
