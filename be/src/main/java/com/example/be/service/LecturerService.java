@@ -76,6 +76,7 @@ public class LecturerService implements BaseService<Lecturers> {
         List<Map<String, Object>> resultsList = new ArrayList<Map<String, Object>>();
         for (Lecturers lecturer : lecturerList) {
             Map<String, Object> map = new HashMap<String, Object>();
+            map.put("id", lecturer.getId());
             map.put("name", lecturer.getName());
             map.put("phone", lecturer.getPhone());
             map.put("workRoom", lecturer.getWorkRoom());
