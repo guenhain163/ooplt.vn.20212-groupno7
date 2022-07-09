@@ -2,6 +2,7 @@ package com.example.be.controller;
 
 import com.example.be.exceptions.ResourceNotFoundException;
 import com.example.be.model.Lecturers;
+import com.example.be.request.CreateExaminerRequest;
 import com.example.be.request.CreateLectureRequest;
 import com.example.be.request.LecturerRequest;
 import com.example.be.service.LecturerService;
@@ -65,20 +66,20 @@ public class LecturerController {
     @PostMapping("/lecturers")
     public ResponseEntity<Lecturers> createNewLecturer(@RequestBody @Valid CreateLectureRequest lecturer) {
         try {
-            return new ResponseEntity<>(lecturerService.createLecturers(lecturer), HttpStatus.OK);
+            return lecturerService.createLecturers(lecturer);
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-//    @PostMapping("/examiners")
-//    public ResponseEntity<Lecturers> createNewExaminer(@RequestBody @Valid CreateLectureRequest lecturer) {
-//        try {
-//            return new ResponseEntity<>(lecturerService.createLecturers(lecturer), HttpStatus.OK);
-//        } catch (ResourceNotFoundException ex) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    @PostMapping("/examiners")
+    public ResponseEntity<Lecturers> createNewExaminer(@RequestBody @Valid CreateExaminerRequest examiner) {
+        try {
+            return lecturerService.createExaminers(examiner);
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PutMapping(value = {"/lecturers/{id}", "/examiners/{id}"})
     public ResponseEntity<Lecturers> updateLecturer(@PathVariable Integer id, @Valid @RequestBody LecturerRequest lecturers) {

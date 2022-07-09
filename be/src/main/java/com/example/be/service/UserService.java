@@ -1,12 +1,8 @@
 package com.example.be.service;
 
-import com.example.be.model.Lecturers;
 import com.example.be.model.Users;
 import com.example.be.repository.UserRepository;
-import com.example.be.request.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -63,5 +58,9 @@ public class UserService implements UserDetailsService, BaseService<Users> {
 
         Users newUser = new Users(email, encodedPassword);
         return save(newUser);
+    }
+
+    public Optional<Users> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }
