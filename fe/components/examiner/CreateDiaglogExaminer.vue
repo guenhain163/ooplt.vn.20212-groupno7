@@ -122,7 +122,7 @@ export default {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           alert('submit!')
-          await this.$axios.post('/admin/lecturers', this.ruleForm).then((response) => {
+          await this.$axios.post('/admin/examiners', this.ruleForm).then((response) => {
             this.notifycation()
             this.$router.go({
             path: '/',

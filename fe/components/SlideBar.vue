@@ -12,7 +12,7 @@
                 <ul>
                   <li><a href="/">Quản lý giảng viên </a></li>
                   <li><a href="/examinator">Quản lý Cán bộ coi thi </a></li>
-                  <li><a href="/examinator-plan">Thông tin phân công trông thi </a></li>
+                  <li><a href="/exam-classes">Thông tin phân công trông thi </a></li>
                   <li><a href="/cost">Quản lý kinh phí </a></li>
                   <li><a href="/report">Báo cáo thống kê </a></li>
                   <li><a href="/contact">Liên hệ </a></li>

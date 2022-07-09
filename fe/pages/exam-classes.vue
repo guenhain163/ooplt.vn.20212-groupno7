@@ -26,32 +26,40 @@
               >
             </el-row>
 
-            <div class="m-5">
+            <div class="my-5" style="margin-left: 3rem">
               <el-table
                 v-loading="isLoading"
                 :data="tableDataSearch"
                 style="width: 100%"
                 height="450"
               >
-              <el-table-column prop="stt" label="STT" width="50">
+                <el-table-column prop="stt" label="STT" width="50">
                 </el-table-column>
-                <el-table-column prop="name" label="Name" width="270">
+                <el-table-column prop="codeModule" label="Mã học phần" width="120">
                 </el-table-column>
-                <el-table-column prop="modules" label="Bộ môn" width="270">
+                <el-table-column prop="nameModule" label="Tên học phần" width="120">
                 </el-table-column>
-                <el-table-column prop="phone" label="Điện thoại" width="120">
+                <el-table-column prop="classExam.note" label="Ghi chú" width="80">
                 </el-table-column>
-                <el-table-column prop="email" label="Email" width="200">
+                <el-table-column prop="phone" label="Nhóm" width="100">
                 </el-table-column>
-                <el-table-column
-                  prop="workRoom"
-                  label="Phòng làm việc"
-                  width="200"
-                >
+                <el-table-column prop="classExam.openingPeriod" label="Đợt mở" width="80">
+                </el-table-column>
+                <el-table-column prop="classExam.week" label="Tuần" width="100">
+                </el-table-column>
+                <el-table-column prop="classExam.date" label="Thứ" width="100">
+                </el-table-column>
+                <el-table-column prop="classExam.date" label="Ngày thi" width="100">
+                </el-table-column>
+                <el-table-column prop="classExam.examShift" label="Kíp" width="80">
+                </el-table-column>
+                <el-table-column prop="numberStudent" label="SLDK" width="100">
+                </el-table-column>
+                <el-table-column prop="classExam.room" label="Phòng thi" width="100">
                 </el-table-column>
 
                 <el-table-column
-                  min-width="120"
+                  min-width="100"
                   class-name="text-secondary"
                   label="Action"
                 >
@@ -67,6 +75,14 @@
                       <br />
                       <el-link
                         style="margin-top: 10px"
+                        @click="examPass(scope.$index, scope.row)"
+                      >
+                        <strong>Phân công trông thi</strong>
+                      </el-link>
+                      <br />
+
+                      <el-link
+                        style="margin-top: 10px"
                         @click="deleteData(scope.$index, scope.row)"
                       >
                         <strong>Delete</strong>
@@ -80,8 +96,9 @@
                 </el-table-column>
               </el-table>
 
-              <DiaglogExaminer ref="offerDetailDialog" />
-              <CreateDiaglogExaminer ref="CreateDiaglogExaminer" />
+              <DiaglogExamClasses ref="offerDetailDialog" />
+              <CreateDiaglogExamClasses ref="CreateDiaglogExamClasses" />
+              <ExamRegister ref="examRegister" />
             </div>
           </div>
         </div>
@@ -92,16 +109,18 @@
 
 <script>
 import SlideBar from '../components/SlideBar'
-import DiaglogExaminer from '../components/examiner/DiaglogExaminer'
-import CreateDiaglogExaminer from '../components/examiner/CreateDiaglogExaminer'
+import DiaglogExamClasses from '../components/examClasses/DiaglogExamClasses'
+import CreateDiaglogExamClasses from '../components/examClasses/CreateDiaglogExamClasses'
+import ExamRegister from '../components/examClasses/ExamRegister'
 
 export default {
   name: 'IndexPage',
   auth: false,
   components: {
     SlideBar,
-    DiaglogExaminer,
-    CreateDiaglogExaminer,
+    DiaglogExamClasses,
+    CreateDiaglogExamClasses,
+    ExamRegister
   },
   data() {
     return {
@@ -154,10 +173,6 @@ export default {
       this.$refs.offerDetailDialog.dialogVisible = true
       this.$refs.offerDetailDialog.id = index
       this.$refs.offerDetailDialog.val = val
-
-      this.$refs.offerDetailDialog.data.name = val.name
-      this.$refs.offerDetailDialog.data.phone = val.phone
-      this.$refs.offerDetailDialog.data.workRoom = val.workRoom
     },
     async deleteData(index, val) {
       this.$refs[`popover${index}`].doClose()
@@ -174,24 +189,25 @@ export default {
         })
     },
     createTeacher() {
-      this.$refs.CreateDiaglogExaminer.dialogVisible = true
+      this.$refs.CreateDiaglogExamClasses.dialogVisible = true
     },
     async getData() {
       this.isLoading = true
       await this.$axios
-        .get('/admin/examiners')
+        .get('/admin/examClasses')
         .then((response) => {
           const raw = response.data
           for (let index = 0; index < raw.length; index++) {
-            const element = raw[index];
+            const element = raw[index]
             element.stt = index + 1
           }
           raw.forEach((data) => {
-            data.value = data.name
+            data.value = data.nameModule
           })
           this.tableData = raw
           this.tableDataSearch = this.tableData
           this.isLoading = false
+          console.log(this.tableData)
         })
         .catch((erorr) => {
           console.log(erorr)
@@ -210,6 +226,12 @@ export default {
         title: 'Error',
         message: 'Can not delete',
       })
+    },
+    examPass(index, val) {
+      this.$refs[`popover${index}`].doClose()
+      this.$refs.examRegister.dialogVisible = true
+      this.$refs.examRegister.value = val
+      this.$refs.examRegister.getlecturesExam()
     },
   },
 }

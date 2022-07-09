@@ -71,19 +71,13 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          // await this.$auth.loginWith('laravelJWT', {
-          //   data: this.ruleForm
-          // }).then((response) => {
-          //   this.notifycation()
-          // }).catch((e) => {
-          //   console.log(e)
-          // })
-
-
-          await this.$axios.post('http://localhost:8080/api/auth/login', this.ruleForm).then((response) => {
-            console.log(response)
+          await this.$auth.loginWith('laravelJWT', {
+            data: this.ruleForm
+          }).then((response) => {
+            this.notifycation()
           }).catch((e) => {
             console.log(e)
+            this.notifycation()
           })
         } else {
           console.log('error submit!!')

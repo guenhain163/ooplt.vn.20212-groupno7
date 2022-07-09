@@ -1,24 +1,33 @@
 <template>
   <div class="custom-dialog">
     <el-dialog
-      title="Chỉnh sửa thông tin giáo viên"
+      title="Phân công cán bộ coi thi"
       :visible.sync="dialogVisible"
       width="30%"
       :before-close="handleClose"
     >
+    asdsad
       <el-form ref="val" :model="data" label-width="120px">
-        <el-form-item label="Name">
-          <el-input v-model="data.name"></el-input>
+        <el-form-item label="Mã lớp thi">
+          <el-input v-model="data.codeModule" disabled></el-input>
         </el-form-item>
-        <el-form-item label="Phone">
-          <el-input v-model="data.phone"></el-input>
+        <el-form-item label="Số sinh viên">
+          <el-input
+            v-model="data.numberStudent" disabled
+          ></el-input>
         </el-form-item>
-        <el-form-item label="Email">
-          <el-input v-model="val.email" disabled></el-input>
+
+        <el-form-item label="Cán bộ coi thi số" prop="modules">
+          <el-checkbox-group v-model="data.modules">
+            <el-checkbox label=1 name="modules"></el-checkbox>
+            <el-checkbox
+              label=2
+              name="modules"
+              value="1"
+            ></el-checkbox>
+          </el-checkbox-group>
         </el-form-item>
-        <el-form-item label="Phòng làm việc">
-          <el-input v-model="data.workRoom"></el-input>
-        </el-form-item>
+
         <el-form-item>
           <el-button type="primary" @click="onSubmit">Edit</el-button>
           <el-button @click="handleClose">Cancel</el-button>
@@ -34,32 +43,25 @@ export default {
     return {
       dialogVisible: false,
       data: {
-        name: '',
-        phone: '',
-        workRoom: '',
+        modules: [],
       },
-      val: {
-        name: '',
-        phone: '',
-        workRoom: '',
-        email: '',
-      }
     }
   },
   methods: {
-    async onSubmit() {
-      await this.$axios
-        .patch(`/admin/lecturers/${this.val.id}`, this.data)
-        .then((response) => {
-          this.notifycation()
-          this.$router.go({
-            path: '/',
-          })
-        })
-        .catch((error) => {
-          console.log(error)
-          this.errorNotification()
-        })
+    onSubmit() {
+      // this.$axios
+      //   .patch(`/admin/lecturers/${this.val.id}`, this.data)
+      //   .then((response) => {
+      //     this.notifycation()
+      //     this.$router.go({
+      //       path: '/',
+      //     })
+      //   })
+      //   .catch((error) => {
+      //     console.log(error)
+      //     this.errorNotification()
+      //   })
+      console.log(this.$refs.val)
     },
     handleClose(done) {
       this.$confirm('Are you sure to close this dialog?')
