@@ -3,9 +3,12 @@ package com.example.be.service;
 import com.example.be.model.*;
 import com.example.be.repository.ExamClassLecturerDetailRepository;
 import com.example.be.repository.LecturerRepository;
+import com.example.be.request.CreateExaminerRequest;
 import com.example.be.request.CreateLectureRequest;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -75,7 +78,7 @@ public class LecturerService implements BaseService<Lecturers> {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("name", lecturer.getName());
             map.put("phone", lecturer.getPhone());
-            map.put("room", lecturer.getWorkRoom());
+            map.put("workRoom", lecturer.getWorkRoom());
             Users user = lecturer.getUsers();
             map.put("email", user.getEmail());
             List<Integer> moduleIdList = lecturer.getSpecialitiesById().stream().map(Speciality::getModuleId).toList();
@@ -87,7 +90,11 @@ public class LecturerService implements BaseService<Lecturers> {
         return resultsList;
     }
 
-    public Lecturers createLecturers(CreateLectureRequest lecturer) {
+    public ResponseEntity<Lecturers> createLecturers(CreateLectureRequest lecturer) {
+        if (userService.findByEmail(lecturer.getEmail()).isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
         Users user = userService.createDefault(lecturer.getEmail());
 
         Lecturers newLecturer = this.save(new Lecturers(
@@ -106,6 +113,34 @@ public class LecturerService implements BaseService<Lecturers> {
 
         specialityService.save(specialities);
 
-        return newLecturer;
+        return new ResponseEntity<>(newLecturer, HttpStatus.OK);
+    }
+
+    public ResponseEntity<Lecturers> createExaminers(CreateExaminerRequest examiner) {
+        if (userService.findByEmail(examiner.getEmail()).isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        Users user = userService.createDefault(examiner.getEmail());
+
+        Lecturers newExaminer = this.save(new Lecturers(
+                examiner.getName(),
+                examiner.getPhone(),
+                examiner.getWorkRoom(),
+                user.getId(),
+                Lecturers.Roles.EXAMINER.ordinal()
+        ));
+
+        if (!examiner.getModules().isEmpty()) {
+            ArrayList<Speciality> specialities = new ArrayList<>();
+            for (Integer moduleId : examiner.getModules()) {
+                Speciality speciality = new Speciality(newExaminer.getId(), moduleId);
+                specialities.add(speciality);
+            }
+
+            specialityService.save(specialities);
+        }
+
+        return new ResponseEntity<>(newExaminer, HttpStatus.OK);
     }
 }
