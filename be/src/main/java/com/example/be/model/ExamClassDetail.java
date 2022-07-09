@@ -1,11 +1,17 @@
 package com.example.be.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Data
 @Table(name = "exam_class_detail", schema = "exam_management")
 public class ExamClassDetail {
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -143,4 +143,8 @@ public class LecturerService implements BaseService<Lecturers> {
 
         return new ResponseEntity<>(newExaminer, HttpStatus.OK);
     }
+
+    public List<Map<String, Object>> getExaminersByExamClassId(Integer examClassId) {
+        return lecturerRepository.findByExamClassId(examClassId);
+    }
 }

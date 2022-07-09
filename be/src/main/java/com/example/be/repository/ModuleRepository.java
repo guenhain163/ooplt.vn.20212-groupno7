@@ -17,4 +17,11 @@ public interface ModuleRepository extends JpaRepository<Modules, Integer> {
     @Modifying
     @Query(value = "SELECT m.name FROM Modules m WHERE m.id IN ?1")
     List<String> listModuleNamesById(List<Integer> idList);
+
+    @Modifying
+    @Query("SELECT m.name FROM Modules m " +
+            "LEFT JOIN Speciality s ON s.moduleId = m.id " +
+            "LEFT JOIN Lecturers l ON l.id = s.lecturerId " +
+            "WHERE l.id = ?1")
+    List<String> listModuleNamesByLecturerId(Integer lecturerId);
 }

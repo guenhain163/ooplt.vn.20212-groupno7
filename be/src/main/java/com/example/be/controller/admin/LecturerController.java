@@ -148,4 +148,9 @@ public class LecturerController {
     ) {
         return lecturerService.listOfExaminersIsFree(date, examShift, examClassId);
     }
+
+    @GetMapping(value = "/examiners", params = {"examClassId"})
+    public ResponseEntity<?> getExaminersByExamClassId(@RequestParam Integer examClassId) {
+        return new ResponseEntity<>(lecturerService.getExaminersByExamClassId(examClassId), HttpStatus.OK);
+    }
 }
