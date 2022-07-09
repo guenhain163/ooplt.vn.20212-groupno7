@@ -15,6 +15,14 @@ public class ExamClassExaminerDetail {
     private Long id;
 
     @Basic
+    @Column(name = "lecturer_id")
+    private Long lecturerId;
+
+    @Basic
+    @Column(name = "exam_class_id")
+    private Long examClassId;
+
+    @Basic
     @Column(name = "cost")
     private Integer cost;
 
@@ -23,12 +31,12 @@ public class ExamClassExaminerDetail {
     private Integer status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lecturer_id", referencedColumnName = "id")
+    @JoinColumn(name = "lecturer_id", referencedColumnName = "id", insertable = false, updatable = false)
     @JsonBackReference
     private Lecturers lecturersByLecturerId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "exam_class_id", referencedColumnName = "id")
+    @JoinColumn(name = "exam_class_id", referencedColumnName = "id", insertable = false, updatable = false)
     @JsonBackReference
     private ExamClasses examClassesByExamClassId;
 
@@ -38,6 +46,22 @@ public class ExamClassExaminerDetail {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getLecturerId() {
+        return lecturerId;
+    }
+
+    public void setLecturerId(Long lecturerId) {
+        this.lecturerId = lecturerId;
+    }
+
+    public Long getExamClassId() {
+        return examClassId;
+    }
+
+    public void setExamClassId(Long examClassId) {
+        this.examClassId = examClassId;
     }
 
     public Integer getCost() {
