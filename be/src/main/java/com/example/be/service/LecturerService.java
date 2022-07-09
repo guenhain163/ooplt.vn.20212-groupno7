@@ -3,13 +3,12 @@ package com.example.be.service;
 import com.example.be.model.*;
 import com.example.be.repository.ExamClassLecturerDetailRepository;
 import com.example.be.repository.LecturerRepository;
+import com.example.be.request.CreateLectureRequest;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.example.be.model.Lecturers.*;
 
 @Service
 public class LecturerService implements BaseService<Lecturers> {
@@ -19,9 +18,10 @@ public class LecturerService implements BaseService<Lecturers> {
     private ExamClassLecturerDetailRepository examClassLecturerDetailRepository;
     @Autowired
     private ModuleService moduleService;
-
-
-    private final List<Integer> LECTURER = Arrays.asList(Lecturers.Roles.LECTURER.ordinal(), Lecturers.Roles.ALL.ordinal());
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private SpecialityService specialityService;
 
     @Override
     public Iterable<Lecturers> findAll() {
@@ -66,8 +66,8 @@ public class LecturerService implements BaseService<Lecturers> {
         } else return null;
     }
 
-    public List<Map<String, Object>> getAllLecturers() {
-        List<Lecturers> lecturerList = this.findByRoleIn(LECTURER);
+    public List<Map<String, Object>> getAllLecturersOrExaminers(List<Integer> roles) {
+        List<Lecturers> lecturerList = this.findByRoleIn(roles);
         System.out.println(lecturerList);
 
         List<Map<String, Object>> resultsList = new ArrayList<Map<String, Object>>();
@@ -85,5 +85,27 @@ public class LecturerService implements BaseService<Lecturers> {
         }
 
         return resultsList;
+    }
+
+    public Lecturers createLecturers(CreateLectureRequest lecturer) {
+        Users user = userService.createDefault(lecturer.getEmail());
+
+        Lecturers newLecturer = this.save(new Lecturers(
+                lecturer.getName(),
+                lecturer.getPhone(),
+                lecturer.getWorkRoom(),
+                user.getId(),
+                Lecturers.Roles.LECTURER.ordinal()
+        ));
+
+        ArrayList<Speciality> specialities = new ArrayList<>();
+        for (Integer moduleId : lecturer.getModules()) {
+            Speciality speciality = new Speciality(newLecturer.getId(), moduleId);
+            specialities.add(speciality);
+        }
+
+        specialityService.save(specialities);
+
+        return newLecturer;
     }
 }

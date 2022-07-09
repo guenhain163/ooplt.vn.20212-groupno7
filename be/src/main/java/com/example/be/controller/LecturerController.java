@@ -2,6 +2,7 @@ package com.example.be.controller;
 
 import com.example.be.exceptions.ResourceNotFoundException;
 import com.example.be.model.Lecturers;
+import com.example.be.request.CreateLectureRequest;
 import com.example.be.request.LecturerRequest;
 import com.example.be.service.LecturerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,24 +34,17 @@ public class LecturerController {
         return new ResponseEntity<>(lecturerService.findAll(), HttpStatus.OK);
     }
 
-//    @GetMapping("/lecturers")
-//    public ResponseEntity<List<Lecturers>> getAllLecturers() {
-//        return new ResponseEntity<>(
-//                lecturerService.findByRoleIn(LECTURER),
-//                HttpStatus.OK);
-//    }
-
     @GetMapping("/lecturers")
     public ResponseEntity<?> getAllLecturers() {
         return new ResponseEntity<>(
-                lecturerService.getAllLecturers(),
+                lecturerService.getAllLecturersOrExaminers(LECTURER),
                 HttpStatus.OK);
     }
 
     @GetMapping("/examiners")
-    public ResponseEntity<List<Lecturers>> getAllExaminers() {
+    public ResponseEntity<?> getAllExaminers() {
         return new ResponseEntity<>(
-                lecturerService.findByRoleIn(EXAMINER),
+                lecturerService.getAllLecturersOrExaminers(EXAMINER),
                 HttpStatus.OK);
     }
 
@@ -68,21 +62,23 @@ public class LecturerController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
-    @PostMapping(value = {"/lecturers", "/examiners"})
-    public ResponseEntity<Lecturers> createNewLecturer(@Valid @RequestBody LecturerRequest lecturer) {
+    @PostMapping("/lecturers")
+    public ResponseEntity<Lecturers> createNewLecturer(@RequestBody @Valid CreateLectureRequest lecturer) {
         try {
-            Lecturers newLecturer = new Lecturers(
-                    lecturer.getName(),
-                    lecturer.getPhone(),
-                    lecturer.getWorkRoom(),
-                    lecturer.getUserId(),
-                    lecturer.getRole()
-            );
-            return new ResponseEntity<>(lecturerService.update(newLecturer), HttpStatus.OK);
+            return new ResponseEntity<>(lecturerService.createLecturers(lecturer), HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+//    @PostMapping("/examiners")
+//    public ResponseEntity<Lecturers> createNewExaminer(@RequestBody @Valid CreateLectureRequest lecturer) {
+//        try {
+//            return new ResponseEntity<>(lecturerService.createLecturers(lecturer), HttpStatus.OK);
+//        } catch (ResourceNotFoundException ex) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @PutMapping(value = {"/lecturers/{id}", "/examiners/{id}"})
     public ResponseEntity<Lecturers> updateLecturer(@PathVariable Integer id, @Valid @RequestBody LecturerRequest lecturers) {
