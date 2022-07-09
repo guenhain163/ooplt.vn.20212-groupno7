@@ -3,6 +3,7 @@ package com.example.be.service;
 import com.example.be.model.ExamClassExaminerDetail;
 import com.example.be.model.ExamClassLecturerDetail;
 import com.example.be.model.ExamClasses;
+import com.example.be.model.Lecturers;
 import com.example.be.repository.ExamClassLecturerDetailRepository;
 import com.example.be.repository.ExamClassRepository;
 import com.example.be.request.ExamClassRequest;
@@ -14,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.example.be.model.ExamClasses.Status.REGISTERED;
 
@@ -57,6 +55,10 @@ public class ExamClassService implements BaseService<ExamClasses> {
 
     public Optional<ExamClasses> findByIdAndStatus(Integer id, Integer status) {
         return examClassRepository.findByIdAndStatus(id, status);
+    }
+
+    public Object getAllExamClasses() {
+        return examClassRepository.getAllExamClasses();
     }
 
     public ExamClasses create(@NotNull ExamClassRequest examClass) {
