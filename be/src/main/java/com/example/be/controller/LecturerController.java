@@ -33,10 +33,17 @@ public class LecturerController {
         return new ResponseEntity<>(lecturerService.findAll(), HttpStatus.OK);
     }
 
+//    @GetMapping("/lecturers")
+//    public ResponseEntity<List<Lecturers>> getAllLecturers() {
+//        return new ResponseEntity<>(
+//                lecturerService.findByRoleIn(LECTURER),
+//                HttpStatus.OK);
+//    }
+
     @GetMapping("/lecturers")
-    public ResponseEntity<List<Lecturers>> getAllLecturers() {
+    public ResponseEntity<?> getAllLecturers() {
         return new ResponseEntity<>(
-                lecturerService.findByRoleIn(LECTURER),
+                lecturerService.getAllLecturers(),
                 HttpStatus.OK);
     }
 
