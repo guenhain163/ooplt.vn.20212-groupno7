@@ -1,4 +1,4 @@
-package com.example.be.controller;
+package com.example.be.controller.admin;
 
 import com.example.be.exceptions.ResourceNotFoundException;
 import com.example.be.model.Lecturers;

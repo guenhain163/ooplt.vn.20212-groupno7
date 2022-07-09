@@ -1,4 +1,4 @@
-package com.example.be.controller;
+package com.example.be.controller.admin;
 
 import com.example.be.exceptions.ResourceNotFoundException;
 import com.example.be.model.ExamClassExaminerDetail;
@@ -27,8 +27,9 @@ public class ExamClassesController {
     private ExamClassService examClassService;
 
     @GetMapping
-    public ResponseEntity<Iterable<ExamClasses>> getAllExamClasses() {
-        return new ResponseEntity<>(examClassService.findAll(), HttpStatus.OK);
+    public ResponseEntity<?> getAllExamClasses() {
+//        return new ResponseEntity<>(examClassService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(examClassService.getAllExamClasses(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

@@ -1,4 +1,4 @@
-package com.example.be.controller;
+package com.example.be.controller.admin;
 
 import com.example.be.model.Modules;
 import com.example.be.service.ModuleService;
