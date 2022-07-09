@@ -1,10 +1,10 @@
 package com.example.be.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -15,34 +15,39 @@ public class ExamClasses {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
 
     @Basic
-    @Column(name = "exam_shift", nullable = true)
+    @Column(name = "class_id", nullable = false)
+    private Integer classId;
+
+    @Basic
+    @Column(name = "exam_shift")
     private Integer examShift;
 
     @Basic
-    @Column(name = "date", nullable = true)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "date")
     private Date date;
 
     @Basic
-    @Column(name = "week", nullable = true, length = 255)
+    @Column(name = "week", length = 255)
     private String week;
 
     @Basic
-    @Column(name = "opening_period", nullable = true, length = 255)
+    @Column(name = "opening_period", length = 255)
     private String openingPeriod;
 
     @Basic
-    @Column(name = "room", nullable = true, length = 255)
+    @Column(name = "room", length = 255)
     private String room;
 
     @Basic
-    @Column(name = "status", nullable = true)
+    @Column(name = "status")
     private Integer status;
 
     @Basic
-    @Column(name = "note", nullable = true, length = 255)
+    @Column(name = "note", length = 255)
     private String note;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "examClassesByExamClassId")
@@ -52,16 +57,49 @@ public class ExamClasses {
     private Set<ExamClassExaminerDetail> examClassExaminerDetailsById = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "class_id", referencedColumnName = "id")
-//    @JsonBackReference
+    @JoinColumn(name = "class_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonBackReference
     private Classes classesByClassId;
 
-    public Long getId() {
+    public enum Status {
+        NEW,
+        REGISTERED,
+        DONE,
+        CLOSED
+    }
+
+    public ExamClasses() {
+
+    }
+
+    public ExamClasses(Integer classId, Integer examShift, Date date, String week, String openingPeriod, String room) {
+        this.classId = classId;
+        this.examShift = examShift;
+        this.date = date;
+        this.week = week;
+        this.openingPeriod = openingPeriod;
+        this.room = room;
+    }
+
+    public ExamClasses(Integer classId, Integer examShift, Date date, String week, String openingPeriod, String room, String note) {
+        this(classId, examShift, date, week, openingPeriod, room);
+        this.note = note;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 
     public int getExamShift() {
@@ -125,7 +163,7 @@ public class ExamClasses {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExamClasses that = (ExamClasses) o;
-        return id == that.id
+        return Objects.equals(id, that.id)
                 && Objects.equals(examShift, that.examShift)
                 && Objects.equals(date, that.date)
                 && Objects.equals(week, that.week) 

@@ -11,7 +11,7 @@ public class ExamClassLecturerDetail {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Basic
     @Column(name = "number_student")
@@ -25,22 +25,46 @@ public class ExamClassLecturerDetail {
     @Column(name = "status")
     private Integer status;
 
+    @Basic
+    @Column(name = "lecturer_id")
+    private Integer lectureId;
+
+    @Basic
+    @Column(name = "exam_class_id")
+    private Integer examClassId;
+
     @ManyToOne
-    @JoinColumn(name = "lecturer_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "lecturer_id", referencedColumnName = "id", insertable = false, updatable = false)
     @JsonBackReference
     private Lecturers lecturersByLecturerId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "exam_class_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "exam_class_id", referencedColumnName = "id", insertable = false, updatable = false)
     @JsonBackReference
     private ExamClasses examClassesByExamClassId;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getLectureId() {
+        return lectureId;
+    }
+
+    public void setLectureId(Integer lectureId) {
+        this.lectureId = lectureId;
+    }
+
+    public Integer getExamClassId() {
+        return examClassId;
+    }
+
+    public void setExamClassId(Integer examClassId) {
+        this.examClassId = examClassId;
     }
 
     public int getNumberStudent() {

@@ -33,11 +33,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private boolean hasAuthorizationBearer(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
-        if (ObjectUtils.isEmpty(header) || !header.startsWith("Bearer")) {
-            return false;
-        }
-
-        return true;
+        return !ObjectUtils.isEmpty(header) && header.startsWith("Bearer");
     }
 
     private String getAccessToken(HttpServletRequest request) {
@@ -62,7 +58,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         Users userDetails = new Users();
         String[] jwtSubject = jwtUtil.getSubject(token).split(",");
 
-        userDetails.setId(Long.parseLong(jwtSubject[0]));
+        userDetails.setId(Integer.parseInt(jwtSubject[0]));
         userDetails.setEmail(jwtSubject[1]);
 
         return userDetails;

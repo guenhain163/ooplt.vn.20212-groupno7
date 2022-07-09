@@ -4,6 +4,7 @@ import com.example.be.jwt.JwtTokenUtil;
 import com.example.be.model.Users;
 import com.example.be.request.AuthRequest;
 import com.example.be.response.AuthResponse;
+import com.example.be.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,16 +12,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@CrossOrigin("*")
 @RestController
 public class AuthController {
     @Autowired
     private AuthenticationManager authManager;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private JwtTokenUtil jwtUtil;
@@ -33,8 +35,6 @@ public class AuthController {
                             request.getEmail(), request.getPassword())
             );
 
-            System.out.println(request.getEmail());
-
             Users user = (Users) authentication.getPrincipal();
             String accessToken = jwtUtil.generateAccessToken(user);
             Long expiresIn = jwtUtil.getExpiresIn(accessToken);
@@ -46,4 +46,11 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+//    @GetMapping("/api/auth/user")
+//    public ResponseEntity<?> getUser() {
+//        try {
+//            return authManager.
+//        }
+//    }
 }

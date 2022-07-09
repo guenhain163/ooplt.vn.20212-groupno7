@@ -17,23 +17,53 @@ public class Speciality {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
+
+    @Basic
+    @Column(name = "module_id")
+    private Integer moduleId;
+
+    @Basic
+    @Column(name = "lecturer_id")
+    private Integer lecturerId;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "module_id", referencedColumnName = "id", nullable = false)
-//    @JsonBackReference
+    @JoinColumn(name = "module_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonBackReference
     private Modules modulesByModuleId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lecturer_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "lecturer_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonBackReference
     private Lecturers lecturersByLecturerId;
 
-    public Long getId() {
+    public Speciality(Integer lectureId, Integer moduleId) {
+        this.lecturerId = lectureId;
+        this.moduleId = moduleId;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getModuleId() {
+        return moduleId;
+    }
+
+    public void setLecturerId(Integer lecturerId) {
+        this.lecturerId = lecturerId;
+    }
+
+    public Integer getLecturerId() {
+        return lecturerId;
+    }
+
+    public void setModuleId(Integer moduleId) {
+        this.moduleId = moduleId;
     }
 
     @Override

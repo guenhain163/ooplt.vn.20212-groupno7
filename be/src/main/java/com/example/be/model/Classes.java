@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -23,7 +24,7 @@ public class Classes {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Basic
     @Column(name = "code", unique = true)
@@ -35,7 +36,8 @@ public class Classes {
 
     @Basic
     @Column(name = "registered_exam")
-    @CreationTimestamp
+//    @CreationTimestamp
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date registeredExam;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,14 +46,14 @@ public class Classes {
     private Modules modulesByModuleId;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "classesByClassId")
-//    @JsonManagedReference
+    @JsonManagedReference
     private Set<ExamClasses> examClassesById = new HashSet<>();
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

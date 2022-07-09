@@ -23,7 +23,7 @@ public class Users implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
 
     @Basic
     @Email
@@ -66,11 +66,11 @@ public class Users implements UserDetails {
         this.role = role;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

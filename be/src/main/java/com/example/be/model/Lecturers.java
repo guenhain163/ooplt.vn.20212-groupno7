@@ -15,7 +15,7 @@ public class Lecturers {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Basic
     @Column(name = "name")
@@ -38,7 +38,7 @@ public class Lecturers {
 
     @Basic
     @Column(name = "user_id")
-    private Long userId;
+    private Integer userId;
 
     @OneToOne(targetEntity = Users.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
@@ -64,7 +64,7 @@ public class Lecturers {
 
     }
 
-    public Lecturers(String name, String phone, String workRoom, Long userId, Integer role) {
+    public Lecturers(String name, String phone, String workRoom, Integer userId, Integer role) {
         this.name = name;
         this.phone = phone;
         this.workRoom = workRoom;
@@ -72,11 +72,11 @@ public class Lecturers {
         this.role = role;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -112,11 +112,11 @@ public class Lecturers {
         this.role = role;
     }
 
-    public Long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

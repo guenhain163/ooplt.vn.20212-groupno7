@@ -22,7 +22,7 @@ public class ClassService implements BaseService<Classes> {
     }
 
     @Override
-    public Optional<Classes> findById(Long id) {
+    public Optional<Classes> findById(Integer id) {
         return Optional.empty();
     }
 
@@ -36,12 +36,12 @@ public class ClassService implements BaseService<Classes> {
         return classRepository.saveAndFlush(classes);
     }
 
-    public Classes updateRegisteredClass(Date date, Long id) {
+    public Classes updateRegisteredClass(Date date, Integer id) {
         return classRepository.updateRegisteredClass(date, id);
     }
 
     @Override
-    public void remove(Long id) {
+    public void remove(Integer id) {
 
     }
 
