@@ -31,6 +31,6 @@ public interface LecturerRepository extends JpaRepository<Lecturers, Integer > {
     @Query("SELECT NEW map(a.id as id, a.name as name, b.email as email) FROM Lecturers a " +
             "INNER JOIN Users b ON b.id = a.userId " +
             "INNER JOIN ExamClassExaminerDetail c ON c.lecturerId = a.id " +
-            "WHERE c.lecturerId = ?1")
+            "WHERE c.examClassId = ?1")
     List<Map<String, Object>> findByExamClassId(Integer examClassId);
 }
