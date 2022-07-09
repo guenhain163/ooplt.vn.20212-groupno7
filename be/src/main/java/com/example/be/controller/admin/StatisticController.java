@@ -12,8 +12,8 @@ public class StatisticController {
     @Autowired
     private StatisticService statisticService;
 
-    @GetMapping("/lecturer/{id}")
-    public ResponseEntity<?> getStatisticLecturer(@PathVariable Integer lecturerId) {
-        return statisticService.getStatisticLecturer(lecturerId);
+    @GetMapping("/lecturers/{id}")
+    public ResponseEntity<?> getStatisticLecturer(@PathVariable Integer id) {
+        return statisticService.getStatisticLecturer(id);
     }
 }

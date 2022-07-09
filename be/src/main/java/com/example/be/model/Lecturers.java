@@ -1,6 +1,7 @@
 package com.example.be.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -8,7 +9,12 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Data
 public class Lecturers {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
@@ -53,10 +59,6 @@ public class Lecturers {
         EXAMINER,
         LECTURER,
         ALL
-    }
-
-    public Lecturers() {
-
     }
 
     public Lecturers(String name, String phone, String workRoom, Integer userId, Integer role) {
