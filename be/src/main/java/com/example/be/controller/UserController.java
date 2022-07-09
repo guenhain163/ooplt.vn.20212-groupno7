@@ -21,7 +21,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Users> getUser(@PathVariable Long id) {
+    public ResponseEntity<Users> getUser(@PathVariable Integer id) {
         Optional<Users> userOptional = userService.findById(id);
         return userOptional.map(user -> new ResponseEntity<>(user, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -34,13 +34,11 @@ public class UserController {
                 return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
             }
 
-            Users newUser = new Users(
+            return new ResponseEntity<>(userService.save(new Users(
                     user.getEmail(),
                     user.getPassword(),
                     user.getRole()
-            );
-
-            return new ResponseEntity<>(userService.save(newUser), HttpStatus.OK);
+            )), HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

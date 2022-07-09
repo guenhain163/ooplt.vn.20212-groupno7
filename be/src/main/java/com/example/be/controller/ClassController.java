@@ -33,7 +33,7 @@ public class ClassController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Classes> updateLecturer(@PathVariable Long id, @RequestBody Classes classes) {
+    public ResponseEntity<Classes> updateLecturer(@PathVariable Integer id, @RequestBody Classes classes) {
         Optional<Classes> classOptional = classService.findById(id);
         return classOptional.map(el -> {
             classes.setId(el.getId());
@@ -44,7 +44,7 @@ public class ClassController {
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateRegisteredClass(
             @RequestBody Date date,
-            @PathVariable("id") Long id) {
+            @PathVariable("id") Integer id) {
         try {
             return new ResponseEntity<>(classService.updateRegisteredClass(date, id), HttpStatus.OK);
         } catch (Exception e) {

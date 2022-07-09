@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ModuleRepository extends JpaRepository<Modules, Long> {
+public interface ModuleRepository extends JpaRepository<Modules, Integer> {
     @Query(value = "SELECT m.id, m.name, m.code FROM modules m", nativeQuery = true)
     List<Object[]> listModules();
 }

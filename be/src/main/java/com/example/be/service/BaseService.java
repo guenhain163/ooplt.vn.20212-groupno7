@@ -2,17 +2,17 @@ package com.example.be.service;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
+@Service
 public interface BaseService<T> {
     Iterable<T> findAll();
 
-    Optional<T> findById(Long id);
+    Optional<T> findById(Integer id);
 
     T save(T t);
 
     T update(T t);
 
-    void remove(Long id);
+    void remove(Integer id);
 }

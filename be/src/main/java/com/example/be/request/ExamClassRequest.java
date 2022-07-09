@@ -6,7 +6,7 @@ import java.sql.Date;
 
 public class ExamClassRequest {
     @NotNull
-    private Long classId;
+    private Integer classId;
 
     @NotNull
     private Integer examShift;
@@ -32,11 +32,11 @@ public class ExamClassRequest {
 
     private String note;
 
-    public Long getClassId() {
+    public Integer getClassId() {
         return classId;
     }
 
-    public void setClassId(Long classId) {
+    public void setClassId(Integer classId) {
         this.classId = classId;
     }
 

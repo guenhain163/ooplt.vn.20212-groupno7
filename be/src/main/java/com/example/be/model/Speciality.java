@@ -17,7 +17,7 @@ public class Speciality {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "module_id", referencedColumnName = "id", nullable = false)
@@ -28,11 +28,11 @@ public class Speciality {
     @JoinColumn(name = "lecturer_id", referencedColumnName = "id", nullable = false)
     private Lecturers lecturersByLecturerId;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

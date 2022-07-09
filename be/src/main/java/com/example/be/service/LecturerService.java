@@ -24,7 +24,7 @@ public class LecturerService implements BaseService<Lecturers> {
     }
 
     @Override
-    public Optional<Lecturers> findById(Long id) {
+    public Optional<Lecturers> findById(Integer id) {
         return lecturerRepository.findById(id);
     }
 
@@ -39,7 +39,7 @@ public class LecturerService implements BaseService<Lecturers> {
     }
 
     @Override
-    public void remove(Long id) {
+    public void remove(Integer id) {
         lecturerRepository.deleteById(id);
     }
 
@@ -47,19 +47,16 @@ public class LecturerService implements BaseService<Lecturers> {
         return lecturerRepository.findByRoleIn(roles);
     }
 
-    public Optional<Lecturers> findByIdAndRoleIn(Long id, List<Integer> roles) {
+    public Optional<Lecturers> findByIdAndRoleIn(Integer id, List<Integer> roles) {
         return lecturerRepository.findByIdAndRoleIn(id, roles);
     }
 
-    public Iterable<Lecturers> listOfExaminersIsFree(Date date, Integer examShift, Long examClassId) {
+    public Iterable<Lecturers> listOfExaminersIsFree(Date date, Integer examShift, Integer examClassId) {
         Optional<ExamClassLecturerDetail> examClassLecturerDetail =
                 examClassLecturerDetailRepository.findByExamClassId(examClassId);
-        System.out.println(date);
-        System.out.println(examShift);
-        System.out.println(examClassId);
 
         if (examClassLecturerDetail.isPresent()) {
-            Long lecturerId = examClassLecturerDetail.get().getLectureId();
+            Integer lecturerId = examClassLecturerDetail.get().getLectureId();
             return lecturerRepository.findExaminersIsFree(date, examShift, lecturerId);
         } else return null;
     }

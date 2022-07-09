@@ -19,7 +19,7 @@ public class ModuleService implements BaseService<Modules> {
     }
 
     @Override
-    public Optional<Modules> findById(Long id) {
+    public Optional<Modules> findById(Integer id) {
         return moduleRepository.findById(id);
     }
 
@@ -34,7 +34,7 @@ public class ModuleService implements BaseService<Modules> {
     }
 
     @Override
-    public void remove(Long id) {
+    public void remove(Integer id) {
         moduleRepository.deleteById(id);
     }
 

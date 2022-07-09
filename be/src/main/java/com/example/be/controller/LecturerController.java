@@ -48,14 +48,14 @@ public class LecturerController {
     }
 
     @GetMapping("/lecturers/{id}")
-    public ResponseEntity<Lecturers> getLecturer(@PathVariable Long id) {
+    public ResponseEntity<Lecturers> getLecturer(@PathVariable Integer id) {
         Optional<Lecturers> lecturerOptional = lecturerService.findByIdAndRoleIn(id, LECTURER);
         return lecturerOptional.map(lecturer -> new ResponseEntity<>(lecturer, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @GetMapping("/examiners/{id}")
-    public ResponseEntity<Lecturers> getExaminer(@PathVariable Long id) {
+    public ResponseEntity<Lecturers> getExaminer(@PathVariable Integer id) {
         Optional<Lecturers> lecturerOptional = lecturerService.findByIdAndRoleIn(id, EXAMINER);
         return lecturerOptional.map(lecturer -> new ResponseEntity<>(lecturer, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -78,7 +78,7 @@ public class LecturerController {
     }
 
     @PutMapping(value = {"/lecturers/{id}", "/examiners/{id}"})
-    public ResponseEntity<Lecturers> updateLecturer(@PathVariable Long id, @Valid @RequestBody LecturerRequest lecturers) {
+    public ResponseEntity<Lecturers> updateLecturer(@PathVariable Integer id, @Valid @RequestBody LecturerRequest lecturers) {
         Optional<Lecturers> lecturerOptional = lecturerService.findById(id);
 
         try {
@@ -94,7 +94,7 @@ public class LecturerController {
     }
 
     @PatchMapping(value = "/lecturers/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Lecturers> patchLecturer(@PathVariable Long id, @RequestBody Map<Object, Object> fields) {
+    public ResponseEntity<Lecturers> patchLecturer(@PathVariable Integer id, @RequestBody Map<Object, Object> fields) {
         Optional<Lecturers> lecturer = lecturerService.findById(id);
 
         if (lecturer.isPresent()) {
@@ -111,7 +111,7 @@ public class LecturerController {
     }
 
     @DeleteMapping(value = {"/lecturers/{id}", "/examiners/{id}"})
-    public ResponseEntity<Lecturers> deleteLecturer(@PathVariable Long id) {
+    public ResponseEntity<Lecturers> deleteLecturer(@PathVariable Integer id) {
         Optional<Lecturers> lecturerOptional = lecturerService.findById(id);
         return lecturerOptional.map(lecturer -> {
             lecturerService.remove(id);
@@ -123,11 +123,8 @@ public class LecturerController {
     public ResponseEntity<Iterable<Lecturers>> listOfExaminersIsFree(
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date date,
             @RequestParam Integer examShift,
-            @RequestParam Long examClassId
+            @RequestParam Integer examClassId
     ) {
-        System.out.println(date);
-        System.out.println(examShift);
-        System.out.println(examClassId);
         return new ResponseEntity<>(lecturerService.listOfExaminersIsFree(date, examShift, examClassId), HttpStatus.OK);
     }
 }

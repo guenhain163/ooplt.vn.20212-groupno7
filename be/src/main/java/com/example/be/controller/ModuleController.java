@@ -29,7 +29,7 @@ public class ModuleController {
 //    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Modules> getModule(@PathVariable Long id) {
+    public ResponseEntity<Modules> getModule(@PathVariable Integer id) {
         Optional<Modules> moduleOptional = moduleService.findById(id);
         return moduleOptional.map(module -> new ResponseEntity<>(module, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -41,7 +41,7 @@ public class ModuleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Modules> updateModule(@PathVariable Long id, @RequestBody Modules modules) {
+    public ResponseEntity<Modules> updateModule(@PathVariable Integer id, @RequestBody Modules modules) {
         Optional<Modules> moduleOptional = moduleService.findById(id);
         return moduleOptional.map(module -> {
             modules.setId(module.getId());
@@ -50,7 +50,7 @@ public class ModuleController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Modules> deleteModule(@PathVariable Long id) {
+    public ResponseEntity<Modules> deleteModule(@PathVariable Integer id) {
         Optional<Modules> moduleOptional = moduleService.findById(id);
         return moduleOptional.map(module -> {
             moduleService.remove(id);

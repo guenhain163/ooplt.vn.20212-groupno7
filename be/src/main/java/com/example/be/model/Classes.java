@@ -23,7 +23,7 @@ public class Classes {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Basic
     @Column(name = "code", unique = true)
@@ -47,11 +47,11 @@ public class Classes {
 //    @JsonManagedReference
     private Set<ExamClasses> examClassesById = new HashSet<>();
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -11,7 +11,7 @@ public class ExamClassLecturerDetail {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Basic
     @Column(name = "number_student")
@@ -27,11 +27,11 @@ public class ExamClassLecturerDetail {
 
     @Basic
     @Column(name = "lecturer_id")
-    private Long lectureId;
+    private Integer lectureId;
 
     @Basic
     @Column(name = "exam_class_id")
-    private Long examClassId;
+    private Integer examClassId;
 
     @ManyToOne
     @JoinColumn(name = "lecturer_id", referencedColumnName = "id", insertable = false, updatable = false)
@@ -43,27 +43,27 @@ public class ExamClassLecturerDetail {
     @JsonBackReference
     private ExamClasses examClassesByExamClassId;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getLectureId() {
+    public Integer getLectureId() {
         return lectureId;
     }
 
-    public void setLectureId(Long lectureId) {
+    public void setLectureId(Integer lectureId) {
         this.lectureId = lectureId;
     }
 
-    public Long getExamClassId() {
+    public Integer getExamClassId() {
         return examClassId;
     }
 
-    public void setExamClassId(Long examClassId) {
+    public void setExamClassId(Integer examClassId) {
         this.examClassId = examClassId;
     }
 

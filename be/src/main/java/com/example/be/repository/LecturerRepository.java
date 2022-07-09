@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface LecturerRepository extends JpaRepository<Lecturers, Long> {
+public interface LecturerRepository extends JpaRepository<Lecturers, Integer > {
     List<Lecturers> findByRoleIn(List<Integer> roles);
 
-    Optional<Lecturers> findByIdAndRoleIn(Long id, List<Integer> roles);
+    Optional<Lecturers> findByIdAndRoleIn(Integer  id, List<Integer> roles);
 
     @Modifying
     @Query("SELECT a FROM Lecturers a\n" +
@@ -24,5 +24,5 @@ public interface LecturerRepository extends JpaRepository<Lecturers, Long> {
             "\t\tON b.examClassId = c.id\n" +
             "\tWHERE c.date = ?1 AND c.examShift = ?2) \n" +
             "    AND a.id <> ?3 AND a.role IN (0, 2)")
-    Iterable<Lecturers> findExaminersIsFree(Date date, Integer examShift, Long lecturerId);
+    Iterable<Lecturers> findExaminersIsFree(Date date, Integer examShift, Integer  lecturerId);
 }

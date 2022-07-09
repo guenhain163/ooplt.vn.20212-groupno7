@@ -11,12 +11,12 @@ import java.util.Date;
 
 @Repository
 @EnableJpaRepositories
-public interface ClassRepository extends JpaRepository<Classes, Long> {
+public interface ClassRepository extends JpaRepository<Classes, Integer> {
     Iterable<Classes> findByRegisteredExamIsNotNull();
 
     Iterable<Classes> findByRegisteredExamIsNull();
 
     @Modifying
     @Query("UPDATE Classes c SET c.registeredExam = ?1 WHERE c.id = ?2")
-    Classes updateRegisteredClass(Date date, Long id);
+    Classes updateRegisteredClass(Date date, Integer id);
 }

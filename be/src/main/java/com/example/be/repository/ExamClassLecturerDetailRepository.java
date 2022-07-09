@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ExamClassLecturerDetailRepository extends JpaRepository<ExamClassLecturerDetail, Long> {
-    Optional<ExamClassLecturerDetail> findByExamClassId(Long examClassId);
+public interface ExamClassLecturerDetailRepository extends JpaRepository<ExamClassLecturerDetail, Integer> {
+    Optional<ExamClassLecturerDetail> findByExamClassId(Integer examClassId);
 }
