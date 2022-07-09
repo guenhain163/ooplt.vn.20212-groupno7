@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -80,6 +81,17 @@ public class ExamClassesController {
     public ResponseEntity<?> divisionExamClass(@PathVariable Integer id, @RequestBody List<Integer> examinersId) {
         try {
             return examClassService.division(id, examinersId);
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/{id}/status/paid")
+    public ResponseEntity<?> paidExamClass(@PathVariable Integer id) {
+        try {
+            Map <Object, Object> field = new HashMap<>();
+            field.put("status", ExamClasses.Status.PAID.ordinal());
+            return new ResponseEntity<>(examClassService.patch(id, field), HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
