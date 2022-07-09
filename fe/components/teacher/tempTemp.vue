@@ -1,31 +1,36 @@
 <template>
   <div class="custom-dialog">
     <el-dialog
-      title="Tạo mới thông tin giáo viên"
+      title="Phân công cán bộ coi thi"
       :visible.sync="dialogVisible"
       width="30%"
       :before-close="handleClose"
     >
-      <el-form ref="form" :model="form" :rules="rules" label-width="120px" class="demo-form">
-        <el-form-item label="Name">
-          <el-input v-model="form.name"></el-input>
+    asdsad
+      <el-form ref="val" :model="data" label-width="120px">
+        <el-form-item label="Mã lớp thi">
+          <el-input v-model="data.codeModule" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="Số sinh viên">
+          <el-input
+            v-model="data.numberStudent" disabled
+          ></el-input>
         </el-form-item>
 
-        <el-form-item label="Phone">
-          <el-input v-model="form.phone"></el-input>
-        </el-form-item>
-
-        <el-form-item label="email">
-          <el-input v-model="form.email"></el-input>
-        </el-form-item>
-
-        <el-form-item label="Work Room">
-          <el-input v-model="form.workRoom"></el-input>
+        <el-form-item label="Cán bộ coi thi số" prop="modules">
+          <el-checkbox-group v-model="data.modules">
+            <el-checkbox label=1 name="modules"></el-checkbox>
+            <el-checkbox
+              label=2
+              name="modules"
+              value="1"
+            ></el-checkbox>
+          </el-checkbox-group>
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="submitForm('form')">Create</el-button>
-          <el-button @click="resetForm('form')">Reset</el-button>
+          <el-button type="primary" @click="onSubmit">Edit</el-button>
+          <el-button @click="handleClose">Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -37,79 +42,26 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      form: {
-        name: '',
-        phone: '',
-        email: '',
-        workRoom: '',
-      },
-
-      rules: {
-        name: [
-          {
-            required: true,
-            message: 'Please input name',
-            trigger: 'blur',
-          },
-          {
-            min: 3,
-            max: 5,
-            message: 'Length should be 3 to 5',
-            trigger: 'blur',
-          },
-        ],
-
-        phone: [
-          {
-            required: true,
-            message: 'Please input phone',
-            trigger: 'blur',
-          },
-          {
-            min: 8,
-            max: 12,
-            message: 'Length should be 3 to 5',
-            trigger: 'blur',
-          },
-        ],
-
-        email: [
-          {
-            required: true,
-            message: 'Please input email',
-            trigger: 'blur',
-          },
-
-          {
-            type: 'email',
-            message: 'Please input correct email address',
-            trigger: ['blur', 'change'],
-          },
-        ],
-
-        workRoom: [
-          {
-            required: true,
-            message: 'Please input work room',
-            trigger: 'blur',
-          },
-        ],
+      data: {
+        modules: [],
       },
     }
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (!valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
+    onSubmit() {
+      // this.$axios
+      //   .patch(`/admin/lecturers/${this.val.id}`, this.data)
+      //   .then((response) => {
+      //     this.notifycation()
+      //     this.$router.go({
+      //       path: '/',
+      //     })
+      //   })
+      //   .catch((error) => {
+      //     console.log(error)
+      //     this.errorNotification()
+      //   })
+      console.log(this.$refs.val)
     },
     handleClose(done) {
       this.$confirm('Are you sure to close this dialog?')
@@ -117,6 +69,19 @@ export default {
           done()
         })
         .catch((_) => {})
+    },
+    notifycation() {
+      this.$notify.success({
+        title: 'Success',
+        message: 'Edit success',
+        showClose: false,
+      })
+    },
+    errorNotification() {
+      this.$notify.error({
+        title: 'Error',
+        message: 'Can not edit',
+      })
     },
   },
 }

@@ -33,13 +33,15 @@
                 style="width: 100%"
                 height="450"
               >
+                <el-table-column prop="stt" label="STT" width="50">
+                </el-table-column>
                 <el-table-column prop="name" label="Name" width="270">
                 </el-table-column>
                 <el-table-column prop="state" label="Bộ môn" width="270">
                 </el-table-column>
                 <el-table-column prop="phone" label="Điện thoại" width="120">
                 </el-table-column>
-                <el-table-column prop="users.email" label="Email" width="200">
+                <el-table-column prop="email" label="Email" width="200">
                 </el-table-column>
                 <el-table-column
                   prop="workRoom"
@@ -122,9 +124,7 @@ export default {
       }
     },
   },
-  mounted() {
-    this.links = this.loadAll()
-  },
+  mounted() {},
   created() {
     this.isLoading = true
     this.getData()
@@ -144,10 +144,10 @@ export default {
       }
     },
     loadAll() {
-      return this.tableData
+      return this.tableDataSearch
     },
     handleSelect(item) {
-      this.tableDataSearch = item
+      console.log(item)
     },
     editData(index, val) {
       this.$refs[`popover${index}`].doClose()
@@ -160,9 +160,7 @@ export default {
       this.$refs.offerDetailDialog.data.workRoom = val.workRoom
     },
     async deleteData(index, val) {
-      console.log(val.id)
       this.$refs[`popover${index}`].doClose()
-      // this.tableDataSearch.splice(index, 1)
       await this.$axios
         .delete(`/admin/lecturers/${val.id}`)
         .then((response) => {
@@ -184,6 +182,10 @@ export default {
         .get('/admin/lecturers')
         .then((response) => {
           const raw = response.data
+          for (let index = 0; index < raw.length; index++) {
+            const element = raw[index]
+            element.stt = index + 1
+          }
           raw.forEach((data) => {
             data.value = data.name
           })
@@ -194,6 +196,7 @@ export default {
         .catch((erorr) => {
           console.log(erorr)
         })
+      this.links = this.tableDataSearch
     },
     notifycation() {
       this.$notify.success({
