@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -35,7 +36,8 @@ public class Classes {
 
     @Basic
     @Column(name = "registered_exam")
-    @CreationTimestamp
+//    @CreationTimestamp
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date registeredExam;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,7 +46,7 @@ public class Classes {
     private Modules modulesByModuleId;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "classesByClassId")
-//    @JsonManagedReference
+    @JsonManagedReference
     private Set<ExamClasses> examClassesById = new HashSet<>();
 
     public Integer getId() {

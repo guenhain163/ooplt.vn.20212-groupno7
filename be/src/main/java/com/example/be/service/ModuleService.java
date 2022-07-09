@@ -54,4 +54,7 @@ public class ModuleService implements BaseService<Modules> {
         return new ArrayList<>(listModules);
     }
 
+    public List<String> listModuleNamesById(List<Integer> idList) {
+        return moduleRepository.listModuleNamesById(idList);
+    }
 }
