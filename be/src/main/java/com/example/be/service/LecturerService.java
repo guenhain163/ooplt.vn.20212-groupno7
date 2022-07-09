@@ -92,7 +92,7 @@ public class LecturerService implements BaseService<Lecturers> {
     }
 
     public ResponseEntity<Lecturers> createLecturers(CreateLectureRequest lecturer) {
-        if (userService.findByEmail(lecturer.getEmail()).isEmpty()) {
+        if (!userService.findByEmail(lecturer.getEmail()).isEmpty()) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
@@ -118,7 +118,7 @@ public class LecturerService implements BaseService<Lecturers> {
     }
 
     public ResponseEntity<Lecturers> createExaminers(CreateExaminerRequest examiner) {
-        if (userService.findByEmail(examiner.getEmail()).isEmpty()) {
+        if (userService.findByEmail(examiner.getEmail()).isPresent()) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
@@ -132,7 +132,7 @@ public class LecturerService implements BaseService<Lecturers> {
                 Lecturers.Roles.EXAMINER.ordinal()
         ));
 
-        if (!examiner.getModules().isEmpty()) {
+        if (examiner.getModules() != null && !examiner.getModules().isEmpty()) {
             ArrayList<Speciality> specialities = new ArrayList<>();
             for (Integer moduleId : examiner.getModules()) {
                 Speciality speciality = new Speciality(newExaminer.getId(), moduleId);

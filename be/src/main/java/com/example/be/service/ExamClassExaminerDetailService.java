@@ -36,4 +36,8 @@ public class ExamClassExaminerDetailService implements BaseService<ExamClassExam
     public void remove(Integer id) {
         examClassExaminerDetailRepository.deleteById(id);
     }
+
+    public Iterable<ExamClassExaminerDetail> save(Iterable<ExamClassExaminerDetail> examClassExaminerDetails) {
+        return examClassExaminerDetailRepository.saveAll(examClassExaminerDetails);
+    }
 }
