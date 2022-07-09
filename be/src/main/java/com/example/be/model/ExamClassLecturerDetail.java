@@ -22,10 +22,6 @@ public class ExamClassLecturerDetail {
     private Integer cost;
 
     @Basic
-    @Column(name = "status")
-    private Integer status;
-
-    @Basic
     @Column(name = "lecturer_id")
     private Integer lectureId;
 
@@ -83,25 +79,18 @@ public class ExamClassLecturerDetail {
         this.cost = cost;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExamClassLecturerDetail that = (ExamClassLecturerDetail) o;
-        return id == that.id && Objects.equals(cost, that.cost) && Objects.equals(numberStudent, that.numberStudent) && Objects.equals(status, that.status);
+        return id == that.id && Objects.equals(cost, that.cost) && Objects.equals(numberStudent, that.numberStudent)
+                && Objects.equals(lectureId, that.lectureId) && Objects.equals(examClassId, that.examClassId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, cost, numberStudent, status);
+        return Objects.hash(id, cost, numberStudent, lectureId, examClassId);
     }
 
     public ExamClasses getExamClassesByExamClassId() {

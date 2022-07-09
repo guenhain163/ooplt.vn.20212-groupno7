@@ -3,8 +3,6 @@ package com.example.be.service;
 import com.example.be.model.ExamClassExaminerDetail;
 import com.example.be.model.ExamClassLecturerDetail;
 import com.example.be.model.ExamClasses;
-import com.example.be.model.Lecturers;
-import com.example.be.repository.ExamClassLecturerDetailRepository;
 import com.example.be.repository.ExamClassRepository;
 import com.example.be.request.ExamClassRequest;
 import org.jetbrains.annotations.NotNull;
