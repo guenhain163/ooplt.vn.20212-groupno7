@@ -1,4 +1,4 @@
-package com.example.be.controller;
+package com.example.be.controller.admin;
 
 import com.example.be.exceptions.ResourceNotFoundException;
 import com.example.be.model.Lecturers;
@@ -98,6 +98,23 @@ public class LecturerController {
     }
 
     @PatchMapping(value = "/lecturers/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Lecturers> patchExaminer(@PathVariable Integer id, @RequestBody Map<Object, Object> fields) {
+        Optional<Lecturers> lecturer = lecturerService.findById(id);
+
+        if (lecturer.isPresent()) {
+            fields.forEach((key, value) -> {
+                Field field = ReflectionUtils.findField(Lecturers.class, (String) key);
+                field.setAccessible(true);
+                ReflectionUtils.setField(field, lecturer.get(), value);
+            });
+            Lecturers updateLecturer = lecturerService.update(lecturer.get());
+            return new ResponseEntity<>(updateLecturer, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PatchMapping(value = "/examiners/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Lecturers> patchLecturer(@PathVariable Integer id, @RequestBody Map<Object, Object> fields) {
         Optional<Lecturers> lecturer = lecturerService.findById(id);
 

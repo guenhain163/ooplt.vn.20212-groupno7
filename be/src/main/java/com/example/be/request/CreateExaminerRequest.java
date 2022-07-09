@@ -1,5 +1,7 @@
 package com.example.be.request;
 
+import com.sun.istack.Nullable;
+import net.bytebuddy.utility.nullability.MaybeNull;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
@@ -39,6 +41,7 @@ public class CreateExaminerRequest {
         this.email = email;
     }
 
+    @MaybeNull
     public List<Integer> getModules() {
         return modules;
     }

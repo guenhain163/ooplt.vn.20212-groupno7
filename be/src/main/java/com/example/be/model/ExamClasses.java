@@ -1,6 +1,7 @@
 package com.example.be.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -9,13 +10,22 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Data
 @Table(name = "exam_classes", schema = "exam_management")
 public class ExamClasses {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
+
+    @Basic
+    @Column(name = "exam_code", length = 45)
+    private String examCode;
 
     @Basic
     @Column(name = "class_id", nullable = false)
@@ -47,6 +57,18 @@ public class ExamClasses {
     private Integer status;
 
     @Basic
+    @Column(name = "printing_cost")
+    private Integer printingCost;
+
+    @Basic
+    @Column(name = "examination_cost")
+    private Integer examinationCost;
+
+    @Basic
+    @Column(name = "organization_cost")
+    private Integer organizationCost;
+
+    @Basic
     @Column(name = "note", length = 255)
     private String note;
 
@@ -66,10 +88,6 @@ public class ExamClasses {
         REGISTERED,
         DONE,
         CLOSED
-    }
-
-    public ExamClasses() {
-
     }
 
     public ExamClasses(Integer classId, Integer examShift, Date date, String week, String openingPeriod, String room) {
@@ -96,6 +114,14 @@ public class ExamClasses {
 
     public Integer getClassId() {
         return classId;
+    }
+
+    public String getExamCode() {
+        return examCode;
+    }
+
+    public void setExamCode(String examCode) {
+        this.examCode = examCode;
     }
 
     public void setClassId(Integer classId) {
@@ -150,6 +176,30 @@ public class ExamClasses {
         this.status = status;
     }
 
+    public Integer getExaminationCost() {
+        return examinationCost;
+    }
+
+    public void setExaminationCost(Integer examinationCost) {
+        this.examinationCost = examinationCost;
+    }
+
+    public Integer getPrintingCost() {
+        return printingCost;
+    }
+
+    public void setPrintingCost(Integer printingCost) {
+        this.printingCost = printingCost;
+    }
+
+    public Integer getOrganizationCost() {
+        return organizationCost;
+    }
+
+    public void setOrganizationCost(Integer organizationCost) {
+        this.organizationCost = organizationCost;
+    }
+
     public String getNote() {
         return note;
     }
@@ -170,12 +220,17 @@ public class ExamClasses {
                 && Objects.equals(openingPeriod, that.openingPeriod) 
                 && Objects.equals(room, that.room)
                 && Objects.equals(status, that.status)
+                && Objects.equals(examinationCost, that.examinationCost)
+                && Objects.equals(organizationCost, that.organizationCost)
+                && Objects.equals(printingCost, that.printingCost)
+                && Objects.equals(examCode, that.examCode)
                 && Objects.equals(note, that.note);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, examShift, date, week, openingPeriod, room, status, note);
+        return Objects.hash(id, examShift, date, week, openingPeriod, room, status, note,
+                examinationCost, organizationCost, printingCost, examCode);
     }
 
 

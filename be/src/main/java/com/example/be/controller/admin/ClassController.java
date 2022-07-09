@@ -1,4 +1,4 @@
-package com.example.be.controller;
+package com.example.be.controller.admin;
 
 import com.example.be.model.Classes;
 import com.example.be.model.Lecturers;

@@ -35,13 +35,17 @@ public class Classes {
     private int group;
 
     @Basic
+    @Column(name = "module_id")
+    private int moduleId;
+
+    @Basic
     @Column(name = "registered_exam")
 //    @CreationTimestamp
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date registeredExam;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="module_id")
+    @JoinColumn(name="module_id", insertable = false, updatable = false)
     @JsonBackReference
     private Modules modulesByModuleId;
 
@@ -55,6 +59,14 @@ public class Classes {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public int getModuleId() {
+        return moduleId;
+    }
+
+    public void setModuleId(Integer moduleId) {
+        this.moduleId = moduleId;
     }
 
     public String getCode() {
