@@ -5,52 +5,27 @@
       :visible.sync="dialogVisible"
       width="30%"
       :before-close="handleClose"
-      ><el-form
-        ref="ruleForm"
-        :model="ruleForm"
-        :rules="rules"
-        label-width="120px"
-        class="demo-ruleForm"
-      >
-        <el-form-item label="Name" prop="name">
-          <el-input v-model="ruleForm.name"></el-input>
+    >
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px" class="demo-form">
+        <el-form-item label="Name">
+          <el-input v-model="form.name"></el-input>
         </el-form-item>
 
-        <el-form-item label="Phone" prop="phone">
-          <el-input v-model="ruleForm.phone"></el-input>
+        <el-form-item label="Phone">
+          <el-input v-model="form.phone"></el-input>
         </el-form-item>
 
-        <el-form-item label="Email" prop="email">
-          <el-input v-model="ruleForm.email"></el-input>
+        <el-form-item label="email">
+          <el-input v-model="form.email"></el-input>
         </el-form-item>
 
-        <el-form-item label="Work room" prop="workRoom">
-          <el-input v-model="ruleForm.workRoom"></el-input>
-        </el-form-item>
-
-        <el-form-item label="Modules" prop="modules">
-          <el-checkbox-group v-model="ruleForm.modules">
-            <el-checkbox label="Online activities" name="modules"></el-checkbox>
-            <el-checkbox
-              label="Promotion activities"
-              name="modules"
-            ></el-checkbox>
-            <el-checkbox
-              label="Offline activities"
-              name="modules"
-            ></el-checkbox>
-            <el-checkbox
-              label="Simple brand exposure"
-              name="modules"
-            ></el-checkbox>
-          </el-checkbox-group>
+        <el-form-item label="Work Room">
+          <el-input v-model="form.workRoom"></el-input>
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')"
-            >Create</el-button
-          >
-          <el-button @click="resetForm('ruleForm')">Reset</el-button>
+          <el-button type="primary" @click="submitForm('form')">Create</el-button>
+          <el-button @click="resetForm('form')">Reset</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -62,13 +37,13 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      ruleForm: {
+      form: {
         name: '',
-        modules: [],
         phone: '',
         email: '',
         workRoom: '',
       },
+
       rules: {
         name: [
           {
@@ -76,18 +51,24 @@ export default {
             message: 'Please input name',
             trigger: 'blur',
           },
+          {
+            min: 3,
+            max: 5,
+            message: 'Length should be 3 to 5',
+            trigger: 'blur',
+          },
         ],
 
         phone: [
           {
             required: true,
-            message: 'Please input Phone',
+            message: 'Please input phone',
             trigger: 'blur',
           },
           {
             min: 8,
             max: 12,
-            message: 'Length should be 8 to 12',
+            message: 'Length should be 3 to 5',
             trigger: 'blur',
           },
         ],
@@ -95,9 +76,10 @@ export default {
         email: [
           {
             required: true,
-            message: 'Please input Email',
+            message: 'Please input email',
             trigger: 'blur',
           },
+
           {
             type: 'email',
             message: 'Please input correct email address',
@@ -112,22 +94,13 @@ export default {
             trigger: 'blur',
           },
         ],
-
-        modules: [
-          {
-            type: 'array',
-            required: true,
-            message: 'Please select at least one activity type',
-            trigger: 'change',
-          },
-        ],
       },
     }
   },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
-        if (valid) {
+        if (!valid) {
           alert('submit!')
         } else {
           console.log('error submit!!')

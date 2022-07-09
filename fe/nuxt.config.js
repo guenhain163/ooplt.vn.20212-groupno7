@@ -51,7 +51,7 @@ export default {
         provider: 'laravel/jwt',
         url: 'http://localhost:8080',
         token: {
-          property: 'access_token',
+          property: 'accessToken',
           maxAge: 60 * 60
         },
         refreshToken: {
