@@ -32,6 +32,10 @@ public class ExamClassRequest {
 
     private String note;
 
+    private String group;
+
+    private String examCode;
+
     public Integer getClassId() {
         return classId;
     }
@@ -94,5 +98,21 @@ public class ExamClassRequest {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public void setExamCode(String examCode) {
+        this.examCode = examCode;
+    }
+
+    public String getExamCode() {
+        return examCode;
     }
 }
