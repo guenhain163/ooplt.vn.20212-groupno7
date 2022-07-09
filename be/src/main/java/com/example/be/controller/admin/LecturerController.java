@@ -141,11 +141,11 @@ public class LecturerController {
     }
 
     @GetMapping(value = "/examiners/free", params = {"date", "examShift", "examClassId"})
-    public ResponseEntity<Iterable<Lecturers>> listOfExaminersIsFree(
+    public ResponseEntity<?> listOfExaminersIsFree(
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date date,
             @RequestParam Integer examShift,
             @RequestParam Integer examClassId
     ) {
-        return new ResponseEntity<>(lecturerService.listOfExaminersIsFree(date, examShift, examClassId), HttpStatus.OK);
+        return lecturerService.listOfExaminersIsFree(date, examShift, examClassId);
     }
 }

@@ -87,6 +87,7 @@ public class ExamClasses {
         NEW,
         REGISTERED,
         DONE,
+        PAID,
         CLOSED
     }
 

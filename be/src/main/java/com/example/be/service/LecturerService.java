@@ -5,7 +5,6 @@ import com.example.be.repository.ExamClassLecturerDetailRepository;
 import com.example.be.repository.LecturerRepository;
 import com.example.be.request.CreateExaminerRequest;
 import com.example.be.request.CreateLectureRequest;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,14 +58,15 @@ public class LecturerService implements BaseService<Lecturers> {
         return lecturerRepository.findByIdAndRoleIn(id, roles);
     }
 
-    public Iterable<Lecturers> listOfExaminersIsFree(Date date, Integer examShift, Integer examClassId) {
+    public ResponseEntity<?> listOfExaminersIsFree(Date date, Integer examShift, Integer examClassId) {
         Optional<ExamClassLecturerDetail> examClassLecturerDetail =
                 examClassLecturerDetailRepository.findByExamClassId(examClassId);
 
         if (examClassLecturerDetail.isPresent()) {
             Integer lecturerId = examClassLecturerDetail.get().getLectureId();
-            return lecturerRepository.findExaminersIsFree(date, examShift, lecturerId);
-        } else return null;
+            return new ResponseEntity<>(lecturerRepository.findExaminersIsFree(date, examShift, lecturerId),
+                    HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     public List<Map<String, Object>> getAllLecturersOrExaminers(List<Integer> roles) {

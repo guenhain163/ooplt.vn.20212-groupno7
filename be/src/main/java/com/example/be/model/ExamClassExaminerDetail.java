@@ -31,10 +31,6 @@ public class ExamClassExaminerDetail {
     @Column(name = "cost")
     private Integer cost;
 
-    @Basic
-    @Column(name = "status")
-    private Integer status;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecturer_id", referencedColumnName = "id", insertable = false, updatable = false)
     @JsonBackReference
@@ -54,7 +50,6 @@ public class ExamClassExaminerDetail {
     public ExamClassExaminerDetail(Integer examClassId, Integer lecturerId) {
         this.lecturerId = lecturerId;
         this.examClassId = examClassId;
-        this.status = Status.NEW.ordinal();
     }
 
     public Integer getId() {
@@ -89,25 +84,18 @@ public class ExamClassExaminerDetail {
         this.cost = cost;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExamClassExaminerDetail that = (ExamClassExaminerDetail) o;
-        return id == that.id && Objects.equals(cost, that.cost) && Objects.equals(status, that.status);
+        return id == that.id && Objects.equals(cost, that.cost) && Objects.equals(lecturerId, that.lecturerId)
+                && Objects.equals(examClassId, that.examClassId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, cost, status);
+        return Objects.hash(id, cost, lecturerId, examClassId);
     }
 
     public ExamClasses getExamClassesByExamClassId() {
