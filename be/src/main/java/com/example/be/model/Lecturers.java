@@ -1,8 +1,6 @@
 package com.example.be.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -43,9 +41,6 @@ public class Lecturers {
     @OneToOne(targetEntity = Users.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private Users usersByUserId;
-
-    @OneToMany(mappedBy = "lecturersByLecturerId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<ExamClassLecturerDetail> examClassLecturerDetailsById;
 
     @OneToMany(mappedBy = "lecturersByLecturerId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ExamClassExaminerDetail> examClassExaminerDetailsById;
@@ -147,14 +142,6 @@ public class Lecturers {
 
     public void setExamClassExaminerDetailsById(Set<ExamClassExaminerDetail> examClassExaminerDetailsById) {
         this.examClassExaminerDetailsById = examClassExaminerDetailsById;
-    }
-
-    public Collection<ExamClassLecturerDetail> getExamClassLecturerDetailsById() {
-        return examClassLecturerDetailsById;
-    }
-
-    public void setExamClassLecturerDetailsById(Set<ExamClassLecturerDetail> examClassLecturerDetailsById) {
-        this.examClassLecturerDetailsById = examClassLecturerDetailsById;
     }
 
     public Set<Speciality> getSpecialitiesById() {

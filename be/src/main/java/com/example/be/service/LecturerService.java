@@ -1,7 +1,6 @@
 package com.example.be.service;
 
 import com.example.be.model.*;
-import com.example.be.repository.ExamClassLecturerDetailRepository;
 import com.example.be.repository.LecturerRepository;
 import com.example.be.request.CreateExaminerRequest;
 import com.example.be.request.CreateLectureRequest;
@@ -17,7 +16,7 @@ public class LecturerService implements BaseService<Lecturers> {
     @Autowired
     private LecturerRepository lecturerRepository;
     @Autowired
-    private ExamClassLecturerDetailRepository examClassLecturerDetailRepository;
+    private ClassService classService;
     @Autowired
     private ModuleService moduleService;
     @Autowired
@@ -59,11 +58,11 @@ public class LecturerService implements BaseService<Lecturers> {
     }
 
     public ResponseEntity<?> listOfExaminersIsFree(Date date, Integer examShift, Integer examClassId) {
-        Optional<ExamClassLecturerDetail> examClassLecturerDetail =
-                examClassLecturerDetailRepository.findByExamClassId(examClassId);
+        Optional<Classes> classOptional =
+                classService.findByExamClassId(examClassId);
 
-        if (examClassLecturerDetail.isPresent()) {
-            Integer lecturerId = examClassLecturerDetail.get().getLectureId();
+        if (classOptional.isPresent()) {
+            Integer lecturerId = classOptional.get().getLecturerId();
             return new ResponseEntity<>(lecturerRepository.findExaminersIsFree(date, examShift, lecturerId),
                     HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
@@ -92,7 +91,7 @@ public class LecturerService implements BaseService<Lecturers> {
     }
 
     public ResponseEntity<Lecturers> createLecturers(CreateLectureRequest lecturer) {
-        if (!userService.findByEmail(lecturer.getEmail()).isEmpty()) {
+        if (userService.findByEmail(lecturer.getEmail()).isPresent()) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
 

@@ -1,6 +1,7 @@
 package com.example.be.controller.admin;
 
 import com.example.be.model.Classes;
+import com.example.be.model.ExamClasses;
 import com.example.be.model.Lecturers;
 import com.example.be.service.ClassService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -27,12 +28,19 @@ public class ClassController {
         return new ResponseEntity<>(classService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping(params = {"registered_exam"})
-    public ResponseEntity<Iterable<Classes>> getRegisteredClasses(@RequestParam boolean registered_exam) {
-        return new ResponseEntity<>(classService.findByRegisteredExam(registered_exam), HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<Classes> getExamClass(@PathVariable Integer id) {
+        Optional<Classes> classOptional = classService.findById(id);
+        return classOptional.map(class1 -> new ResponseEntity<>(class1, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
-    @PutMapping("/{id}")
+    @GetMapping(params = {"registeredExam"})
+    public ResponseEntity<Iterable<Classes>> getRegisteredClasses(@RequestParam boolean registeredExam) {
+        return new ResponseEntity<>(classService.findByRegisteredExam(registeredExam), HttpStatus.OK);
+    }
+
+    @PutMapping(value = {"/{id}"}, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Classes> updateLecturer(@PathVariable Integer id, @RequestBody Classes classes) {
         Optional<Classes> classOptional = classService.findById(id);
         return classOptional.map(el -> {

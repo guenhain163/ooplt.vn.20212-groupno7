@@ -1,7 +1,7 @@
 package com.example.be.service;
 
 import com.example.be.model.ExamClassExaminerDetail;
-import com.example.be.model.ExamClassLecturerDetail;
+import com.example.be.model.ExamClassDetail;
 import com.example.be.model.ExamClasses;
 import com.example.be.repository.ExamClassRepository;
 import com.example.be.request.ExamClassRequest;
@@ -24,7 +24,7 @@ public class ExamClassService implements BaseService<ExamClasses> {
     @Autowired
     private ExamClassExaminerDetailService examClassExaminerDetailService;
     @Autowired
-    private ExamClassLecturerDetailService examClassLecturerDetailService;
+    private ExamClassDetailService examClassDetailService;
 
     @Override
     public Iterable<ExamClasses> findAll() {
@@ -111,13 +111,13 @@ public class ExamClassService implements BaseService<ExamClasses> {
 
     public ResponseEntity<?> division(Integer id, List<Integer> examinersId) {
         Optional<ExamClasses> examClassesOptional = this.findByIdAndStatus(id, REGISTERED.ordinal());
-        Optional<ExamClassLecturerDetail> examClassLecturerDetail = examClassLecturerDetailService.findByExamClassId(id);
+        Optional<ExamClassDetail> examClassDetail = examClassDetailService.findByExamClassId(id);
 
-        if (examClassesOptional.isEmpty() || examClassLecturerDetail.isEmpty()) {
+        if (examClassesOptional.isEmpty() || examClassDetail.isEmpty()) {
             return new ResponseEntity<>("Exam class doesn't exist.", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        int numberStudent = examClassLecturerDetail.get().getNumberStudent();
+        int numberStudent = examClassDetail.get().getNumberStudent();
         if (numberStudent >= 60 && examinersId.size() != 2 || numberStudent < 60 && examinersId.size() != 1) {
             return new ResponseEntity<>("Invalid number of examiners.", HttpStatus.UNPROCESSABLE_ENTITY);
         }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ public class ClassService implements BaseService<Classes> {
 
     @Override
     public Optional<Classes> findById(Integer id) {
-        return Optional.empty();
+        return classRepository.findById(id);
     }
 
     @Override
@@ -45,10 +46,18 @@ public class ClassService implements BaseService<Classes> {
 
     }
 
-    public Iterable<Classes> findByRegisteredExam(boolean registered_exam) {
-        if (registered_exam) {
+    public Iterable<Classes> findByRegisteredExam(boolean registeredExam) {
+        if (registeredExam) {
             return classRepository.findByRegisteredExamIsNotNull();
         }
         return classRepository.findByRegisteredExamIsNull();
+    }
+
+    public Iterable<Classes> findByLectureId(Integer lectureId) {
+        return classRepository.findByLecturerId(lectureId);
+    }
+
+    public Optional<Classes> findByExamClassId(Integer examClassId) {
+        return classRepository.findByExamClassId(examClassId);
     }
 }

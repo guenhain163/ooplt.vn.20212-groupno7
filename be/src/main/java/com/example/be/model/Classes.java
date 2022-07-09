@@ -8,10 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -31,16 +28,15 @@ public class Classes {
     private String code;
 
     @Basic
-    @Column(name = "group")
-    private int group;
+    @Column(name = "module_id")
+    private Integer moduleId;
 
     @Basic
-    @Column(name = "module_id")
-    private int moduleId;
+    @Column(name = "lecturer_id")
+    private Integer lecturerId;
 
     @Basic
     @Column(name = "registered_exam")
-//    @CreationTimestamp
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date registeredExam;
 
@@ -48,6 +44,11 @@ public class Classes {
     @JoinColumn(name="module_id", insertable = false, updatable = false)
     @JsonBackReference
     private Modules modulesByModuleId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="lecturer_id", insertable = false, updatable = false)
+    @JsonBackReference
+    private Lecturers lecturersByLecturerId;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "classesByClassId")
     @JsonManagedReference
@@ -69,6 +70,14 @@ public class Classes {
         this.moduleId = moduleId;
     }
 
+    public void setLecturerId(int lecturerId) {
+        this.lecturerId = lecturerId;
+    }
+
+    public int getLecturerId() {
+        return lecturerId;
+    }
+
     public String getCode() {
         return code;
     }
@@ -77,20 +86,27 @@ public class Classes {
         this.code = code;
     }
 
-    public int getGroup() {
-        return group;
-    }
-
-    public void setGroup(int group) {
-        this.group = group;
-    }
-
-    public Date getRegistered_exam() {
+    public Date getRegisteredExam() {
         return registeredExam;
     }
 
-    public void setRegistered_exam(Date date) {
+    public void setRegisteredExam(Date date) {
         this.registeredExam = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Classes that = (Classes) o;
+        return Objects.equals(id, that.id) && Objects.equals(code, that.code)
+                && Objects.equals(moduleId, that.moduleId) && Objects.equals(lecturerId, that.lecturerId)
+                && Objects.equals(registeredExam, that.registeredExam);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, code, moduleId, lecturerId, registeredExam);
     }
 
     public Set<ExamClasses> getExamClasses() {
@@ -99,5 +115,21 @@ public class Classes {
 
     public void setOrderItems(Set<ExamClasses> examClasses) {
         this.examClassesById = examClasses;
+    }
+
+    public Lecturers getLecturersByLecturerId() {
+        return lecturersByLecturerId;
+    }
+
+    public void setLecturersByLecturerId(Lecturers lecturersByLecturerId) {
+        this.lecturersByLecturerId = lecturersByLecturerId;
+    }
+
+    public Modules getModulesByModuleId() {
+        return modulesByModuleId;
+    }
+
+    public void setModulesByModuleId(Modules modulesByModuleId) {
+        this.modulesByModuleId = modulesByModuleId;
     }
 }

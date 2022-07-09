@@ -13,13 +13,15 @@ import java.util.Optional;
 public interface ExamClassRepository extends JpaRepository<ExamClasses, Integer> {
     Optional<ExamClasses> findByIdAndStatus(Integer id, Integer status);
 
-    @Query("SELECT new map(a as classExam, c.name as nameModule, c.code as codeModule, b.group as group, " +
+    @Query("SELECT new map(a as classExam, c.name as nameModule, c.code as codeModule, " +
             "d.numberStudent as numberStudent, e.name as nameLecturer) FROM ExamClasses a " +
-            "INNER JOIN Classes b " +
-            "ON a.classId = b.id " +
-            "INNER JOIN Modules c " +
-            "ON b.moduleId = c.id " +
-            "INNER JOIN ExamClassLecturerDetail d " +
-            "ON d.examClassId = a.id INNER JOIN Lecturers e ON e.id = d.lectureId")
+            "LEFT JOIN Classes b " +
+            "   ON a.classId = b.id " +
+            "LEFT JOIN Modules c " +
+            "   ON b.moduleId = c.id " +
+            "LEFT JOIN ExamClassDetail d " +
+            "   ON d.examClassId = a.id " +
+            "LEFT JOIN Lecturers e " +
+            "   ON e.id = b.lecturerId")
     List<Map<String, Object>> getAllExamClasses();
 }

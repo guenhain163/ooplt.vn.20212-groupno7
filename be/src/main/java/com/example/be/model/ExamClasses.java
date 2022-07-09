@@ -49,6 +49,10 @@ public class ExamClasses {
     private String openingPeriod;
 
     @Basic
+    @Column(name = "group")
+    private String group;
+
+    @Basic
     @Column(name = "room", length = 255)
     private String room;
 
@@ -57,23 +61,11 @@ public class ExamClasses {
     private Integer status;
 
     @Basic
-    @Column(name = "printing_cost")
-    private Integer printingCost;
-
-    @Basic
-    @Column(name = "examination_cost")
-    private Integer examinationCost;
-
-    @Basic
-    @Column(name = "organization_cost")
-    private Integer organizationCost;
-
-    @Basic
     @Column(name = "note", length = 255)
     private String note;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "examClassesByExamClassId")
-    private Set<ExamClassLecturerDetail> examClassLecturerDetailsById = new HashSet<>();
+    private Set<ExamClassDetail> examClassLecturerDetailsById = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "examClassesByExamClassId")
     private Set<ExamClassExaminerDetail> examClassExaminerDetailsById = new HashSet<>();
@@ -161,6 +153,14 @@ public class ExamClasses {
         this.openingPeriod = openingPeriod;
     }
 
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
     public String getRoom() {
         return room;
     }
@@ -175,30 +175,6 @@ public class ExamClasses {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public Integer getExaminationCost() {
-        return examinationCost;
-    }
-
-    public void setExaminationCost(Integer examinationCost) {
-        this.examinationCost = examinationCost;
-    }
-
-    public Integer getPrintingCost() {
-        return printingCost;
-    }
-
-    public void setPrintingCost(Integer printingCost) {
-        this.printingCost = printingCost;
-    }
-
-    public Integer getOrganizationCost() {
-        return organizationCost;
-    }
-
-    public void setOrganizationCost(Integer organizationCost) {
-        this.organizationCost = organizationCost;
     }
 
     public String getNote() {
@@ -221,17 +197,14 @@ public class ExamClasses {
                 && Objects.equals(openingPeriod, that.openingPeriod) 
                 && Objects.equals(room, that.room)
                 && Objects.equals(status, that.status)
-                && Objects.equals(examinationCost, that.examinationCost)
-                && Objects.equals(organizationCost, that.organizationCost)
-                && Objects.equals(printingCost, that.printingCost)
                 && Objects.equals(examCode, that.examCode)
+                && Objects.equals(group, that.group)
                 && Objects.equals(note, that.note);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, examShift, date, week, openingPeriod, room, status, note,
-                examinationCost, organizationCost, printingCost, examCode);
+        return Objects.hash(id, examShift, date, week, openingPeriod, room, group, status, note, examCode);
     }
 
 
@@ -243,11 +216,11 @@ public class ExamClasses {
         this.examClassExaminerDetailsById = examClassExaminerDetailsById;
     }
 
-    public Set<ExamClassLecturerDetail> getExamClassLecturerDetailsById() {
+    public Set<ExamClassDetail> getExamClassLecturerDetailsById() {
         return examClassLecturerDetailsById;
     }
 
-    public void setExamClassLecturerDetailsById(Set<ExamClassLecturerDetail> examClassLecturerDetailsById) {
+    public void setExamClassLecturerDetailsById(Set<ExamClassDetail> examClassLecturerDetailsById) {
         this.examClassLecturerDetailsById = examClassLecturerDetailsById;
     }
 
