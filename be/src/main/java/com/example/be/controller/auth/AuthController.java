@@ -21,8 +21,6 @@ import javax.validation.Valid;
 public class AuthController {
     @Autowired
     private AuthenticationManager authManager;
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private JwtTokenUtil jwtUtil;
@@ -47,10 +45,12 @@ public class AuthController {
         }
     }
 
-//    @GetMapping("/api/auth/user")
-//    public ResponseEntity<?> getUser() {
-//        try {
-//            return authManager.
-//        }
-//    }
+    @GetMapping("/api/auth/user")
+    public ResponseEntity<?> getUser() {
+        try {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
