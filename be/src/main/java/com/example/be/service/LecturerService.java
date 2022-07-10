@@ -148,7 +148,7 @@ public class LecturerService implements BaseService<Lecturers> {
         return lecturerRepository.findByExamClassId(examClassId);
     }
 
-    public List<Map<String, Object>> getLecturersOrExaminersBySemester(String semester, List<Integer> roleList) {
-        return lecturerRepository.findBySemesterAndRole(semester, roleList);
+    public List<Map<String, Object>> getLecturersOrExaminersBySemester(List<Integer> roleList) {
+        return lecturerRepository.findByRole(roleList);
     }
 }

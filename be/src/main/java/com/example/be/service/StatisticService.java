@@ -121,11 +121,11 @@ public class StatisticService {
         return new ResponseEntity<>(classes, HttpStatus.OK);
     }
 
-    public List<Map<String, Object>> getLecturers(String semester) {
-        return lecturerService.getLecturersOrExaminersBySemester(semester, LECTURER);
+    public List<Map<String, Object>> getLecturers() {
+        return lecturerService.getLecturersOrExaminersBySemester(LECTURER);
     }
 
-    public List<Map<String, Object>> getExaminers(String semester) {
-        return lecturerService.getLecturersOrExaminersBySemester(semester, EXAMINER);
+    public List<Map<String, Object>> getExaminers() {
+        return lecturerService.getLecturersOrExaminersBySemester(EXAMINER);
     }
 }
