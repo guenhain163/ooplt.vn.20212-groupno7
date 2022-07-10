@@ -19,6 +19,9 @@ public interface ClassRepository extends JpaRepository<Classes, Integer> {
 
     Iterable<Classes> findByLecturerId(Integer lecturerId);
 
+    @Query("SELECT a FROM Classes a INNER JOIN ExamClasses b ON b.classId = a.id WHERE b.semester = ?1")
+    Iterable<Classes> findBySemester(String semester);
+
     @Modifying
     @Query("UPDATE Classes c SET c.registeredExam = ?1 WHERE c.id = ?2")
     Classes updateRegisteredClass(Date date, Integer id);

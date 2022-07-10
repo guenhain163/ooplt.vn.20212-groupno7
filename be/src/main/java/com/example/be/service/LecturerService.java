@@ -70,7 +70,7 @@ public class LecturerService implements BaseService<Lecturers> {
 
     public List<Map<String, Object>> getAllLecturersOrExaminers(List<Integer> roles) {
         List<Lecturers> lecturerList = this.findByRoleIn(roles);
-        System.out.println(lecturerList);
+//        System.out.println(lecturerList);
 
         List<Map<String, Object>> resultsList = new ArrayList<Map<String, Object>>();
         for (Lecturers lecturer : lecturerList) {

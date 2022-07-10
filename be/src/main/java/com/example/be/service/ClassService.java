@@ -60,4 +60,8 @@ public class ClassService implements BaseService<Classes> {
     public Optional<Classes> findByExamClassId(Integer examClassId) {
         return classRepository.findByExamClassId(examClassId);
     }
+
+    public Iterable<Classes> findAllBySemester(String semester) {
+        return classRepository.findBySemester(semester);
+    }
 }

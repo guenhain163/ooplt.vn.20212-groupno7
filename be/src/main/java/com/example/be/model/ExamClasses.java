@@ -64,6 +64,10 @@ public class ExamClasses {
     @Column(name = "note", length = 255)
     private String note;
 
+    @Basic
+    @Column(name = "semester", length = 10)
+    private String semester;
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "examClassesByExamClassId")
     private ExamClassDetail examClassDetailsById;
 
@@ -78,7 +82,6 @@ public class ExamClasses {
     public enum Status {
         NEW,
         REGISTERED,
-        DONE,
         PAID,
         CLOSED
     }
@@ -185,6 +188,14 @@ public class ExamClasses {
         this.note = note;
     }
 
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -199,12 +210,13 @@ public class ExamClasses {
                 && Objects.equals(status, that.status)
                 && Objects.equals(examCode, that.examCode)
                 && Objects.equals(examGroup, that.examGroup)
+                && Objects.equals(semester, that.semester)
                 && Objects.equals(note, that.note);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, examShift, date, week, openingPeriod, room, examGroup, status, note, examCode);
+        return Objects.hash(id, examShift, date, week, openingPeriod, room, examGroup, status, note, semester, examCode);
     }
 
 

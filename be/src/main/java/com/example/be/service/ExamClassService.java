@@ -59,6 +59,10 @@ public class ExamClassService implements BaseService<ExamClasses> {
         return examClassRepository.findByLectureId(lectureId);
     }
 
+    public Iterable<ExamClasses> findByLectureIdAndSemester(Integer lectureId, String semester) {
+        return examClassRepository.findByLectureIdAndSemester(lectureId, semester);
+    }
+
     public Object getAllExamClasses() {
         return examClassRepository.getAllExamClasses();
     }

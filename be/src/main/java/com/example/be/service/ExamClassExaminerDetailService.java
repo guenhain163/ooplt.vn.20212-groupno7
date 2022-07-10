@@ -40,4 +40,8 @@ public class ExamClassExaminerDetailService implements BaseService<ExamClassExam
     public Iterable<ExamClassExaminerDetail> save(Iterable<ExamClassExaminerDetail> examClassExaminerDetails) {
         return examClassExaminerDetailRepository.saveAll(examClassExaminerDetails);
     }
+
+    public Iterable<ExamClassExaminerDetail> findByLectureIdAndSemester(Integer lecturerId, String semester) {
+        return examClassExaminerDetailRepository.findByLecturerIdAndSemester(lecturerId, semester);
+    }
 }

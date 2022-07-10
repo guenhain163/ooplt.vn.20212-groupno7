@@ -109,11 +109,11 @@ public class Classes {
         return Objects.hash(id, code, moduleId, lecturerId, registeredExam);
     }
 
-    public Set<ExamClasses> getExamClasses() {
+    public Set<ExamClasses> getExamClassesById() {
         return examClassesById;
     }
 
-    public void setOrderItems(Set<ExamClasses> examClasses) {
+    public void setExamClassesById(Set<ExamClasses> examClasses) {
         this.examClassesById = examClasses;
     }
 
