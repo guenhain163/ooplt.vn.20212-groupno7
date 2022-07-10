@@ -12,8 +12,18 @@ public class StatisticController {
     @Autowired
     private StatisticService statisticService;
 
-    @GetMapping("/lecturers/{id}")
-    public ResponseEntity<?> getStatisticLecturer(@PathVariable Integer id) {
-        return statisticService.getStatisticLecturer(id);
+    @GetMapping("/lecturers/{id}/{semester}")
+    public ResponseEntity<?> getStatisticLecturer(@PathVariable Integer id, @PathVariable String semester) {
+        return statisticService.getStatisticLecturer(id, semester);
+    }
+
+    @GetMapping("/examiners/{id}/{semester}")
+    public ResponseEntity<?> getStatisticExaminer(@PathVariable Integer id, @PathVariable String semester) {
+        return statisticService.getStatisticExaminer(id, semester);
+    }
+
+    @GetMapping("/classes/{semester}")
+    public ResponseEntity<?> getStatisticClass(@PathVariable String semester) {
+        return statisticService.getStatisticClass(semester);
     }
 }
