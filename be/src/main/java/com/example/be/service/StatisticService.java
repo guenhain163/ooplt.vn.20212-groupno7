@@ -116,7 +116,7 @@ public class StatisticService {
     }
 
     public ResponseEntity<?> getStatisticClass(String semester) {
-        Iterable<Classes> classes = classService.findAllBySemester(semester);
+        List<Map<String, Object>> classes = classService.findAllBySemester(semester);
 
         return new ResponseEntity<>(classes, HttpStatus.OK);
     }
