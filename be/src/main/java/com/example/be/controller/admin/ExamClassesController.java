@@ -1,20 +1,16 @@
 package com.example.be.controller.admin;
 
 import com.example.be.exceptions.ResourceNotFoundException;
-import com.example.be.model.ExamClassExaminerDetail;
 import com.example.be.model.ExamClasses;
 import com.example.be.request.ExamClassRequest;
-import com.example.be.service.ExamClassExaminerDetailService;
 import com.example.be.service.ExamClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +56,7 @@ public class ExamClassesController {
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ExamClasses> patchExamClass(@PathVariable Integer id, @RequestBody Map<Object, Object> fields) {
+    public ResponseEntity<ExamClasses> patchExamClass(@PathVariable Integer id, @RequestBody Map<String, Object> fields) {
         try {
             return new ResponseEntity<>(examClassService.patch(id, fields), HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
@@ -89,7 +85,7 @@ public class ExamClassesController {
     @PostMapping("/{id}/status/paid")
     public ResponseEntity<?> paidExamClass(@PathVariable Integer id) {
         try {
-            Map <Object, Object> field = new HashMap<>();
+            Map <String, Object> field = new HashMap<>();
             field.put("status", ExamClasses.Status.PAID.ordinal());
             return new ResponseEntity<>(examClassService.patch(id, field), HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {

@@ -55,6 +55,10 @@ public class ExamClassService implements BaseService<ExamClasses> {
         return examClassRepository.findByIdAndStatus(id, status);
     }
 
+    public Iterable<ExamClasses> findByLectureId(Integer lectureId) {
+        return examClassRepository.findByLectureId(lectureId);
+    }
+
     public Object getAllExamClasses() {
         return examClassRepository.getAllExamClasses();
     }
@@ -84,29 +88,37 @@ public class ExamClassService implements BaseService<ExamClasses> {
         updateExamClass.setWeek(examClass.getWeek());
         updateExamClass.setOpeningPeriod(examClass.getOpeningPeriod());
         updateExamClass.setRoom(examClass.getRoom());
-        updateExamClass.setStatus(examClass.getStatus());
         if (!examClass.getNote().isEmpty()) {
             updateExamClass.setNote(examClass.getNote());
         }
 
-//        if (examClass.getStatus()) {
-//            updateExamClass.setStatus(examClass.getStatus());
-//        }
+        if (examClass.getStatus() <= ExamClasses.Status.CLOSED.ordinal()
+                || examClass.getStatus() >= ExamClasses.Status.NEW.ordinal()) {
+            updateExamClass.setStatus(examClass.getStatus());
+        }
 
         return this.update(updateExamClass);
     }
 
-    public ExamClasses patch(Integer id, Map<Object, Object> fields) {
-        Optional<ExamClasses> examClass = this.findById(id);
+    public ExamClasses patch(Integer id, Map<String, Object> fields) {
+        ExamClasses examClass = examClassRepository.findById(id).get();
 
-        if (examClass.isPresent()) {
-            fields.forEach((key, value) -> {
-                Field field = ReflectionUtils.findField(ExamClasses.class, (String) key);
+        fields.forEach((key, value) -> {
+            if (!Objects.equals(key, "numberStudent")) {
+                Field field = ReflectionUtils.findField(ExamClasses.class, key);
+                assert field != null;
                 field.setAccessible(true);
-                ReflectionUtils.setField(field, examClass.get(), value);
-            });
-            return this.update(examClass.get());
-        } else return null;
+                ReflectionUtils.setField(field, examClass, value);
+            } else {
+                ExamClassDetail examClassDetail = examClassDetailService.findByExamClassId(id).get();
+                examClassDetail.setNumberStudent((Integer) value);
+                examClassDetailService.update(examClassDetail);
+            }
+        });
+
+        System.out.println(examClass.getClassId());
+
+        return examClassRepository.saveAndFlush(examClass);
     }
 
     public ResponseEntity<?> division(Integer id, List<Integer> examinersId) {
