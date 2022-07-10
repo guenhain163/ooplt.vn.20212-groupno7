@@ -39,7 +39,7 @@ public class ExamClassDetail {
     @Column(name = "examination_cost")
     private Integer examinationCost;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exam_class_id", referencedColumnName = "id", insertable = false, updatable = false)
     @JsonBackReference
     private ExamClasses examClassesByExamClassId;

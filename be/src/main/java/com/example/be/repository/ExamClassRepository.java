@@ -2,9 +2,12 @@ package com.example.be.repository;
 
 import com.example.be.model.ExamClasses;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,4 +27,7 @@ public interface ExamClassRepository extends JpaRepository<ExamClasses, Integer>
             "LEFT JOIN Lecturers e " +
             "   ON e.id = b.lecturerId")
     List<Map<String, Object>> getAllExamClasses();
+
+    @Query("SELECT a FROM ExamClasses a INNER JOIN Classes b ON b.id = a.classId WHERE b.lecturerId = ?1")
+    Iterable<ExamClasses> findByLectureId(Integer lectureId);
 }

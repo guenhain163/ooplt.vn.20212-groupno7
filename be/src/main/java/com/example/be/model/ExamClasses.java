@@ -49,8 +49,8 @@ public class ExamClasses {
     private String openingPeriod;
 
     @Basic
-    @Column(name = "group")
-    private String group;
+    @Column(name = "exam_group")
+    private String examGroup;
 
     @Basic
     @Column(name = "room", length = 255)
@@ -64,8 +64,8 @@ public class ExamClasses {
     @Column(name = "note", length = 255)
     private String note;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "examClassesByExamClassId")
-    private Set<ExamClassDetail> examClassLecturerDetailsById = new HashSet<>();
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "examClassesByExamClassId")
+    private ExamClassDetail examClassDetailsById;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "examClassesByExamClassId")
     private Set<ExamClassExaminerDetail> examClassExaminerDetailsById = new HashSet<>();
@@ -153,12 +153,12 @@ public class ExamClasses {
         this.openingPeriod = openingPeriod;
     }
 
-    public String getGroup() {
-        return group;
+    public String getExamGroup() {
+        return examGroup;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setExamGroup(String examGroup) {
+        this.examGroup = examGroup;
     }
 
     public String getRoom() {
@@ -198,13 +198,13 @@ public class ExamClasses {
                 && Objects.equals(room, that.room)
                 && Objects.equals(status, that.status)
                 && Objects.equals(examCode, that.examCode)
-                && Objects.equals(group, that.group)
+                && Objects.equals(examGroup, that.examGroup)
                 && Objects.equals(note, that.note);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, examShift, date, week, openingPeriod, room, group, status, note, examCode);
+        return Objects.hash(id, examShift, date, week, openingPeriod, room, examGroup, status, note, examCode);
     }
 
 
@@ -216,12 +216,12 @@ public class ExamClasses {
         this.examClassExaminerDetailsById = examClassExaminerDetailsById;
     }
 
-    public Set<ExamClassDetail> getExamClassLecturerDetailsById() {
-        return examClassLecturerDetailsById;
+    public ExamClassDetail getExamClassDetailsById() {
+        return examClassDetailsById;
     }
 
-    public void setExamClassLecturerDetailsById(Set<ExamClassDetail> examClassLecturerDetailsById) {
-        this.examClassLecturerDetailsById = examClassLecturerDetailsById;
+    public void setExamClassDetailsById(ExamClassDetail examClassDetailsById) {
+        this.examClassDetailsById = examClassDetailsById;
     }
 
     public Classes getClassesByClassId() {
