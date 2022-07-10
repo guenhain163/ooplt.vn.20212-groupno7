@@ -82,7 +82,6 @@ public class ExamClasses {
     public enum Status {
         NEW,
         REGISTERED,
-        DONE,
         PAID,
         CLOSED
     }

@@ -41,12 +41,6 @@ public class ExamClassExaminerDetail {
     @JsonBackReference
     private ExamClasses examClassesByExamClassId;
 
-    public enum Status {
-        NEW,
-        DONE,
-        PAID
-    }
-
     public ExamClassExaminerDetail(Integer examClassId, Integer lecturerId) {
         this.lecturerId = lecturerId;
         this.examClassId = examClassId;
