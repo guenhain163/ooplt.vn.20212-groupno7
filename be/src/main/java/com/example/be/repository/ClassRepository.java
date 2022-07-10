@@ -21,9 +21,9 @@ public interface ClassRepository extends JpaRepository<Classes, Integer> {
 
     Iterable<Classes> findByLecturerId(Integer lecturerId);
 
-    @Query("SELECT NEW map(a.code as code, b as examClass, c.name as nameModule, c.code as codeModule) FROM Classes a " +
-            "INNER JOIN ExamClasses b ON b.classId = a.id " +
-            "INNER JOIN Modules c ON c.id = a.moduleId " +
+    @Query("SELECT NEW map(a.code as code, b as examClass, c.name as nameModule, c.code as codeModule) FROM ExamClasses b " +
+            "LEFT JOIN Classes a ON b.classId = a.id " +
+            "LEFT JOIN Modules c ON c.id = a.moduleId " +
             "WHERE b.semester = ?1")
     List<Map<String, Object>> findBySemester(String semester);
 
