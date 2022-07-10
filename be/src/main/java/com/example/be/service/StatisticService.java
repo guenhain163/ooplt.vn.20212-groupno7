@@ -61,7 +61,7 @@ public class StatisticService {
                 map.put("cost", examClassDetail.getCost());
                 map.put("numberStudent", examClassDetail.getNumberStudent());
                 map.put("printingCost", examClassDetail.getPrintingCost());
-                map.put("examinationCode", examClassDetail.getExaminationCost());
+                map.put("examinationCost", examClassDetail.getExaminationCost());
                 list.add(map);
             }
         });
