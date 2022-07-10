@@ -26,7 +26,6 @@ public class StatisticService {
     private final List<Integer> LECTURER = Arrays.asList(Roles.LECTURER.ordinal(), Lecturers.Roles.ALL.ordinal());
     private final List<Integer> EXAMINER = Arrays.asList(Roles.EXAMINER.ordinal(), Lecturers.Roles.ALL.ordinal());
 
-
     public Map<String, Object> getLecturerOrExaminer(Integer lecturerId, List<Integer> roles) {
         Optional<Lecturers> lecturerOptional = lecturerService.findByIdAndRoleIn(lecturerId, roles);
         if (lecturerOptional.isPresent()) {
@@ -120,5 +119,13 @@ public class StatisticService {
         Iterable<Classes> classes = classService.findAllBySemester(semester);
 
         return new ResponseEntity<>(classes, HttpStatus.OK);
+    }
+
+    public List<Map<String, Object>> getLecturers(String semester) {
+        return lecturerService.getLecturersOrExaminersBySemester(semester, LECTURER);
+    }
+
+    public List<Map<String, Object>> getExaminers(String semester) {
+        return lecturerService.getLecturersOrExaminersBySemester(semester, EXAMINER);
     }
 }
