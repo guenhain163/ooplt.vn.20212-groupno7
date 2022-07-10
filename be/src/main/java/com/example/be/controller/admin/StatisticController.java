@@ -18,14 +18,14 @@ public class StatisticController {
         return statisticService.getStatisticLecturer(id, semester);
     }
 
-    @GetMapping("/lecturers/{semester}")
-    public ResponseEntity<?> getLecturers(@PathVariable String semester) {
-        return new ResponseEntity<>(statisticService.getLecturers(semester), HttpStatus.OK);
+    @GetMapping("/lecturers")
+    public ResponseEntity<?> getLecturers() {
+        return new ResponseEntity<>(statisticService.getLecturers(), HttpStatus.OK);
     }
 
-    @GetMapping("/examiners/{semester}")
-    public ResponseEntity<?> getExaminers(@PathVariable String semester) {
-        return new ResponseEntity<>(statisticService.getExaminers(semester), HttpStatus.OK);
+    @GetMapping("/examiners")
+    public ResponseEntity<?> getExaminers() {
+        return new ResponseEntity<>(statisticService.getExaminers(), HttpStatus.OK);
     }
 
     @GetMapping("/examiners/{id}/{semester}")
