@@ -7,10 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ClassService implements BaseService<Classes> {
@@ -61,7 +58,7 @@ public class ClassService implements BaseService<Classes> {
         return classRepository.findByExamClassId(examClassId);
     }
 
-    public Iterable<Classes> findAllBySemester(String semester) {
+    public List<Map<String, Object>> findAllBySemester(String semester) {
         return classRepository.findBySemester(semester);
     }
 }
