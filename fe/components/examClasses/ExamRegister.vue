@@ -20,13 +20,13 @@
             multiple
             filterable
             default-first-option
-            multiple-limit="2"
+            :multiple-limit=maxLectureExam
             placeholder="Choose tags for your article"
           >
             <el-option
               v-for="item in options"
-              :key="item.value"
-              :label="item.label"
+              :key="item.id"
+              :label="`${item.name} - ${item.email}`"
               :value="item.value"
             >
             </el-option>
@@ -34,10 +34,10 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')"
+          <el-button type="primary" @click="submitForm('val')"
             >Create</el-button
           >
-          <el-button @click="resetForm('ruleForm')">Reset</el-button>
+          <el-button @click="resetForm('val')">Reset</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -53,49 +53,27 @@ export default {
         modules: [],
       },
       value: {},
-
-      options: [
-        {
-          value: 'HTML',
-          label: 'HTML',
-        },
-        {
-          value: 'CSS',
-          label: 'CSS',
-        },
-        {
-          value: 'JavaScript',
-          label: 'JavaScript',
-        },
-      ],
+      options: [],
       value2: [],
+      maxLectureExam: ''
     }
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate(async (valid) => {
-        if (valid) {
-          alert('submit!')
-          await this.$axios
-            .post('/admin/lecturers', this.ruleForm)
-            .then((response) => {
-              this.notifycation()
-              this.$router.go({
-                path: '/',
-              })
-            })
-            .catch((error) => {
-              this.errorNotification()
-              console.log(error)
-            })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
+    async submitForm(formName) {
+      console.log(this.value)
+      await this.$axios.post(`/admin/examClasses/${this.value.classExam.id}/examiners/division`, this.value2).then((response) => {
+        this.notifycation()
+        this.$router.go({
+          path: '/exam-classes'
+        })
+      }).catch((error) => {
+        console.log(error)
+        this.errorNotification()
       })
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
+      this.value2 = []
     },
     handleClose(done) {
       this.$confirm('Are you sure to close this dialog?')
@@ -103,6 +81,7 @@ export default {
           done()
         })
         .catch((_) => {})
+        this.resetForm('val')
     },
     notifycation() {
       this.$notify.success({
@@ -118,7 +97,6 @@ export default {
       })
     },
     async getlecturesExam() {
-      console.log(this.value)
       await this.$axios
         .get('/admin/examiners/free', {
           params: {
@@ -128,11 +106,28 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response)
+          const data = response.data
+          for (let index = 0; index < data.length; index++) {
+            const element = data[index];
+            element.value = element.id
+          }
+          this.options = data
         })
         .catch((error) => {
           console.log(error)
         })
+
+      console.log(this.value)
+        await this.$axios.get(`/admin/examiners?examClassId=${this.value.classExam.classId}`).then((response) => {
+          console.log(response)
+        }).catch((error) => {
+          console.log(error)
+        })
+    },
+    setCondition(value) {
+      if (value >= 60) {
+        this.maxLectureExam = 2
+      } else this.maxLectureExam = 1
     },
   },
 }

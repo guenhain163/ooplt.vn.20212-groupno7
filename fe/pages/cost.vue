@@ -8,10 +8,10 @@
             <div>
               <el-row class="demo-autocomplete">
                 <el-col :span="12">
-                  <div class="sub-title mb-2">Tìm giáo viên</div>
+                  <div class="sub-title mb-2 mx-3">Tìm giáo viên</div>
                   <el-autocomplete
                     v-model="state1"
-                    class="inline-input"
+                    class="inline-input mx-3"
                     :fetch-suggestions="querySearch"
                     placeholder="Please Input"
                     @select="handleSelect"
@@ -20,55 +20,114 @@
               </el-row>
             </div>
 
-            <el-row class="mt-3">
-              <el-button type="primary" @click="createTeacher()">Create Giang Vien</el-button>
+            <el-row class="mt-3 mx-3">
+              <el-button type="primary" @click="createTeacher()"
+                >Create Giang Vien</el-button
+              >
             </el-row>
 
-            <div class="m-5">
-              <el-table :data="tableDataSearch" style="width: 100%" height="450">
-                <el-table-column fixed prop="date" label="Date" width="150">
+            <div class="my-5" style="margin-left: 3rem">
+              <el-table
+                v-loading="isLoading"
+                :data="tableDataSearch"
+                style="width: 100%"
+                height="450"
+              >
+                <el-table-column prop="stt" label="STT" width="50">
                 </el-table-column>
-                <el-table-column prop="name" label="Name" width="120">
+                <el-table-column
+                  prop="classExam.examCode"
+                  label="Mã lớp thi"
+                  width="100"
+                >
                 </el-table-column>
-                <el-table-column prop="state" label="State" width="120">
+                <el-table-column
+                  prop="nameLecturer"
+                  label="Giảng viên"
+                  width="300"
+                >
                 </el-table-column>
-                <el-table-column prop="city" label="City" width="120">
+                <el-table-column
+                  prop="classExam.date"
+                  label="Ngày thi"
+                  width="100"
+                >
                 </el-table-column>
-                <el-table-column prop="address" label="Address" width="300">
+                <el-table-column
+                  prop="nameModule"
+                  label="Tên học phần"
+                  width="120"
+                >
                 </el-table-column>
-                <el-table-column prop="zip" label="Zip" width="120">
+                <el-table-column prop="numberStudent" label="SLDK" width="100">
+                </el-table-column>
+                <el-table-column
+                  prop="classExam.examClassDetailsById.cost"
+                  label="Đơn giá"
+                  width="80"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="cost_to_chuc"
+                  label="Chi phí tổ chức"
+                  width="150"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="classExam.examClassDetailsById.printingCost"
+                  label="Chi phí in ấn"
+                  width="150"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="classExam.examClassDetailsById.examinationCost"
+                  label="Chi phí trông thi"
+                  width="150"
+                >
+                </el-table-column>
+                <el-table-column prop="totalCost" label="Tổng" width="100">
+                </el-table-column>
+                <el-table-column
+                  prop="statusString"
+                  label="Trạng thái"
+                  width="150"
+                >
                 </el-table-column>
 
                 <el-table-column
-                  min-width="120"
+                  min-width="100"
                   class-name="text-secondary"
                   label="Action"
                 >
-                <template slot-scope="scope">
-                  <el-popover :ref="'popover'+scope.$index" placement="bottom-end" trigger="click">
-                    <el-link @click="editData(scope.$index, scope.row)">
-                      <strong>Edit </strong>
-                    </el-link>
-                    <br />
-                    <el-link style="margin-top: 10px" @click="deleteData(scope.$index, scope.row)">
-                      <strong>Delete</strong>
-                    </el-link>
-                    <br />
-                    <el-button slot="reference" size="mini">
-                      Action &#x25BC;
-                    </el-button>
-                  </el-popover>
-                </template>
+                  <template slot-scope="scope">
+                    <el-popover
+                      :ref="'popover' + scope.$index"
+                      placement="bottom-end"
+                      trigger="click"
+                    >
+                      <el-link @click="editData(scope.$index, scope.row)">
+                        <strong>Edit </strong>
+                      </el-link>
+                      <br />
 
+                      <el-link
+                        style="margin-top: 10px"
+                        @click="pay(scope.$index, scope.row)"
+                      >
+                        <strong>Thanh toán</strong>
+                      </el-link>
+                      <br />
+                      <el-button slot="reference" size="mini">
+                        Action &#x25BC;
+                      </el-button>
+                    </el-popover>
+                  </template>
                 </el-table-column>
-
               </el-table>
 
-              <DiaglogTeacher
-                ref="offerDetailDialog"/>
-              <CreateDiaglogTeacher
-                ref="createDiaglogTeacher"/>
-
+              <DiaglogExamClasses ref="offerDetailDialog" />
+              <CreateDiaglogExamClasses ref="CreateDiaglogExamClasses" />
+              <ExamRegister ref="examRegister" />
             </div>
           </div>
         </div>
@@ -79,104 +138,44 @@
 
 <script>
 import SlideBar from '../components/SlideBar'
-import DiaglogTeacher from '../components/teacher/DiaglogTeacher'
-import CreateDiaglogTeacher from '../components/teacher/CreateDiaglogTeacher'
+import DiaglogExamClasses from '../components/examClasses/DiaglogExamClasses'
+import CreateDiaglogExamClasses from '../components/examClasses/CreateDiaglogExamClasses'
+import ExamRegister from '../components/examClasses/ExamRegister'
 
 export default {
   name: 'IndexPage',
   auth: false,
   components: {
     SlideBar,
-    DiaglogTeacher,
-    CreateDiaglogTeacher,
+    DiaglogExamClasses,
+    CreateDiaglogExamClasses,
+    ExamRegister,
   },
   data() {
     return {
-      tableData: [
-        {
-          date: '2016-05-03',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          value: 'Tom',
-        },
-        {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          value: 'Tom2',
-        },
-        {
-          date: '2016-05-04',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          value: 'Tom3',
-        },
-        {
-          date: '2016-05-01',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          value: 'Tom4',
-        },
-        {
-          date: '2016-05-08',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          value: 'Tom5',
-        },
-        {
-          date: '2016-05-06',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          value: 'Tom6',
-        },
-        {
-          date: '2016-05-07',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          value: 'Tom7',
-        },
-      ],
+      tableData: [],
       tableDataSearch: [],
       links: [],
       state1: '',
       state2: '',
+      isLoading: false,
     }
   },
   watch: {
-    state1 (value) {
+    state1(value) {
       if (value === '') {
         this.tableDataSearch = this.tableData
       } else {
-        this.tableDataSearch = this.tableData.filter(tableValue => tableValue.value === value)
+        this.tableDataSearch = this.tableData.filter(
+          (tableValue) => tableValue.value === value
+        )
       }
-    }
+    },
   },
-  mounted() {
-    this.links = this.loadAll()
-  },
+  mounted() {},
   created() {
-    this.tableDataSearch = this.tableData
+    this.isLoading = true
+    this.getData()
   },
   methods: {
     querySearch(queryString, cb) {
@@ -193,22 +192,126 @@ export default {
       }
     },
     loadAll() {
-      return this.tableData
+      return this.tableDataSearch
     },
     handleSelect(item) {
-      this.tableDataSearch = item
+      console.log(item)
     },
     editData(index, val) {
       this.$refs[`popover${index}`].doClose()
-      console.log(this.$refs.offerDetailDialog)
       this.$refs.offerDetailDialog.dialogVisible = true
-    },
-    deleteData(index, val) {
-      this.$refs[`popover${index}`].doClose()
-      this.tableDataSearch.splice(index, 1)
+      this.$refs.offerDetailDialog.val = val
     },
     createTeacher() {
-      this.$refs.createDiaglogTeacher.dialogVisible = true
+      this.$refs.CreateDiaglogExamClasses.dialogVisible = true
+    },
+    async getData() {
+      this.isLoading = true
+      await this.$axios
+        .get('/admin/examClasses')
+        .then((response) => {
+          const raw = response.data
+          for (let index = 0; index < raw.length; index++) {
+            const element = raw[index]
+            element.stt = index + 1
+          }
+          raw.forEach((data) => {
+            data.value = data.nameModule
+
+            data.cost_to_chuc =
+              data.numberStudent * data.classExam.examClassDetailsById.cost
+            data.totalCost =
+              data.classExam.examClassDetailsById.printingCost +
+              data.cost_to_chuc +
+              data.classExam.examClassDetailsById.examinationCost
+
+            this.status(data)
+          })
+
+          this.tableData = raw
+          this.tableDataSearch = this.tableData
+
+          this.isLoading = false
+        })
+        .catch((erorr) => {
+          console.log(erorr)
+        })
+      this.links = this.tableDataSearch
+    },
+    notifycation() {
+      this.$notify.success({
+        title: 'Success',
+        message: 'Delete success',
+        showClose: false,
+      })
+    },
+    errorNotification() {
+      this.$notify.error({
+        title: 'Error',
+        message: 'Can not delete',
+      })
+    },
+    status(data) {
+      console.log(Date.now())
+      switch (data.classExam.status) {
+        case 1:
+          if (Date.now() < Date.parse(data.classExam.date)) {
+            data.statusString = 'Đã đăng ký thi'
+          } else {
+            data.statusString = 'Đã thi'
+          }
+          break
+        case 2:
+          data.statusString = 'Đã thanh toán'
+          break
+        case 3:
+          data.statusString = 'Khóa'
+          break
+        default:
+          data.statusString = 'Mới'
+          break
+      }
+    },
+    pay(index, val) {
+      this.$confirm(
+        'Bạn có chắc chắn muốn thanh toán không. Tiếp tục?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+      )
+        .then(() => {
+          this.callPayAPI(val)
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: 'Bạn đã hủy thao tác',
+          })
+        })
+    },
+    callPayAPI(val) {
+      console.log(val)
+      this.$axios
+        .post(`/admin/examClasses/${val.classExam.id}/status/paid`)
+        .then((response) => {
+          this.$message({
+            type: 'success',
+            message: 'Thanh toán thành công',
+          })
+          this.$router.go({
+            path: '/cost',
+          })
+        })
+        .catch((error) => {
+          console.log(error)
+          this.$message({
+            type: 'info',
+            message: 'Thanh toán thất bại',
+          })
+        })
     },
   },
 }

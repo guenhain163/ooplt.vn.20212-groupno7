@@ -41,7 +41,7 @@
                 </el-table-column>
                 <el-table-column prop="classExam.note" label="Ghi chú" width="80">
                 </el-table-column>
-                <el-table-column prop="phone" label="Nhóm" width="100">
+                <el-table-column prop="classExam.examGroup" label="Nhóm" width="100">
                 </el-table-column>
                 <el-table-column prop="classExam.openingPeriod" label="Đợt mở" width="80">
                 </el-table-column>
@@ -171,17 +171,16 @@ export default {
     editData(index, val) {
       this.$refs[`popover${index}`].doClose()
       this.$refs.offerDetailDialog.dialogVisible = true
-      this.$refs.offerDetailDialog.id = index
       this.$refs.offerDetailDialog.val = val
     },
     async deleteData(index, val) {
       this.$refs[`popover${index}`].doClose()
       await this.$axios
-        .delete(`/admin/examiners/${val.id}`)
+        .delete(`/admin/examClasses/${val.classExam.id}`)
         .then((response) => {
           this.notifycation()
           this.$router.go({
-            path: '/',
+            path: '/exam-classes',
           })
         })
         .catch((e) => {
@@ -232,6 +231,7 @@ export default {
       this.$refs.examRegister.dialogVisible = true
       this.$refs.examRegister.value = val
       this.$refs.examRegister.getlecturesExam()
+      this.$refs.examRegister.setCondition(val.numberStudent)
     },
   },
 }
