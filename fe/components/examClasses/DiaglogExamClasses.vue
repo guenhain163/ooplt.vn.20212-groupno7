@@ -6,18 +6,33 @@
       width="30%"
       :before-close="handleClose"
     >
-      <el-form ref="val" :model="data" label-width="120px">
-        <el-form-item label="Name">
-          <el-input v-model="data.name"></el-input>
+      <el-form ref="val" :model="val" label-width="120px">
+        <el-form-item label="Mã lớp thi">
+          <el-input v-model="val.classExam.examCode"></el-input>
         </el-form-item>
-        <el-form-item label="Phone">
-          <el-input v-model="data.phone"></el-input>
+        <el-form-item label="Ca thi">
+          <el-input-number v-model="val.classExam.examShift"></el-input-number>
         </el-form-item>
-        <el-form-item label="Email">
-          <el-input v-model="val.email" disabled></el-input>
+        <el-form-item label="Ghi chú">
+          <el-input v-model="val.classExam.note"></el-input>
         </el-form-item>
-        <el-form-item label="Phòng làm việc">
-          <el-input v-model="data.workRoom"></el-input>
+        <el-form-item label="Phòng">
+          <el-input v-model="val.classExam.room"></el-input>
+        </el-form-item>
+        <el-form-item label="Kỳ học">
+          <el-input v-model="val.classExam.openingPeriod"></el-input>
+        </el-form-item>
+        <el-form-item label="Trạng thái">
+          <el-input-number v-model="val.classExam.status"></el-input-number>
+        </el-form-item>
+        <el-form-item label="Tuần">
+          <el-input v-model="val.classExam.week"></el-input>
+        </el-form-item>
+        <el-form-item label="Nhóm">
+          <el-input v-model="val.classExam.examGroup"></el-input>
+        </el-form-item>
+        <el-form-item label="SLDK">
+          <el-input-number v-model="val.numberStudent"></el-input-number>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">Edit</el-button>
@@ -33,27 +48,32 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      data: {
-        name: '',
-        phone: '',
-        workRoom: '',
-      },
       val: {
-        name: '',
-        phone: '',
-        workRoom: '',
-        email: '',
-      }
+        classExam: {},
+      },
+      data: {},
     }
   },
   methods: {
     async onSubmit() {
+      this.data = {
+        examCode: this.val.classExam.examCode,
+        room: this.val.classExam.room,
+        openingPeriod: this.val.classExam.openingPeriod,
+        week: this.val.classExam.week,
+        status: this.val.classExam.status,
+        note: this.val.classExam.note,
+        examGroup: this.val.classExam.examGroup,
+        numberStudent: this.val.numberStudent,
+        examShift: this.val.classExam.examShift,
+      }
+      console.log(this.data)
       await this.$axios
-        .patch(`/admin/lecturers/${this.val.id}`, this.data)
+        .patch(`/admin/examClasses/${this.val.classExam.id}`, this.data)
         .then((response) => {
           this.notifycation()
           this.$router.go({
-            path: '/',
+            path: '/exam-classes',
           })
         })
         .catch((error) => {
@@ -84,3 +104,15 @@ export default {
   },
 }
 </script>
+
+<style>
+.el-input-number span {
+  display: none !important;
+}
+
+.el-input-number input {
+  padding: 0px !important;
+  padding-left: 15px !important;
+  text-align: justify !important;
+}
+</style>

@@ -14,7 +14,13 @@
                   <li><a href="/examinator">Quản lý Cán bộ coi thi </a></li>
                   <li><a href="/exam-classes">Thông tin phân công trông thi </a></li>
                   <li><a href="/cost">Quản lý kinh phí </a></li>
-                  <li><a href="/report">Báo cáo thống kê </a></li>
+                  <li> <p>Báo cáo</p>
+                    <ul>
+                      <a href="/report/lectures" style="margin-left: 3rem; font-size: 0.75rem!important">Báo cáo giảng viên </a>
+                      <a href="/report/examinator" style="margin-left: 3rem; font-size: 0.75rem!important">Báo cáo cán bộ coi thi </a>
+                      <a href="/report/class" style="margin-left: 3rem; font-size: 0.75rem!important">Báo cáo lớp học </a>
+                    </ul>
+                  </li>
                   <li><a href="/contact">Liên hệ </a></li>
                 </ul>
               </li>
