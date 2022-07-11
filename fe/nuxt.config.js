@@ -45,19 +45,42 @@ export default {
     'bootstrap-vue/nuxt'
   ],
 
+  // auth: {
+  //   strategies: {
+  //     'laravelJWT': {
+  //       provider: 'laravel/jwt',
+  //       url: 'http://localhost:8080',
+  //       token: {
+  //         property: 'accessToken',
+  //         maxAge: 60 * 60
+  //       },
+  //       refreshToken: {
+  //         maxAge: 20160 * 60
+  //       },
+  //     },
+  //   }
+  // },
+
   auth: {
     strategies: {
-      'laravelJWT': {
-        provider: 'laravel/jwt',
-        url: 'http://localhost:8080',
+      local: {
         token: {
           property: 'accessToken',
-          maxAge: 60 * 60
+          url: 'http://localhost:8080',
+          global: true,
+          // required: true,
+          // type: 'Bearer'
         },
-        refreshToken: {
-          maxAge: 20160 * 60
+        user: {
+          property: 'user',
+          // autoFetch: true
         },
-      },
+        endpoints: {
+          login: { url: '/auth/login', method: 'post' },
+          logout: { url: '/auth/logout', method: 'post' },
+          user: { url: '/auth/user', method: 'get' }
+        }
+      }
     }
   },
 
