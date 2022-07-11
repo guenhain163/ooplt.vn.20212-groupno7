@@ -62,11 +62,9 @@ public class AuthController {
     }
 
     @PostMapping("/api/auth/logout")
-    public ResponseEntity<?> logout(@RequestHeader("Authorization") String header) {
+    public ResponseEntity<?> logout() {
         try {
-            String token = header.split(" ")[1].trim();
-
-            return new ResponseEntity<>(token, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
