@@ -42,10 +42,6 @@ public class Users implements UserDetails {
 //    @JsonBackReference
 //    private Lecturers lecturers;
 
-    protected static final int ROLE_USER = 1;
-    protected static final int ROLE_MODERATOR = 2;
-    protected static final int ROLE_ADMIN = 3;
-
     enum Role {
         USER,
         MODERATOR,
@@ -56,7 +52,7 @@ public class Users implements UserDetails {
         super();
         this.email = email;
         this.password = password;
-        this.role = ROLE_USER;
+        this.role = Role.USER.ordinal();
     }
 
     public Users(String email, String password, int role) {

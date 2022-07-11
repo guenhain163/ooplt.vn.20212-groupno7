@@ -5,10 +5,11 @@ import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
 
 @Component
 public class JwtTokenUtil {
@@ -56,10 +57,30 @@ public class JwtTokenUtil {
         return expiresIn.getTime();
     }
 
+    public <T> T getClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = parseClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
     private Claims parseClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    private Boolean isTokenExpired(String token) {
+        final Date expiration = new Date(getExpiresIn(token));
+        return expiration.before(new Date());
+    }
+
+    public Integer getId(String token) {
+        String subject = getSubject(token);
+        return Integer.parseInt(subject.split(",")[0].trim());
+    }
+
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        final String username = getSubject(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }

@@ -11,14 +11,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService, BaseService<Users> {
     @Autowired
     private UserRepository userRepository;
-
-    private String passwordDefault = "12345678";
 
     @Override
     @Transactional
@@ -54,6 +53,7 @@ public class UserService implements UserDetailsService, BaseService<Users> {
 
     public Users createDefault(String email) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String passwordDefault = "12345678";
         String encodedPassword = passwordEncoder.encode(passwordDefault);
 
         Users newUser = new Users(email, encodedPassword);
