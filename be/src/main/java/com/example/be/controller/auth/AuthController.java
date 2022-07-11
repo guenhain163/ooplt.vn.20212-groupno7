@@ -46,7 +46,8 @@ public class AuthController {
             Users user = (Users) authentication.getPrincipal();
             String accessToken = jwtUtil.generateAccessToken(user);
             Long expiresIn = jwtUtil.getExpiresIn(accessToken);
-            AuthResponse response = new AuthResponse(user.getEmail(), accessToken, expiresIn);
+            Map<String, Object> me = userService.me(jwtUtil.getId(accessToken));
+            AuthResponse response = new AuthResponse(user.getEmail(), accessToken, expiresIn, me.get("user"));
 
             return ResponseEntity.ok().body(response);
         } catch (BadCredentialsException ex) {
@@ -59,16 +60,8 @@ public class AuthController {
         try {
             String token = header.substring(7);
             int userId = jwtUtil.getId(token);
-            Optional<Users> userOptional = userService.findById(userId);
-            Map<String, Object> userResponse = new HashMap<>();
-            userResponse.put("email", userOptional.get().getEmail());
-            userResponse.put("role", userOptional.get().getRole());
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "Successfully retrieved user information.");
-            response.put("user", userResponse);
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(userService.me(userId), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
