@@ -38,7 +38,7 @@ public class ClassService implements BaseService<Classes> {
 
     @Override
     public void remove(Integer id) {
-
+        classRepository.deleteById(id);
     }
 
     public Iterable<Classes> findByRegisteredExam(boolean registeredExam) {
@@ -58,5 +58,9 @@ public class ClassService implements BaseService<Classes> {
 
     public List<Map<String, Object>> findAllBySemester(String semester) {
         return classRepository.findBySemester(semester);
+    }
+
+    public List<Map<String, Object>> findAllByLecturerIdAndSemester(Integer lecturerId, String semester) {
+        return classRepository.findByLecturerIdAndSemester(lecturerId, semester);
     }
 }

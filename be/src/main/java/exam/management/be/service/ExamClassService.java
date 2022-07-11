@@ -5,7 +5,9 @@ import exam.management.be.model.ExamClassDetail;
 import exam.management.be.model.ExamClasses;
 import exam.management.be.repository.ExamClassRepository;
 import exam.management.be.request.ExamClassRequest;
+import net.bytebuddy.utility.nullability.MaybeNull;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +67,10 @@ public class ExamClassService implements BaseService<ExamClasses> {
 
     public Object getAllExamClasses() {
         return examClassRepository.getAllExamClasses();
+    }
+
+    public Object getAllByLecturerIdAndSemester(Integer lecturerId, String semester) {
+        return examClassRepository.findAllByLecturerIdAndSemester(lecturerId, semester);
     }
 
     public ExamClasses create(@NotNull ExamClassRequest examClass) {

@@ -97,38 +97,13 @@ public class LecturerController {
         }
     }
 
-    @PatchMapping(value = "/lecturers/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Lecturers> patchExaminer(@PathVariable Integer id, @RequestBody Map<Object, Object> fields) {
-        Optional<Lecturers> lecturer = lecturerService.findById(id);
-
-        if (lecturer.isPresent()) {
-            fields.forEach((key, value) -> {
-                Field field = ReflectionUtils.findField(Lecturers.class, (String) key);
-                field.setAccessible(true);
-                ReflectionUtils.setField(field, lecturer.get(), value);
-            });
-            Lecturers updateLecturer = lecturerService.update(lecturer.get());
-            return new ResponseEntity<>(updateLecturer, HttpStatus.OK);
+    @PatchMapping(value = {"/examiners/{id}", "/lecturers/{id}"}, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> patchLecturer(@PathVariable Integer id, @RequestBody Map<Object, Object> fields) {
+        try {
+            return new ResponseEntity<>(lecturerService.update(id, fields), HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @PatchMapping(value = "/examiners/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Lecturers> patchLecturer(@PathVariable Integer id, @RequestBody Map<Object, Object> fields) {
-        Optional<Lecturers> lecturer = lecturerService.findById(id);
-
-        if (lecturer.isPresent()) {
-            fields.forEach((key, value) -> {
-                Field field = ReflectionUtils.findField(Lecturers.class, (String) key);
-                field.setAccessible(true);
-                ReflectionUtils.setField(field, lecturer.get(), value);
-            });
-            Lecturers updateLecturer = lecturerService.update(lecturer.get());
-            return new ResponseEntity<>(updateLecturer, HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping(value = {"/lecturers/{id}", "/examiners/{id}"})

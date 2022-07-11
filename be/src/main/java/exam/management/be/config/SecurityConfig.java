@@ -55,13 +55,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/admin/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/user/**").access("hasRole('ROLE_USER')")
-//                .antMatchers(HttpMethod.GET,"/api/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/api/admin/**").authenticated()
+                .antMatchers("/api/user/**").authenticated()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
-//                .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
     }
 
 }

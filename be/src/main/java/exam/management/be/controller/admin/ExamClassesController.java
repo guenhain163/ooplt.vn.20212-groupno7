@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Null;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,6 @@ public class ExamClassesController {
 
     @GetMapping
     public ResponseEntity<?> getAllExamClasses() {
-//        return new ResponseEntity<>(examClassService.findAll(), HttpStatus.OK);
         return new ResponseEntity<>(examClassService.getAllExamClasses(), HttpStatus.OK);
     }
 

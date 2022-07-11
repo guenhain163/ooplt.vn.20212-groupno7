@@ -24,7 +24,7 @@ public class ClassController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Classes> getExamClass(@PathVariable Integer id) {
+    public ResponseEntity<Classes> getClass(@PathVariable Integer id) {
         Optional<Classes> classOptional = classService.findById(id);
         return classOptional.map(class1 -> new ResponseEntity<>(class1, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));

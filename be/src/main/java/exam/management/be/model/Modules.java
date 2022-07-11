@@ -30,14 +30,10 @@ public class Modules {
     private String code;
 
     @OneToMany(mappedBy = "modulesByModuleId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @Column(nullable = true)
-//    @JsonBackReference
     private Set<Classes> classesById = new HashSet<>();
 
 
     @OneToMany(mappedBy = "modulesByModuleId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @Column(nullable = true)
-//    @JsonBackReference
     private Set<Speciality> specialitiesById = new HashSet<>();
 
     public Integer getId() {

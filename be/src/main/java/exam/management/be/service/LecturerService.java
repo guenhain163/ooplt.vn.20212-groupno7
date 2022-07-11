@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 @Service
@@ -73,7 +75,6 @@ public class LecturerService implements BaseService<Lecturers> {
 
     public List<Map<String, Object>> getAllLecturersOrExaminers(List<Integer> roles) {
         List<Lecturers> lecturerList = this.findByRoleIn(roles);
-//        System.out.println(lecturerList);
 
         List<Map<String, Object>> resultsList = new ArrayList<Map<String, Object>>();
         for (Lecturers lecturer : lecturerList) {
@@ -153,5 +154,21 @@ public class LecturerService implements BaseService<Lecturers> {
 
     public List<Map<String, Object>> getLecturersOrExaminersBySemester(List<Integer> roleList) {
         return lecturerRepository.findByRole(roleList);
+    }
+
+    public Lecturers update(Integer id, Map<Object, Object> fields) {
+        Optional<Lecturers> lecturer = lecturerRepository.findById(id);
+
+        if (lecturer.isPresent()) {
+            fields.forEach((key, value) -> {
+                Field field = ReflectionUtils.findField(Lecturers.class, (String) key);
+                assert field != null;
+                field.setAccessible(true);
+                ReflectionUtils.setField(field, lecturer.get(), value);
+            });
+            return lecturerRepository.saveAndFlush(lecturer.get());
+        }
+
+        return null;
     }
 }

@@ -52,10 +52,21 @@ public class AuthController {
     @GetMapping("/api/auth/user")
     public ResponseEntity<?> getUser(@RequestHeader("Authorization") String header) {
         try {
-            String token = header.substring(7);
+            String token = header.split(" ")[1].trim();
             int userId = jwtUtil.getId(token);
 
             return new ResponseEntity<>(userService.me(userId), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/api/auth/logout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String header) {
+        try {
+            String token = header.split(" ")[1].trim();
+
+            return new ResponseEntity<>(token, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
