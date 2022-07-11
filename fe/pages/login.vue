@@ -71,10 +71,14 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          await this.$auth.loginWith('laravelJWT', {
+          await this.$auth.loginWith('local', {
             data: this.ruleForm
           }).then((response) => {
+            console.log(response)
             this.notifycation()
+            this.$router.go({
+            path: '/',
+            })
           }).catch((e) => {
             console.log(e)
             this.notifycation()
