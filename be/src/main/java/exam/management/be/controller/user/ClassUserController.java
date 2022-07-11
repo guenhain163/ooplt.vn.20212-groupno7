@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/user/classes")
+@RequestMapping("/api/user")
 public class ClassUserController {
     @Autowired
     private ClassService classService;
 
-    @GetMapping(value = "/{lecturerId}", params = {"semester"})
-    public ResponseEntity<?> getAllClasses(@PathVariable Integer lecturerId, @RequestParam String semester) {
-        return new ResponseEntity<>(classService.findAllByLecturerIdAndSemester(lecturerId, semester), HttpStatus.OK);
+    @GetMapping(value = "/{id}/classes", params = {"semester"})
+    public ResponseEntity<?> getAllClasses(@PathVariable Integer id, @RequestParam String semester) {
+        return new ResponseEntity<>(classService.findAllByUserIdAndSemester(id, semester), HttpStatus.OK);
     }
 }

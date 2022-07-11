@@ -57,6 +57,7 @@ public class UserService implements UserDetailsService, BaseService<Users> {
         Map<String, Object> userResponse = new HashMap<>();
         userResponse.put("email", userOptional.get().getEmail());
         userResponse.put("role", userOptional.get().getRole());
+        userResponse.put("id", userOptional.get().getId());
 
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Successfully retrieved user information.");

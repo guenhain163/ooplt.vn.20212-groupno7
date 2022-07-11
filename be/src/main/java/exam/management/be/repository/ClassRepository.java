@@ -30,8 +30,9 @@ public interface ClassRepository extends JpaRepository<Classes, Integer> {
     @Query("SELECT NEW map(a.code as code, b as examClass, c.name as nameModule, c.code as codeModule) FROM ExamClasses b " +
             "LEFT JOIN Classes a ON b.classId = a.id " +
             "LEFT JOIN Modules c ON c.id = a.moduleId " +
-            "WHERE a.lecturerId = ?1 AND b.semester = ?2")
-    List<Map<String, Object>> findByLecturerIdAndSemester(Integer lecturerId, String semester);
+            "LEFT JOIN Lecturers d ON d.id = a.lecturerId " +
+            "WHERE d.userId = ?1 AND b.semester = ?2")
+    List<Map<String, Object>> findByUserIdAndSemester(Integer id, String semester);
 
     @Modifying
     @Query("UPDATE Classes c SET c.registeredExam = ?1 WHERE c.id = ?2")

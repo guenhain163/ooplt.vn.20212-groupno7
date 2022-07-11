@@ -69,8 +69,8 @@ public class ExamClassService implements BaseService<ExamClasses> {
         return examClassRepository.getAllExamClasses();
     }
 
-    public Object getAllByLecturerIdAndSemester(Integer lecturerId, String semester) {
-        return examClassRepository.findAllByLecturerIdAndSemester(lecturerId, semester);
+    public Object getAllByUserIdAndSemesterAndRole(Integer lecturerId, String semester, List<Integer> roles) {
+        return examClassRepository.findAllByUserIdAndSemesterAndRole(lecturerId, semester, roles);
     }
 
     public ExamClasses create(@NotNull ExamClassRequest examClass) {

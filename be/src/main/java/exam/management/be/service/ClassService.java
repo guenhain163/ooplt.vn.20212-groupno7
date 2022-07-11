@@ -60,7 +60,7 @@ public class ClassService implements BaseService<Classes> {
         return classRepository.findBySemester(semester);
     }
 
-    public List<Map<String, Object>> findAllByLecturerIdAndSemester(Integer lecturerId, String semester) {
-        return classRepository.findByLecturerIdAndSemester(lecturerId, semester);
+    public List<Map<String, Object>> findAllByUserIdAndSemester(Integer id, String semester) {
+        return classRepository.findByUserIdAndSemester(id, semester);
     }
 }

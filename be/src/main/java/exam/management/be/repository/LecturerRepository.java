@@ -15,7 +15,9 @@ import java.util.Optional;
 public interface LecturerRepository extends JpaRepository<Lecturers, Integer > {
     List<Lecturers> findByRoleIn(List<Integer> roles);
 
-    Optional<Lecturers> findByIdAndRoleIn(Integer  id, List<Integer> roles);
+    Optional<Lecturers> findByIdAndRoleIn(Integer id, List<Integer> roles);
+
+    Optional<Lecturers> findByUserId(Integer userId);
 
     @Modifying
     @Query("SELECT NEW map(a.id as id, a.name as name, d.email as email) FROM Lecturers a " +

@@ -171,4 +171,8 @@ public class LecturerService implements BaseService<Lecturers> {
 
         return null;
     }
+
+    public Optional<Lecturers> findByUserId(Integer id) {
+        return lecturerRepository.findByUserId(id);
+    }
 }
