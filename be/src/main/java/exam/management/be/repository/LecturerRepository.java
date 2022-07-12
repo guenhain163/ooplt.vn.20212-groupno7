@@ -19,14 +19,6 @@ public interface LecturerRepository extends JpaRepository<Lecturers, Integer > {
 
     Optional<Lecturers> findByUserId(Integer userId);
 
-    @Query("SELECT NEW map(a.name as name, a.workRoom as workRoom, a.phone as phone, " +
-            "b.email as email, d.name as nameModule, a.id as lecturerId) FROM Lecturers a " +
-            "LEFT JOIN Users b ON b.id = a.userId " +
-            "LEFT JOIN Speciality c ON c.lecturerId = a.id " +
-            "LEFT JOIN Modules d ON d.id = c.moduleId " +
-            "WHERE b.id = ?1")
-    List<Map<String, Object>> findModulesByUserId(Integer userId);
-
     @Modifying
     @Query("SELECT NEW map(a.id as id, a.name as name, d.email as email) FROM Lecturers a " +
             "INNER JOIN Users d ON d.id = a.userId " +

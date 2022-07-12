@@ -172,7 +172,18 @@ public class LecturerService implements BaseService<Lecturers> {
         return null;
     }
 
-    public List<Map<String, Object>> findByUserId(Integer id) {
-        return lecturerRepository.findModulesByUserId(id);
+    public Map<String, Object> findByUserId(Integer id) {
+        Lecturers lecturer = lecturerRepository.findByUserId(id).get();
+        List<String> modules = moduleService.listModuleNamesByLecturerId(lecturer.getId());
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("modules", modules);
+        map.put("email", lecturer.getUsersByUserId().getEmail());
+        map.put("name", lecturer.getName());
+        map.put("workRoom", lecturer.getWorkRoom());
+        map.put("phone", lecturer.getPhone());
+        map.put("lecturerId", lecturer.getId());
+
+        return map;
     }
 }
