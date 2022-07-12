@@ -20,7 +20,6 @@ public class LecturerUserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getLecturer(@PathVariable Integer id) {
-        System.out.println(id);
         return new ResponseEntity<>(lecturerService.findByUserId(id), HttpStatus.OK);
     }
 
