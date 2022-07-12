@@ -89,7 +89,7 @@ export default {
   methods: {
     async getStatisticLecture(semester) {
       await this.$axios.get(`/admin/statistic/classes/${semester}`).then((response) => {
-
+        this.formData = []
         response.data.forEach(e => {
           this.formData.push({...e, "index": this.formData.length + 1, "dayOfTheWeek": this.formatDay(e.examClass.date)});
         })
