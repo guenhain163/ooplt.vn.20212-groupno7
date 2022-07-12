@@ -21,7 +21,6 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/admin/examClasses")
-@PreAuthorize("hasAnyAuthority('ADMIN')")
 public class ExamClassesController {
     @Autowired
     private ExamClassService examClassService;

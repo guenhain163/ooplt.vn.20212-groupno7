@@ -15,7 +15,6 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/admin/classes")
-@PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
 public class ClassController {
     @Autowired
     private ClassService classService;
