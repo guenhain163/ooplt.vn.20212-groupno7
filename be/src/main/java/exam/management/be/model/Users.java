@@ -4,11 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -41,7 +44,7 @@ public class Users implements UserDetails {
 //    @JsonBackReference
 //    private Lecturers lecturers;
 
-    enum Role {
+    enum Roles {
         USER,
         MODERATOR,
         ADMIN
@@ -51,7 +54,7 @@ public class Users implements UserDetails {
         super();
         this.email = email;
         this.password = password;
-        this.role = Role.USER.ordinal();
+        this.role = Roles.USER.ordinal();
     }
 
     public Users(String email, String password, int role) {
@@ -97,7 +100,11 @@ public class Users implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> authorities
+                = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(Roles.values()[role].name()));
+
+        return authorities;
     }
 
     @Override

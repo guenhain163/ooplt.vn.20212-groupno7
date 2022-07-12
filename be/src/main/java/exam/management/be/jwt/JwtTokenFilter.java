@@ -5,6 +5,8 @@ import exam.management.be.service.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -17,6 +19,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
@@ -66,10 +70,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
 
     private void setAuthenticationContext(String token, HttpServletRequest request) {
-        UserDetails userDetails = getUserDetails(token);
+        Users users = getUserDetails(token);
 
         UsernamePasswordAuthenticationToken
-                authentication = new UsernamePasswordAuthenticationToken(userDetails, null, null);
+                authentication = new UsernamePasswordAuthenticationToken(users, null, users.getAuthorities());
 
         authentication.setDetails(
                 new WebAuthenticationDetailsSource().buildDetails(request));
@@ -77,12 +81,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    private UserDetails getUserDetails(String token) {
+    private Users getUserDetails(String token) {
         Users userDetails = new Users();
-        String[] jwtSubject = jwtUtil.getSubject(token).split(",");
-
-        userDetails.setId(Integer.parseInt(jwtSubject[0]));
-        userDetails.setEmail(jwtSubject[1]);
+        userDetails.setId(jwtUtil.getId(token));
+        userDetails.setEmail(jwtUtil.getUsername(token));
+        userDetails.setRole(jwtUtil.getRole(token));
 
         return userDetails;
     }

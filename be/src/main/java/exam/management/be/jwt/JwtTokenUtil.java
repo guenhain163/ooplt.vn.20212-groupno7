@@ -21,7 +21,7 @@ public class JwtTokenUtil {
 
     public String generateAccessToken(Users user) {
         return Jwts.builder()
-                .setSubject(String.format("%s,%s", user.getId(), user.getEmail()))
+                .setSubject(String.format("%s,%s,%s", user.getId(), user.getEmail(), user.getRole()))
                 .setIssuer("CodeJava")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))
@@ -82,6 +82,11 @@ public class JwtTokenUtil {
     public String getUsername(String token) {
         String subject = getSubject(token);
         return subject.split(",")[1].trim();
+    }
+
+    public Integer getRole(String token) {
+        String subject = getSubject(token);
+        return Integer.parseInt(subject.split(",")[2].trim());
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
