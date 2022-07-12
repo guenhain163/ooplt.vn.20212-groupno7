@@ -37,7 +37,7 @@
                 </el-table-column>
                 <el-table-column prop="name" label="Name" width="270">
                 </el-table-column>
-                <el-table-column prop="modules" label="Bộ môn" width="270">
+                <el-table-column prop="moduleGroup" label="Bộ môn" width="270">
                 </el-table-column>
                 <el-table-column prop="phone" label="Điện thoại" width="120">
                 </el-table-column>
@@ -97,7 +97,6 @@ import CreateDiaglogExaminer from '../components/examiner/CreateDiaglogExaminer'
 
 export default {
   name: 'IndexPage',
-  auth: false,
   components: {
     SlideBar,
     DiaglogExaminer,
@@ -185,6 +184,7 @@ export default {
           for (let index = 0; index < raw.length; index++) {
             const element = raw[index];
             element.stt = index + 1
+            element.moduleGroup = element.modules?.join(", ")
           }
           raw.forEach((data) => {
             data.value = data.name

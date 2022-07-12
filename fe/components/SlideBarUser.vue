@@ -10,33 +10,12 @@
               <p>Main Menu</p>
               <li>
                 <ul>
-                  <li><a href="/">Quản lý giảng viên </a></li>
-                  <li><a href="/examinator">Quản lý Cán bộ coi thi </a></li>
+                  <li><a href="/user">Thông tin cá nhân </a></li>
                   <li>
-                    <a href="/exam-classes">Thông tin phân công trông thi </a>
+                    <a href="/user/teaching-classes">Các lớp đang dạy </a>
                   </li>
-                  <li><a href="/cost">Quản lý kinh phí </a></li>
-                  <li>
-                    <p>Báo cáo</p>
-                    <ul>
-                      <a
-                        href="/report/lectures"
-                        style="margin-left: 3rem; font-size: 0.75rem !important"
-                        >Báo cáo giảng viên
-                      </a>
-                      <a
-                        href="/report/examinator"
-                        style="margin-left: 3rem; font-size: 0.75rem !important"
-                        >Báo cáo cán bộ coi thi
-                      </a>
-                      <a
-                        href="/report/class"
-                        style="margin-left: 3rem; font-size: 0.75rem !important"
-                        >Báo cáo lớp học
-                      </a>
-                    </ul>
-                  </li>
-                  <li><a href="/contact">Liên hệ </a></li>
+                  <li><a href="/user/exam">Các lớp thi </a></li>
+                  <li><a href="/user/examinate">Các lớp coi thi </a></li>
                   <li>
                     <a href="/#" @click="logout">Thoát phiên làm việc </a>
                   </li>
@@ -53,7 +32,6 @@
 <script>
 export default {
   name: 'SlideBar',
-  auth: false,
   methods: {
     async logout() {
       await this.$auth.logout().then(() => {

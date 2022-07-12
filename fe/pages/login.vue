@@ -1,6 +1,7 @@
 <template>
-  <div style="height: 100vh" class="row justify-content-center">
-    <div class="w-50 row justify-content-center align-items-center">
+  <!-- <div class="justify-content-center"> -->
+  <div class="row mt-5 pt-5 justify-content-center align-items-center">
+    <div class="row justify-content-center align-items-center mt-5 pt-5 w-50">
       <el-form
         ref="ruleForm"
         :model="ruleForm"
@@ -27,10 +28,13 @@
       </el-form>
     </div>
   </div>
+
+  <!-- </div> -->
 </template>
 <script>
 export default {
   name: 'LoginPage',
+  auth: 'guest',
   data() {
     const validatePass = (rule, value, callback) => {
       if (value === '') {
@@ -71,23 +75,37 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          await this.$auth.loginWith('local', {
-            data: this.ruleForm
-          }).then((response) => {
-            console.log(response)
-            this.notifycation()
-            this.$router.go({
-            path: '/',
+          await this.$auth
+            .loginWith('local', {
+              data: this.ruleForm,
             })
-          }).catch((e) => {
-            console.log(e)
-            this.notifycation()
-          })
+            .then((response) => {
+              this.notifycation()
+              this.middleweare(response.data.user.role)
+            })
+            .catch((e) => {
+              console.log(e)
+              this.notifycation()
+            })
         } else {
           console.log('error submit!!')
           return false
         }
       })
+    },
+    middleweare(value) {
+      switch (value) {
+        case 1:
+          this.$router.push({
+            path: '/user',
+          })
+          break
+        case 3:
+          this.$router.push({
+            path: '/',
+          })
+          break
+      }
     },
     notifycation() {
       this.$notify.success({

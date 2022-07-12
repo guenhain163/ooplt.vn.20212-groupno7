@@ -37,7 +37,7 @@
                 </el-table-column>
                 <el-table-column prop="name" label="Name" width="270">
                 </el-table-column>
-                <el-table-column prop="state" label="Bộ môn" width="270">
+                <el-table-column prop="moduleGroup" label="Bộ môn" width="270">
                 </el-table-column>
                 <el-table-column prop="phone" label="Điện thoại" width="120">
                 </el-table-column>
@@ -97,7 +97,6 @@ import CreateDiaglogTeacher from '../components/teacher/CreateDiaglogTeacher'
 
 export default {
   name: 'IndexPage',
-  auth: false,
   components: {
     SlideBar,
     DiaglogTeacher,
@@ -165,9 +164,6 @@ export default {
         .delete(`/admin/lecturers/${val.id}`)
         .then((response) => {
           this.notifycation()
-          this.$router.go({
-            path: '/',
-          })
         })
         .catch((e) => {
           this.errorNotification()
@@ -185,6 +181,7 @@ export default {
           for (let index = 0; index < raw.length; index++) {
             const element = raw[index]
             element.stt = index + 1
+            element.moduleGroup = element.modules?.join(", ")
           }
           raw.forEach((data) => {
             data.value = data.name
