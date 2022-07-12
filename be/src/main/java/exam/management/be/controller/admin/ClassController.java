@@ -31,11 +31,6 @@ public class ClassController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
-    @GetMapping(params = {"registeredExam"})
-    public ResponseEntity<Iterable<Classes>> getRegisteredClasses(@RequestParam boolean registeredExam) {
-        return new ResponseEntity<>(classService.findByRegisteredExam(registeredExam), HttpStatus.OK);
-    }
-
     @PutMapping(value = {"/{id}"}, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Classes> updateLecturer(@PathVariable Integer id, @RequestBody Classes classes) {
         Optional<Classes> classOptional = classService.findById(id);

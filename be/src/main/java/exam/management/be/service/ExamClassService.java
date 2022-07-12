@@ -153,4 +153,8 @@ public class ExamClassService implements BaseService<ExamClasses> {
         examClassExaminerDetailService.save(division);
         return new ResponseEntity<>(examClassesOptional.get(), HttpStatus.OK);
     }
+
+    public Optional<ExamClasses> findByClassId(Integer classId) {
+        return examClassRepository.findByClassId(classId);
+    }
 }

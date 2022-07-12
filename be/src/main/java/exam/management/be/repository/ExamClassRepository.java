@@ -39,4 +39,6 @@ public interface ExamClassRepository extends JpaRepository<ExamClasses, Integer>
 
     @Query("SELECT a FROM ExamClasses a LEFT JOIN Classes b ON b.id = a.classId WHERE b.lecturerId = ?1 AND a.semester = ?2")
     Iterable<ExamClasses> findByLectureIdAndSemester(Integer lectureId, String semester);
+
+    Optional<ExamClasses> findByClassId(Integer id);
 }

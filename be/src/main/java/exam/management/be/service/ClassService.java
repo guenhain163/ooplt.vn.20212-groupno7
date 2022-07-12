@@ -1,6 +1,7 @@
 package exam.management.be.service;
 
 import exam.management.be.model.Classes;
+import exam.management.be.model.ExamClasses;
 import exam.management.be.repository.ClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,8 @@ import java.util.*;
 public class ClassService implements BaseService<Classes> {
     @Autowired
     private ClassRepository classRepository;
+    @Autowired
+    private ExamClassService examClassService;
 
     @Override
     public Iterable<Classes> findAll() {
@@ -41,11 +44,17 @@ public class ClassService implements BaseService<Classes> {
         classRepository.deleteById(id);
     }
 
-    public Iterable<Classes> findByRegisteredExam(boolean registeredExam) {
+    public Object findByRegisteredExam(boolean registeredExam, Integer classId) {
         if (registeredExam) {
-            return classRepository.findByRegisteredExamIsNotNull();
+            Classes classes = classRepository.findById(classId).get();
+            classes.setRegisteredExam(new Date());
+            classRepository.save(classes);
+            ExamClasses examClasses = examClassService.findByClassId(classId).get();
+            examClasses.setStatus(ExamClasses.Status.REGISTERED.ordinal());
+            examClassService.save(examClasses);
+            return examClasses;
         }
-        return classRepository.findByRegisteredExamIsNull();
+        return null;
     }
 
     public Iterable<Classes> findByLectureId(Integer lectureId) {
