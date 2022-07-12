@@ -22,6 +22,7 @@
                     </ul>
                   </li>
                   <li><a href="/contact">Liên hệ </a></li>
+                  <li><a href="#" @click='logout'>Logout </a></li>
                 </ul>
               </li>
             </ul>
@@ -36,6 +37,13 @@
 export default {
   name: 'SlideBar',
   auth: false,
+  methods: {
+    async logout() {
+      await this.$auth.logout().then((response) => {
+        console.log(response)
+      });
+    }
+  }
 }
 </script>
 
