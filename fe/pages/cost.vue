@@ -144,7 +144,6 @@ import ExamRegister from '../components/examClasses/ExamRegister'
 
 export default {
   name: 'IndexPage',
-  auth: false,
   components: {
     SlideBar,
     DiaglogExamClasses,
