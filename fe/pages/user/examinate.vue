@@ -1,6 +1,6 @@
 <template>
   <div class="page-header-fixed page-quick-sidebar-over-content">
-    <SlideBarUser />
+    <SlideBarUser @getUserCode="getUserCode"/>
     <div class="page-container">
       <div class="page-content-wrapper setting">
         <div class="page-content">
@@ -31,35 +31,48 @@
 
             <div class="m-5">
               <el-table
-                :data="responseData.classes"
+                :data="responseData"
                 style="width: 100%"
                 height="450"
               >
-                <el-table-column prop="stt" label="STT" width="50">
+                <el-table-column fixed prop="stt" label="STT" width="50">
                 </el-table-column>
                 <el-table-column prop="codeModule" label="Mã học phần" width="120">
                 </el-table-column>
-                <el-table-column prop="nameModule" label="Tên học phần" width="120">
+                <el-table-column prop="nameModule" label="Tên học phần" width="150">
                 </el-table-column>
-                <el-table-column prop="note" label="Ghi chú" width="80">
+                <el-table-column prop="classExam.classId" label="Mã lớp" width="80">
                 </el-table-column>
-                <el-table-column prop="examGroup" label="Nhóm" width="100">
+                <el-table-column prop="classExam.week" label="Tuần" width="100">
                 </el-table-column>
-                <el-table-column prop="openingPeriod" label="Đợt mở" width="80">
+                <el-table-column prop="classExam.date" label="Thứ" width="100">
                 </el-table-column>
-                <el-table-column prop="week" label="Tuần" width="100">
+                <el-table-column prop="classExam.date" label="Ngày thi" width="120">
                 </el-table-column>
-                <el-table-column prop="date" label="Thứ" width="100">
+                <el-table-column prop="classExam.examShift" label="Kíp" width="80">
                 </el-table-column>
-                <el-table-column prop="date" label="Ngày thi" width="100">
+                <el-table-column prop="classExam.examCode" label="Mã lớp thi" width="100">
                 </el-table-column>
-                <el-table-column prop="examShift" label="Kíp" width="80">
+
+                <el-table-column prop="classExam.openingPeriod" label="Đợt mở" width="80">
                 </el-table-column>
-                <el-table-column prop="numberStudent" label="SLDK" width="100">
+                <el-table-column prop="numberStudent" label="SLDK" width="120">
                 </el-table-column>
-                <el-table-column prop="room" label="Phòng thi" width="100">
+                <el-table-column prop="classExam.room" label="Phòng thi" width="100">
                 </el-table-column>
-                <el-table-column prop="room" label="Trạng thái" width="100">
+                <el-table-column prop="classExam.examClassDetailsById.cost" label="Đơn giá" width="120">
+                </el-table-column>
+                <el-table-column prop="hostCost" label="Chi phí tổ chức" width="120">
+                </el-table-column>
+                <el-table-column prop="classExam.examClassDetailsById.printingCost" label="Chi phí in ấn" width="120">
+                </el-table-column>
+                <el-table-column prop="classExam.examClassDetailsById.examinationCost" label="Chi phí coi thi" width="120">
+                </el-table-column>
+                <el-table-column prop="total" label="Tổng" width="120">
+                </el-table-column>
+                <el-table-column prop="classExam.note" label="Ghi chú" width="120">
+                </el-table-column>
+                <el-table-column prop="classExam.statusString" label="Trạng thái" width="120">
                 </el-table-column>
 
 
@@ -84,30 +97,31 @@ export default {
   },
   data() {
     return {
-      responseData: {
-        lecturer: {},
-        classes: [],
-      },
-
+      responseData: [],
       options: [],
-      value: '',
+      value: 20222,
       getCodeId: '',
+      id: '',
     }
   },
   watch: {},
   created() {
-    this.getLectureList()
+    this.getExamList()
     this.options = constant
   },
   methods: {
-    async getLectureList() {
+    async getExamList() {
       await this.$axios
-        .get('/admin/statistic/lecturers')
+        .get(`/user/${this.id}/examClass?role=examiner&semester=${this.value}`)
         .then((response) => {
-          this.data = response.data
-          this.list = this.data.map((item) => {
-            return { value: item.id, label: `${item.name} - ${item.email}` }
-          })
+                    this.responseData = response.data
+
+          for (let index = 0; index < this.responseData.length; index++) {
+            const element = this.responseData[index];
+            element.stt = index + 1
+                      this.status(element.classExam)
+
+          }
         })
         .catch((e) => {
           console.log(e)
@@ -115,6 +129,7 @@ export default {
     },
 
     status(data) {
+      console.log(data.status)
       switch (data.status) {
         case 1:
           if (Date.now() < Date.parse(data.classExam.date)) {
@@ -136,6 +151,10 @@ export default {
     },
     registeExam(index, value) {
       console.log(index, value)
+    },
+    getUserCode(value) {
+      this.id = value
+      this.getExamList(value)
     },
   },
 }

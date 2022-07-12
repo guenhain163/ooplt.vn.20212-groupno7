@@ -95,12 +95,12 @@ export default {
     },
     middleweare(value) {
       switch (value) {
-        case 1:
+        case 0:
           this.$router.push({
             path: '/user',
           })
           break
-        case 3:
+        case 2:
           this.$router.push({
             path: '/',
           })

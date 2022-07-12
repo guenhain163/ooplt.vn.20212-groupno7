@@ -32,11 +32,30 @@
 <script>
 export default {
   name: 'SlideBar',
+  data() {
+    return {
+      id: ''
+    }
+  },
+  created() {
+    this.getUserID()
+  },
   methods: {
     async logout() {
       await this.$auth.logout().then(() => {
         this.$router.push('/login')
       })
+    },
+    async getUserID() {
+      await this.$axios
+        .get('/auth/user')
+        .then((response) => {
+          this.id = response.data.user.id
+          this.$emit('getUserCode', this.id)
+        })
+        .catch((e) => {
+          console.log(e)
+        })
     },
   },
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="page-header-fixed page-quick-sidebar-over-content">
-    <SlideBarUser />
+    <SlideBarUser @getUserCode="getUserCode"/>
     <div class="page-container">
       <div class="page-content-wrapper setting">
         <div class="page-content">
@@ -20,7 +20,7 @@
 
                 <div class="row mx-5 my-4">
                     <div class="col-4">Email:</div>
-                    <div class="col-8"><el-input  v-model="responseData.users.email" placeholder="Please input" disabled=true></el-input></div>
+                    <div class="col-8"><el-input  v-model="responseData.email" placeholder="Please input" disabled=true></el-input></div>
                 </div>
 
                 <div class="row mx-5 my-4">
@@ -76,23 +76,15 @@ export default {
   },
 
   created() {
-    this.getUserID()
   },
   methods: {
-    async getUserID() {
-      await this.$axios
-        .get('/auth/user')
-        .then((response) => {
-          this.getUserInfo(response.data.user.id)
-        })
-        .catch((e) => {
-          console.log(e)
-        })
+    getUserCode(value) {
+      this.getUserInfo(value)
     },
     async getUserInfo(value) {
       await this.$axios.get(`/user/${value}`).then((response) => {
-        console.log(response)
         this.responseData = response.data
+        console.log(this.responseData)
       }).catch((error) => {
         console.log(error)
       })
