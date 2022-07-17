@@ -51,15 +51,64 @@
 </template>
 
 <script>
+import nameImport from '../constant/nameImport'
+
 export default {
   name: 'SlideBar',
   auth: false,
+  data() {
+    return {
+      nameImport: []
+    }
+  },
+  created() {
+    this.nameImport = nameImport
+  },
   methods: {
     async logout() {
       await this.$auth.logout().then(() => {
         this.$router.push('/login')
       })
     },
+
+     onChange(event) {
+      this.file = event.target.files ? event.target.files[0] : null;
+      const XLSX = require('xlsx');
+      if (this.file) {
+        const reader = new FileReader();
+
+        reader.readAsBinaryString(this.file);
+
+        reader.onload = (e) => {
+          /* Parse data */
+          const wb = XLSX.read(e.target.result, { type: 'binary' });
+          /* Get first worksheet */
+          const wsname = wb.SheetNames[0];
+          const ws = wb.Sheets[wsname];
+          /* Convert array of arrays */
+          const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+          this.convertData(data)
+        }
+      }
+    },
+    convertData(data) {
+      const temp = []
+      data.splice(0, 3)
+      data.forEach(element => {
+      const classObject = Object.assign({}, element)
+
+        for (let index = 0; index < this.nameImport.length; index++) {
+          const nameChanged = this.nameImport[index];
+
+          delete Object.assign(classObject, {[nameChanged]: classObject[index] })[index]
+          delete classObject.temp
+        }
+
+        temp.push(classObject)
+      });
+      console.log(temp)
+    }
+
   },
 }
 </script>
