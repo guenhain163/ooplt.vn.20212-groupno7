@@ -141,7 +141,7 @@ export default {
       this.$refs[formName].resetFields()
     },
     handleClose(done) {
-      this.$confirm('Are you sure to close this dialog?')
+      this.$confirm('Bạn có chắc chắn không?')
         .then((_) => {
           done()
         })

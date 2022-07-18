@@ -58,11 +58,13 @@ export default {
   auth: false,
   data() {
     return {
-      nameImport: []
+      nameImport: [],
+      dataImport: [],
     }
   },
   created() {
     this.nameImport = nameImport
+    this.getModuleList()
   },
   methods: {
     async logout() {
@@ -71,22 +73,22 @@ export default {
       })
     },
 
-     onChange(event) {
-      this.file = event.target.files ? event.target.files[0] : null;
-      const XLSX = require('xlsx');
+    onChange(event) {
+      this.file = event.target.files ? event.target.files[0] : null
+      const XLSX = require('xlsx')
       if (this.file) {
-        const reader = new FileReader();
+        const reader = new FileReader()
 
-        reader.readAsBinaryString(this.file);
+        reader.readAsBinaryString(this.file)
 
         reader.onload = (e) => {
           /* Parse data */
-          const wb = XLSX.read(e.target.result, { type: 'binary' });
+          const wb = XLSX.read(e.target.result, { type: 'binary' })
           /* Get first worksheet */
-          const wsname = wb.SheetNames[0];
-          const ws = wb.Sheets[wsname];
+          const wsname = wb.SheetNames[0]
+          const ws = wb.Sheets[wsname]
           /* Convert array of arrays */
-          const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+          const data = XLSX.utils.sheet_to_json(ws, { header: 1 })
           this.convertData(data)
         }
       }
@@ -94,21 +96,29 @@ export default {
     convertData(data) {
       const temp = []
       data.splice(0, 3)
-      data.forEach(element => {
-      const classObject = Object.assign({}, element)
-
+      data.forEach((element) => {
+        const classObject = Object.assign({}, element)
+        // console.log(classObject)
         for (let index = 0; index < this.nameImport.length; index++) {
-          const nameChanged = this.nameImport[index];
-
-          delete Object.assign(classObject, {[nameChanged]: classObject[index] })[index]
-          delete classObject.temp
+          const nameChanged = this.nameImport[index]
+          delete Object.assign(classObject, {
+            [nameChanged]: classObject[index],
+          })[index]
         }
-
         temp.push(classObject)
-      });
-      console.log(temp)
-    }
-
+      })
+      this.dataImport = temp
+    },
+    async getModuleList() {
+      await this.$axios
+        .get('/admin/modules')
+        .then((response) => {
+          this.$emit('getModuleList', response.data)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
   },
 }
 </script>
