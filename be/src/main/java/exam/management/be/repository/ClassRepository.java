@@ -40,4 +40,7 @@ public interface ClassRepository extends JpaRepository<Classes, Integer> {
 
     @Query("SELECT a FROM Classes a INNER JOIN ExamClasses b ON b.classId = a.id WHERE b.id = ?1")
     Optional<Classes> findByExamClassId(Integer examClassId);
+
+
+    Optional<Classes> findByIdAndModuleId(Integer classId, Integer moduleId);
 }

@@ -17,7 +17,6 @@
                     reserve-keyword
                     placeholder="Hãy nhập tên giảng viên"
                     :remote-method="remoteMethod"
-                    :loading="loading"
                   >
                     <el-option
                       v-for="item in options"
@@ -43,7 +42,7 @@
               <div class="py-2 px-5">
                 <p class="mx-5">Tên: <span>{{ responseData.lecturer.name }}</span></p>
                 <p class="mx-5">Email: <span>{{ responseData.lecturer.email }}</span></p>
-                <p class="mx-5">Bộ môn: <span>{{ responseData.lecturer.modules?.join(", ") }}</span></p>
+                <p class="mx-5">Bộ môn: <span v-if='responseData.lecturer.modules'>{{ responseData.lecturer.modules.join(", ") }}</span></p>
                 <p class="mx-5">SDT: <span>{{ responseData.lecturer.phone }}</span></p>
                 <p class="mx-5">Nơi làm việc: <span>{{ responseData.lecturer.workRoom }}</span></p>
               </div>
@@ -102,7 +101,7 @@ export default {
       getExaminers: [],
       getTime: 20222,
       list: [],
-      loading: false,
+      // loading: false,
       states: [],
       data: [],
     }
@@ -121,9 +120,9 @@ export default {
   methods: {
     remoteMethod(query) {
       if (query !== '') {
-        this.loading = true
+        // this.loading = true
         setTimeout(() => {
-          this.loading = false
+          // this.loading = false
           this.options = this.list.filter((item) => {
             return item.label.toLowerCase().includes(query.toLowerCase())
           })
@@ -177,8 +176,8 @@ export default {
           data.statusString = 'Mới'
           break
       }
-    },
-  },
+    }
+  }
 }
 </script>
 

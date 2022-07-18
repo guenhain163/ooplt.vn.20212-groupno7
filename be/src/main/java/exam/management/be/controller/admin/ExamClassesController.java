@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,7 +39,7 @@ public class ExamClassesController {
     }
 
     @PostMapping
-    public ResponseEntity<ExamClasses> createExamClasses(@Valid @RequestBody ExamClassRequest examClass) {
+    public ResponseEntity<Object> createExamClasses(@Valid @RequestBody ExamClassRequest examClass) {
         try {
             return new ResponseEntity<>(examClassService.create(examClass), HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
@@ -92,5 +93,15 @@ public class ExamClassesController {
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/{semester}")
+    public ResponseEntity<?> closeExamClass(@PathVariable String semester) {
+        return new ResponseEntity<>(examClassService.closeExamClass(semester), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/examiners/division")
+    public ResponseEntity<?> getExaminersDivision(@PathVariable Integer id) {
+        return new ResponseEntity<>(examClassService.getExaminersDivision(id), HttpStatus.OK);
     }
 }

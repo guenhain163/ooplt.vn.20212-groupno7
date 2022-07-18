@@ -94,9 +94,9 @@ public class LecturerService implements BaseService<Lecturers> {
         return resultsList;
     }
 
-    public ResponseEntity<Lecturers> createLecturers(CreateLectureRequest lecturer) {
+    public ResponseEntity<?> createLecturers(CreateLectureRequest lecturer) {
         if (userService.findByEmail(lecturer.getEmail()).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Email đã tồn tại.", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         Users user = userService.createDefault(lecturer.getEmail());
@@ -120,9 +120,9 @@ public class LecturerService implements BaseService<Lecturers> {
         return new ResponseEntity<>(newLecturer, HttpStatus.OK);
     }
 
-    public ResponseEntity<Lecturers> createExaminers(CreateExaminerRequest examiner) {
+    public ResponseEntity<?> createExaminers(CreateExaminerRequest examiner) {
         if (userService.findByEmail(examiner.getEmail()).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Email đã tồn tại.",HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         Users user = userService.createDefault(examiner.getEmail());

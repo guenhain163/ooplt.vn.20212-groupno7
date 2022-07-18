@@ -10,4 +10,6 @@ public interface ExamClassExaminerDetailRepository extends JpaRepository<ExamCla
     @Query("SELECT a FROM ExamClassExaminerDetail a LEFT JOIN ExamClasses b ON b.id = a.examClassId " +
             "WHERE a.lecturerId = ?1 AND b.semester = ?2")
     Iterable<ExamClassExaminerDetail> findByLecturerIdAndSemester(Integer lecturerId, String semester);
+
+    Iterable<ExamClassExaminerDetail> findByExamClassId(Integer examClassId);
 }

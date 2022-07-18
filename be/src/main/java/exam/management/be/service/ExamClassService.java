@@ -27,6 +27,8 @@ public class ExamClassService implements BaseService<ExamClasses> {
     private ExamClassExaminerDetailService examClassExaminerDetailService;
     @Autowired
     private ExamClassDetailService examClassDetailService;
+    @Autowired
+    private ClassService classService;
 
     @Override
     public Iterable<ExamClasses> findAll() {
@@ -73,20 +75,40 @@ public class ExamClassService implements BaseService<ExamClasses> {
         return examClassRepository.findAllByUserIdAndSemesterAndRole(lecturerId, semester, roles);
     }
 
-    public ExamClasses create(@NotNull ExamClassRequest examClass) {
+    public Object create(@NotNull ExamClassRequest examClass) {
+        if (classService.findByIdAndModuleId(examClass.getClassId(), examClass.getModuleId()).isEmpty()) {
+            return new ResponseEntity<>("Lớp học không hợp lệ.", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        if (examClassRepository.findByClassId(examClass.getClassId()).isPresent()) {
+            return new ResponseEntity<>("Lớp thi đã tồn tại.", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        String maxExamCode = examClassRepository.findTopByOrderByExamCodeAsc().get().getExamCode();
+        int examCode = Integer.parseInt(maxExamCode) + 1;
+
         ExamClasses newExamClass = new ExamClasses(
                 examClass.getClassId(),
                 examClass.getExamShift(),
                 examClass.getDate(),
                 examClass.getWeek(),
                 examClass.getOpeningPeriod(),
-                examClass.getRoom()
+                examClass.getRoom(),
+                examClass.getSemester(),
+                Integer.toString(examCode),
+                examClass.getStatus(),
+                examClass.getGroup()
         );
+
         if (!examClass.getNote().isEmpty()) {
             newExamClass.setNote(examClass.getNote());
         }
 
-        return this.save(newExamClass);
+        newExamClass = this.save(newExamClass);
+
+        examClassDetailService.save(new ExamClassDetail(newExamClass.getClassId(), examClass.getNumberStudent()));
+
+        return newExamClass;
     }
 
     public ExamClasses update(Integer id, @NotNull ExamClassRequest examClass) {
@@ -98,15 +120,10 @@ public class ExamClassService implements BaseService<ExamClasses> {
         updateExamClass.setWeek(examClass.getWeek());
         updateExamClass.setOpeningPeriod(examClass.getOpeningPeriod());
         updateExamClass.setRoom(examClass.getRoom());
+        updateExamClass.setStatus(examClass.getStatus());
         if (!examClass.getNote().isEmpty()) {
             updateExamClass.setNote(examClass.getNote());
         }
-
-        if (examClass.getStatus() <= ExamClasses.Status.CLOSED.ordinal()
-                || examClass.getStatus() >= ExamClasses.Status.NEW.ordinal()) {
-            updateExamClass.setStatus(examClass.getStatus());
-        }
-
         return this.update(updateExamClass);
     }
 
@@ -126,8 +143,6 @@ public class ExamClassService implements BaseService<ExamClasses> {
             }
         });
 
-        System.out.println(examClass.getClassId());
-
         return examClassRepository.saveAndFlush(examClass);
     }
 
@@ -136,12 +151,22 @@ public class ExamClassService implements BaseService<ExamClasses> {
         Optional<ExamClassDetail> examClassDetail = examClassDetailService.findByExamClassId(id);
 
         if (examClassesOptional.isEmpty() || examClassDetail.isEmpty()) {
-            return new ResponseEntity<>("Exam class doesn't exist.", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Lớp thi không tồn tại.", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        if (examClassesOptional.get().getExamCode().isEmpty()) {
+            return new ResponseEntity<>("Thông tin lớp thi chưa được thiết lập. Không thể phân công trông thi",
+                    HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         int numberStudent = examClassDetail.get().getNumberStudent();
         if (numberStudent >= 60 && examinersId.size() != 2 || numberStudent < 60 && examinersId.size() != 1) {
-            return new ResponseEntity<>("Invalid number of examiners.", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Số cán bộ coi thi không hợp lệ.", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        Iterable<ExamClassExaminerDetail> examClassExaminerDetails = examClassExaminerDetailService.findByExamClassId(id);
+        if (((Collection<?>) examClassExaminerDetails).size() > 0) {
+            examClassExaminerDetailService.removeAll(examClassExaminerDetails);
         }
 
         List<ExamClassExaminerDetail> division = new ArrayList<>();
@@ -151,10 +176,24 @@ public class ExamClassService implements BaseService<ExamClasses> {
             division.add(examClassExaminerDetail);
         });
         examClassExaminerDetailService.save(division);
+
         return new ResponseEntity<>(examClassesOptional.get(), HttpStatus.OK);
     }
 
     public Optional<ExamClasses> findByClassId(Integer classId) {
         return examClassRepository.findByClassId(classId);
+    }
+
+    public List<ExamClasses> closeExamClass(String semester) {
+        Iterable<ExamClasses> examClasses = examClassRepository.findBySemester(semester);
+        examClasses.forEach(examClass -> {
+            examClass.setStatus(ExamClasses.Status.CLOSED.ordinal());
+        });
+
+        return examClassRepository.saveAll(examClasses);
+    }
+
+    public Object getExaminersDivision(Integer examClassId) {
+        return examClassRepository.getExaminersDivision(examClassId);
     }
 }

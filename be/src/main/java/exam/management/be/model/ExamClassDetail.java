@@ -44,6 +44,14 @@ public class ExamClassDetail {
     @JsonBackReference
     private ExamClasses examClassesByExamClassId;
 
+    public ExamClassDetail(int numberStudent, Integer examClassId) {
+        this.examClassId = examClassId;
+        this.numberStudent = numberStudent;
+        this.cost = 0;
+        this.printingCost = 0;
+        this.examinationCost = 0;
+    }
+
     public Integer getId() {
         return id;
     }

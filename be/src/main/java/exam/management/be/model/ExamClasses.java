@@ -86,18 +86,25 @@ public class ExamClasses {
         CLOSED
     }
 
-    public ExamClasses(Integer classId, Integer examShift, Date date, String week, String openingPeriod, String room) {
+    public ExamClasses(Integer classId, Integer examShift, Date date, String week,
+                       String openingPeriod, String room, String semester,
+                       String examCode, Integer status, String examGroup) {
         this.classId = classId;
         this.examShift = examShift;
         this.date = date;
         this.week = week;
         this.openingPeriod = openingPeriod;
         this.room = room;
+        this.semester = semester;
+        this.examCode = examCode;
+        this.status = status;
+        this.examGroup = examGroup;
     }
 
-    public ExamClasses(Integer classId, Integer examShift, Date date, String week, String openingPeriod, String room, String note) {
-        this(classId, examShift, date, week, openingPeriod, room);
-        this.note = note;
+    public ExamClasses(Integer classId, String semester, Integer status) {
+        this.classId = classId;
+        this.semester = semester;
+        this.status = status;
     }
 
     public Integer getId() {

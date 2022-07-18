@@ -43,7 +43,7 @@
               <div class="py-2 px-5">
                 <p class="mx-5">Tên: <span>{{ responseData.lecturer.name }}</span></p>
                 <p class="mx-5">Email: <span>{{ responseData.lecturer.email }}</span></p>
-                <p class="mx-5">Bộ môn: <span>{{ responseData.lecturer.modules?.join(", ") }}</span></p>
+                <p class="mx-5">Bộ môn: <span v-if="responseData.lecturer.modules">{{ responseData.lecturer.modules.join(", ") }}</span></p>
                 <p class="mx-5">SDT: <span>{{ responseData.lecturer.phone }}</span></p>
                 <p class="mx-5">Nơi làm việc: <span>{{ responseData.lecturer.workRoom }}</span></p>
               </div>

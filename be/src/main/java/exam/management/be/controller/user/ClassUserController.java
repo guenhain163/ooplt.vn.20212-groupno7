@@ -22,6 +22,10 @@ public class ClassUserController {
     @GetMapping(value = "/{classId}", params = {"registeredExam"})
     public ResponseEntity<?> getRegisteredClasses(@RequestParam boolean registeredExam,
                                                                   @PathVariable Integer classId) {
-        return new ResponseEntity<>(classService.findByRegisteredExam(registeredExam, classId), HttpStatus.OK);
+        if (registeredExam) {
+            return new ResponseEntity<>(classService.findByRegisteredExam(classId), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("Đăng ký thi không thành công", HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }

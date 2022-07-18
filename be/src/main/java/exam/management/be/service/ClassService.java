@@ -4,6 +4,7 @@ import exam.management.be.model.Classes;
 import exam.management.be.model.ExamClasses;
 import exam.management.be.repository.ClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -12,7 +13,7 @@ import java.util.*;
 public class ClassService implements BaseService<Classes> {
     @Autowired
     private ClassRepository classRepository;
-    @Autowired
+    @Autowired @Lazy
     private ExamClassService examClassService;
 
     @Override
@@ -44,17 +45,12 @@ public class ClassService implements BaseService<Classes> {
         classRepository.deleteById(id);
     }
 
-    public Object findByRegisteredExam(boolean registeredExam, Integer classId) {
-        if (registeredExam) {
-            Classes classes = classRepository.findById(classId).get();
-            classes.setRegisteredExam(new Date());
-            classRepository.save(classes);
-            ExamClasses examClasses = examClassService.findByClassId(classId).get();
-            examClasses.setStatus(ExamClasses.Status.REGISTERED.ordinal());
-            examClassService.save(examClasses);
-            return examClasses;
-        }
-        return null;
+    public Object findByRegisteredExam(Integer classId) {
+        Classes classes = classRepository.findById(classId).get();
+        classes.setRegisteredExam(new Date());
+        classRepository.save(classes);
+        return examClassService.save(
+                new ExamClasses(classId, "20222", ExamClasses.Status.REGISTERED.ordinal()));
     }
 
     public Iterable<Classes> findByLectureId(Integer lectureId) {
@@ -71,5 +67,9 @@ public class ClassService implements BaseService<Classes> {
 
     public List<Map<String, Object>> findAllByUserIdAndSemester(Integer id, String semester) {
         return classRepository.findByUserIdAndSemester(id, semester);
+    }
+
+    public Optional<Classes> findByIdAndModuleId(Integer id, Integer moduleId) {
+        return classRepository.findByIdAndModuleId(id, moduleId);
     }
 }

@@ -29,6 +29,7 @@ public interface ExamClassRepository extends JpaRepository<ExamClasses, Integer>
             "d.numberStudent as numberStudent, e.name as nameLecturer) FROM ExamClasses a " +
             "LEFT JOIN Classes b ON a.classId = b.id " +
             "LEFT JOIN Modules c ON b.moduleId = c.id " +
+            "LEFT JOIN ExamClassExaminerDetail f ON f.lecturerId = b.lecturerId " +
             "LEFT JOIN ExamClassDetail d ON d.examClassId = a.id " +
             "LEFT JOIN Lecturers e ON e.id = b.lecturerId " +
             "WHERE e.userId = ?1 AND a.semester = ?2 AND e.role IN ?3")
@@ -41,4 +42,17 @@ public interface ExamClassRepository extends JpaRepository<ExamClasses, Integer>
     Iterable<ExamClasses> findByLectureIdAndSemester(Integer lectureId, String semester);
 
     Optional<ExamClasses> findByClassId(Integer id);
+
+    Optional<ExamClasses> findByExamCode(String examCode);
+
+    Optional<ExamClasses> findTopByOrderByExamCodeAsc();
+
+    Iterable<ExamClasses> findBySemester(String semester);
+
+    @Query("SELECT NEW map(b.lecturerId as lecturerId, c.name as name, d.email as email) FROM ExamClasses a " +
+            "INNER JOIN ExamClassExaminerDetail b ON b.examClassId = a.id " +
+            "INNER JOIN Lecturers c ON c.id = b.lecturerId " +
+            "INNER JOIN Users d ON d.id = c.userId " +
+            "WHERE a.id = ?1")
+    List<Map<String, Object>> getExaminersDivision(Integer id);
 }

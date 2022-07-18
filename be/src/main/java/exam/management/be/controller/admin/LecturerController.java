@@ -62,7 +62,7 @@ public class LecturerController {
     }
 
     @PostMapping("/lecturers")
-    public ResponseEntity<Lecturers> createNewLecturer(@RequestBody @Valid CreateLectureRequest lecturer) {
+    public ResponseEntity<?> createNewLecturer(@RequestBody @Valid CreateLectureRequest lecturer) {
         try {
             return lecturerService.createLecturers(lecturer);
         } catch (ResourceNotFoundException ex) {
@@ -71,7 +71,7 @@ public class LecturerController {
     }
 
     @PostMapping("/examiners")
-    public ResponseEntity<Lecturers> createNewExaminer(@RequestBody @Valid CreateExaminerRequest examiner) {
+    public ResponseEntity<?> createNewExaminer(@RequestBody @Valid CreateExaminerRequest examiner) {
         try {
             return lecturerService.createExaminers(examiner);
         } catch (ResourceNotFoundException ex) {

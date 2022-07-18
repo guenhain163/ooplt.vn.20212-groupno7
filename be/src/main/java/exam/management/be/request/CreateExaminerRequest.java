@@ -1,6 +1,5 @@
 package exam.management.be.request;
 
-import com.sun.istack.Nullable;
 import net.bytebuddy.utility.nullability.MaybeNull;
 import org.hibernate.validator.constraints.Length;
 
@@ -8,21 +7,21 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class CreateExaminerRequest {
-    @NotNull
-    @Length(min = 2, max = 50)
+    @NotNull(message = "Tên không được bỏ trống.")
+    @Length(min = 2, max = 50, message = "Độ dài tên không phù hợp.")
     private String name;
 
-    @NotNull
-    @Length(min = 6, max = 50)
+    @NotNull(message = "Email không được bỏ trống.")
+    @Length(min = 6, max = 50, message = "Độ dài email không hợp lệ.")
     private String email;
 
     private List<Integer> modules;
 
-    @NotNull
-//    @Length(min = 10, max = 12)
+    @NotNull(message = "Số điện thoại không được bỏ trống.")
+    @Length(min = 10, max = 12, message = "Số điện thoại không hợp lệ.")
     private String phone;
 
-    @NotNull
+    @NotNull(message = "Phòng làm việc không được bỏ trống.")
     private String workRoom;
 
     public String getName() {

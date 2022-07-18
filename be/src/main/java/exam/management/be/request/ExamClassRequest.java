@@ -1,40 +1,43 @@
 package exam.management.be.request;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 public class ExamClassRequest {
-    @NotNull
+    @NotNull(message = "Mã lớp không được bỏ trống.")
     private Integer classId;
 
-    @NotNull
+    @NotNull(message = "Mã học phần không được bỏ trống.")
+    private Integer moduleId;
+
+    @NotNull(message = "Kíp không được bỏ trống.")
     private Integer examShift;
 
-    @NotNull
+    @NotNull(message = "Ngày thi không được bỏ trống.")
     private Date date;
 
-    @NotNull
+    @NotNull(message = "Tuần không được bỏ trống.")
     private String week;
 
-    @NotNull
+    @NotNull(message = "Đợt mở không được bỏ trống.")
     private String openingPeriod;
 
-    @NotNull
+    @NotNull(message = "Phòng thi không được bỏ trống.")
     private String room;
 
-    /**
-     * 1 - New
-     * 2 - Completed
-     * 3 - Closed
-     */
+    @NotNull(message = "Status không được bỏ trống.")
     private Integer status;
+
+    @NotNull(message = "SLĐK không được bỏ trống.")
+    private Integer numberStudent;
 
     private String note;
 
+    @NotNull(message = "Nhóm không được bỏ trống.")
     private String group;
 
-    private String examCode;
+    @NotNull(message = "Kỳ học không được bỏ trống.")
+    private String semester;
 
     public Integer getClassId() {
         return classId;
@@ -108,11 +111,27 @@ public class ExamClassRequest {
         this.group = group;
     }
 
-    public void setExamCode(String examCode) {
-        this.examCode = examCode;
+    public Integer getNumberStudent() {
+        return numberStudent;
     }
 
-    public String getExamCode() {
-        return examCode;
+    public void setNumberStudent(Integer numberStudent) {
+        this.numberStudent = numberStudent;
+    }
+
+    public Integer getModuleId() {
+        return moduleId;
+    }
+
+    public void setModuleId(Integer moduleId) {
+        this.moduleId = moduleId;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
     }
 }

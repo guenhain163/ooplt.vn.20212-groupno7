@@ -44,4 +44,12 @@ public class ExamClassExaminerDetailService implements BaseService<ExamClassExam
     public Iterable<ExamClassExaminerDetail> findByLectureIdAndSemester(Integer lecturerId, String semester) {
         return examClassExaminerDetailRepository.findByLecturerIdAndSemester(lecturerId, semester);
     }
+
+    public Iterable<ExamClassExaminerDetail> findByExamClassId(Integer examClassId) {
+        return examClassExaminerDetailRepository.findByExamClassId(examClassId);
+    }
+
+    public void removeAll(Iterable<ExamClassExaminerDetail> examClassExaminerDetails) {
+        examClassExaminerDetailRepository.deleteAll(examClassExaminerDetails);
+    }
 }

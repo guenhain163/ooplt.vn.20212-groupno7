@@ -6,13 +6,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 public class AuthRequest {
-    @NotNull
-    @Email
+    @NotNull(message = "Email không được bỏ trống.")
+    @Email(message = "Địa chỉ email không hợp lệ.")
     @Length(min = 6, max = 50)
     private String email;
 
-    @NotNull
-    @Length(min = 5, max = 32)
+    @NotNull(message = "Mật khẩu không được bỏ trống.")
+    @Length(min = 5, max = 32, message = "Mật khẩu phải có độ dài từ 6 đến 32 ký tự.")
     private String password;
 
     public String getEmail() {
