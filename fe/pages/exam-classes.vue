@@ -1,29 +1,17 @@
 <template>
   <div class="page-header-fixed page-quick-sidebar-over-content">
-    <SlideBar />
+    <SlideBar ref="slideBarFunction"/>
     <div class="page-container">
       <div class="page-content-wrapper setting">
         <div class="page-content">
           <div class="container">
-            <div>
-              <el-row class="demo-autocomplete">
-                <el-col :span="12">
-                  <div class="sub-title mb-2 mx-3">Tìm giáo viên</div>
-                  <el-autocomplete
-                    v-model="state1"
-                    class="inline-input mx-3"
-                    :fetch-suggestions="querySearch"
-                    placeholder="Please Input"
-                    @select="handleSelect"
-                  ></el-autocomplete>
-                </el-col>
-              </el-row>
-            </div>
 
             <el-row class="mt-3 mx-3">
-              <el-button type="primary" @click="createTeacher()"
-                >Create Giang Vien</el-button
-              >
+              <!-- <el-button type="primary"><input type="file" @change="onChange" /></el-button> -->
+              <label for="file-upload" class="custom-file-upload">
+                <i class="fa fa-cloud-upload"></i> Custom Upload
+              </label>
+              <input id="file-upload" type="file" @change="onChange"/>
             </el-row>
 
             <div class="my-5" style="margin-left: 3rem">
@@ -96,8 +84,6 @@
                 </el-table-column>
               </el-table>
 
-              <DiaglogExamClasses ref="offerDetailDialog" />
-              <CreateDiaglogExamClasses ref="CreateDiaglogExamClasses" />
               <ExamRegister ref="examRegister" />
             </div>
           </div>
@@ -109,16 +95,12 @@
 
 <script>
 import SlideBar from '../components/SlideBar'
-import DiaglogExamClasses from '../components/examClasses/DiaglogExamClasses'
-import CreateDiaglogExamClasses from '../components/examClasses/CreateDiaglogExamClasses'
 import ExamRegister from '../components/examClasses/ExamRegister'
 
 export default {
   name: 'IndexPage',
   components: {
     SlideBar,
-    DiaglogExamClasses,
-    CreateDiaglogExamClasses,
     ExamRegister
   },
   data() {
@@ -232,8 +214,22 @@ export default {
       this.$refs.examRegister.getlecturesExam()
       this.$refs.examRegister.setCondition(val.numberStudent)
     },
+    onChange(event) {
+      console.log(event)
+      this.$refs.slideBarFunction.onChange(event)
+    }
   },
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+  input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+</style>
