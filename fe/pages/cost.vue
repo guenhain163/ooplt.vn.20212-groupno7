@@ -20,11 +20,7 @@
               </el-row>
             </div>
 
-            <el-row class="mt-3 mx-3">
-              <el-button type="primary" @click="createTeacher()"
-                >Create Giang Vien</el-button
-              >
-            </el-row>
+
 
             <div class="my-5" style="margin-left: 3rem">
               <el-table
@@ -126,7 +122,6 @@
               </el-table>
 
               <DiaglogExamClasses ref="offerDetailDialog" />
-              <CreateDiaglogExamClasses ref="CreateDiaglogExamClasses" />
               <ExamRegister ref="examRegister" />
             </div>
           </div>
@@ -139,7 +134,6 @@
 <script>
 import SlideBar from '../components/SlideBar'
 import DiaglogExamClasses from '../components/examClasses/DiaglogExamClasses'
-import CreateDiaglogExamClasses from '../components/examClasses/CreateDiaglogExamClasses'
 import ExamRegister from '../components/examClasses/ExamRegister'
 
 export default {
@@ -147,7 +141,6 @@ export default {
   components: {
     SlideBar,
     DiaglogExamClasses,
-    CreateDiaglogExamClasses,
     ExamRegister,
   },
   data() {

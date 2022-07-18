@@ -1,7 +1,7 @@
 <template>
   <div class="custom-dialog">
     <el-dialog
-      title="Tạo mới thông tin giáo viên"
+      title="Tạo mới thông tin cán bộ trông thi"
       :visible.sync="dialogVisible"
       width="30%"
       :before-close="handleClose"
@@ -12,11 +12,11 @@
         label-width="120px"
         class="demo-ruleForm"
       >
-        <el-form-item label="Name" prop="name">
+        <el-form-item label="Tên" prop="name">
           <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
 
-        <el-form-item label="Phone" prop="phone">
+        <el-form-item label="Số điện thoại" prop="phone">
           <el-input v-model="ruleForm.phone"></el-input>
         </el-form-item>
 
@@ -24,24 +24,26 @@
           <el-input v-model="ruleForm.email"></el-input>
         </el-form-item>
 
-        <el-form-item label="Work room" prop="workRoom">
+        <el-form-item label="Nơi làm việc" prop="workRoom">
           <el-input v-model="ruleForm.workRoom"></el-input>
         </el-form-item>
 
-        <el-form-item label="Modules" prop="modules">
-          <el-checkbox-group v-model="ruleForm.modules">
-            <el-checkbox label=1 name="modules"></el-checkbox>
-            <el-checkbox
-              label=4
-              name="modules"
-              value="1"
-            ></el-checkbox>
-          </el-checkbox-group>
+        <el-form-item label="Môn" prop="modules">
+          <el-select v-model="ruleForm.modules" placeholder="Select">
+    <el-option
+      v-for="item in moduleData"
+      :key="item.id"
+      :label="item.name"
+      :value="item.id">
+    </el-option>
+  </el-select>
         </el-form-item>
+
+
 
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')"
-            >Create</el-button
+            >Tạo</el-button
           >
           <el-button @click="resetForm('ruleForm')">Reset</el-button>
         </el-form-item>
@@ -52,6 +54,12 @@
 
 <script>
 export default {
+  props: {
+    // eslint-disable-next-line vue/require-default-prop
+    moduleData: {
+      type: Array,
+    }
+  },
   data() {
     return {
       dialogVisible: false,
@@ -66,7 +74,7 @@ export default {
         name: [
           {
             required: true,
-            message: 'Please input name',
+            message: 'Hãy nhập tên',
             trigger: 'blur',
           },
         ],
@@ -74,13 +82,13 @@ export default {
         phone: [
           {
             required: true,
-            message: 'Please input Phone',
+            message: 'Hãy nhập số điện thoại',
             trigger: 'blur',
           },
           {
-            min: 8,
+            min: 10,
             max: 12,
-            message: 'Length should be 8 to 12',
+            message: 'Độ dài tối thiểu từ 8 đến 12 ký tự',
             trigger: 'blur',
           },
         ],
@@ -88,12 +96,12 @@ export default {
         email: [
           {
             required: true,
-            message: 'Please input Email',
+            message: 'Hãy nhập email',
             trigger: 'blur',
           },
           {
             type: 'email',
-            message: 'Please input correct email address',
+            message: 'Hãy nhập đúng dạng email',
             trigger: ['blur', 'change'],
           },
         ],
@@ -101,17 +109,8 @@ export default {
         workRoom: [
           {
             required: true,
-            message: 'Please input work room',
+            message: 'Hãy nhập nơi làm việc',
             trigger: 'blur',
-          },
-        ],
-
-        modules: [
-          {
-            type: 'array',
-            required: true,
-            message: 'Please select at least one activity type',
-            trigger: 'change',
           },
         ],
       },
@@ -121,7 +120,8 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          alert('submit!')
+          const intToArray = Array.from(String(this.ruleForm.modules), Number);
+          this.ruleForm.modules = intToArray
           await this.$axios.post('/admin/examiners', this.ruleForm).then((response) => {
             this.notifycation()
             this.$router.go({
@@ -141,9 +141,10 @@ export default {
       this.$refs[formName].resetFields()
     },
     handleClose(done) {
-      this.$confirm('Are you sure to close this dialog?')
+      this.$confirm('Bạn có chắc chắn không?')
         .then((_) => {
           done()
+          this.resetForm('ruleForm')
         })
         .catch((_) => {})
     },
@@ -160,6 +161,9 @@ export default {
         message: 'Can not create',
       })
     },
+    getModuleList(value) {
+      console.log(value)
+    }
   },
 }
 </script>

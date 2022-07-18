@@ -1,6 +1,6 @@
 <template>
   <div class="page-header-fixed page-quick-sidebar-over-content">
-    <SlideBar />
+    <SlideBar @getModuleList="getModuleList" />
     <div class="page-container">
       <div class="page-content-wrapper setting">
         <div class="page-content">
@@ -8,7 +8,7 @@
             <div>
               <el-row class="demo-autocomplete">
                 <el-col :span="12">
-                  <div class="sub-title mb-2 mx-3">Tìm giáo viên</div>
+                  <div class="sub-title mb-2 mx-3">Tìm giảng viên</div>
                   <el-autocomplete
                     v-model="state1"
                     class="inline-input mx-3"
@@ -22,7 +22,7 @@
 
             <el-row class="mt-3 mx-3">
               <el-button type="primary" @click="createTeacher()"
-                >Create Giang Vien</el-button
+                >Tạo giảng viên</el-button
               >
             </el-row>
 
@@ -81,7 +81,10 @@
               </el-table>
 
               <DiaglogTeacher ref="offerDetailDialog" />
-              <CreateDiaglogTeacher ref="createDiaglogTeacher" />
+              <CreateDiaglogTeacher
+                ref="createDiaglogTeacher"
+                :moduleData="moduleArrayData"
+              />
             </div>
           </div>
         </div>
@@ -110,6 +113,7 @@ export default {
       state1: '',
       state2: '',
       isLoading: false,
+      moduleArrayData: [],
     }
   },
   watch: {
@@ -164,6 +168,9 @@ export default {
         .delete(`/admin/lecturers/${val.id}`)
         .then((response) => {
           this.notifycation()
+          this.$router.go({
+            path: '/',
+          })
         })
         .catch((e) => {
           this.errorNotification()
@@ -181,7 +188,7 @@ export default {
           for (let index = 0; index < raw.length; index++) {
             const element = raw[index]
             element.stt = index + 1
-            element.moduleGroup = element.modules?.join(", ")
+            element.moduleGroup = element.modules?.join(', ')
           }
           raw.forEach((data) => {
             data.value = data.name
@@ -207,6 +214,9 @@ export default {
         title: 'Error',
         message: 'Can not delete',
       })
+    },
+    getModuleList(value) {
+      this.moduleArrayData = value
     },
   },
 }

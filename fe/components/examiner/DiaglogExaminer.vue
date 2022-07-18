@@ -1,7 +1,7 @@
 <template>
   <div class="custom-dialog">
     <el-dialog
-      title="Chỉnh sửa thông tin giáo viên"
+      title="Chỉnh sửa thông tin cán bộ trông thi"
       :visible.sync="dialogVisible"
       width="30%"
       :before-close="handleClose"
@@ -62,7 +62,7 @@ export default {
         })
     },
     handleClose(done) {
-      this.$confirm('Are you sure to close this dialog?')
+      this.$confirm('Bạn có chắc chắn không?')
         .then((_) => {
           done()
         })
