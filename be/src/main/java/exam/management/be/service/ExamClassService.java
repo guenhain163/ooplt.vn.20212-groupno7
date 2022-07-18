@@ -124,7 +124,7 @@ public class ExamClassService implements BaseService<ExamClasses> {
             }
 
             Optional<Classes> classOptional = classService.findByCode(examClass.getCode());
-            if (classOptional.isPresent()) {
+            if (classOptional.isEmpty()) {
                 listError.add("Mã lớp: " + examClass.getCode() + " không tồn tại.");
                 return;
             }
@@ -150,7 +150,7 @@ public class ExamClassService implements BaseService<ExamClasses> {
             }
 
             newExamClass = this.save(newExamClass);
-            examClassDetailService.save(new ExamClassDetail(newExamClass.getClassId(), examClass.getNumberStudent()));
+            examClassDetailService.save(new ExamClassDetail(examClass.getNumberStudent(), newExamClass.getId()));
         });
 
         return listError;
