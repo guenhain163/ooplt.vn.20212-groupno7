@@ -1,5 +1,6 @@
 package exam.management.be.repository;
 
+import com.fasterxml.jackson.databind.Module;
 import exam.management.be.model.Modules;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public interface ModuleRepository extends JpaRepository<Modules, Integer> {
@@ -24,4 +26,6 @@ public interface ModuleRepository extends JpaRepository<Modules, Integer> {
             "LEFT JOIN Lecturers l ON l.id = s.lecturerId " +
             "WHERE l.id = ?1")
     List<String> listModuleNamesByLecturerId(Integer lecturerId);
+
+    Optional<Modules> findByCodeAndName(String code, String name);
 }

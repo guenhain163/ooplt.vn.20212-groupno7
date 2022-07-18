@@ -48,4 +48,8 @@ public class ModuleService implements BaseService<Modules> {
     public List<String> listModuleNamesByLecturerId(Integer lecturerId) {
         return moduleRepository.listModuleNamesByLecturerId(lecturerId);
     }
+
+    public Optional<Modules> findByCodeAndName(String code, String name) {
+        return moduleRepository.findByCodeAndName(code, name);
+    }
 }

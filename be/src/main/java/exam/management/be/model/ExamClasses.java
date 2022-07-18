@@ -33,7 +33,7 @@ public class ExamClasses {
 
     @Basic
     @Column(name = "exam_shift")
-    private Integer examShift;
+    private String examShift;
 
     @Basic
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -86,7 +86,7 @@ public class ExamClasses {
         CLOSED
     }
 
-    public ExamClasses(Integer classId, Integer examShift, Date date, String week,
+    public ExamClasses(Integer classId, String examShift, Date date, String week,
                        String openingPeriod, String room, String semester,
                        String examCode, Integer status, String examGroup) {
         this.classId = classId;
@@ -131,11 +131,11 @@ public class ExamClasses {
         this.classId = classId;
     }
 
-    public int getExamShift() {
+    public String getExamShift() {
         return examShift;
     }
 
-    public void setExamShift(int examShift) {
+    public void setExamShift(String examShift) {
         this.examShift = examShift;
     }
 

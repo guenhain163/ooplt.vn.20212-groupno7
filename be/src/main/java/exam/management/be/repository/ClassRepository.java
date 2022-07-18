@@ -43,4 +43,6 @@ public interface ClassRepository extends JpaRepository<Classes, Integer> {
 
 
     Optional<Classes> findByIdAndModuleId(Integer classId, Integer moduleId);
+
+    Optional<Classes> findByCode(String code);
 }

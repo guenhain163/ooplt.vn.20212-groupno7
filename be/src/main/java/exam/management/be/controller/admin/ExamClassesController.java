@@ -3,6 +3,7 @@ package exam.management.be.controller.admin;
 import exam.management.be.exceptions.ResourceNotFoundException;
 import exam.management.be.model.ExamClasses;
 import exam.management.be.request.ExamClassRequest;
+import exam.management.be.request.ImportExamClassRequest;
 import exam.management.be.service.ExamClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,16 @@ public class ExamClassesController {
     public ResponseEntity<Object> createExamClasses(@Valid @RequestBody ExamClassRequest examClass) {
         try {
             return new ResponseEntity<>(examClassService.create(examClass), HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/{semester}/import")
+    public ResponseEntity<Object> importExamClasses(@Valid @RequestBody List<ImportExamClassRequest> examClasses,
+                                                    @PathVariable String semester) {
+        try {
+            return new ResponseEntity<>(examClassService.importExamClasses(examClasses, semester), HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

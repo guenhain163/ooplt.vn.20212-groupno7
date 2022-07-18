@@ -1,10 +1,9 @@
 package exam.management.be.service;
 
-import exam.management.be.model.ExamClassExaminerDetail;
-import exam.management.be.model.ExamClassDetail;
-import exam.management.be.model.ExamClasses;
+import exam.management.be.model.*;
 import exam.management.be.repository.ExamClassRepository;
 import exam.management.be.request.ExamClassRequest;
+import exam.management.be.request.ImportExamClassRequest;
 import net.bytebuddy.utility.nullability.MaybeNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,6 +28,8 @@ public class ExamClassService implements BaseService<ExamClasses> {
     private ExamClassDetailService examClassDetailService;
     @Autowired
     private ClassService classService;
+    @Autowired
+    private ModuleService moduleService;
 
     @Override
     public Iterable<ExamClasses> findAll() {
@@ -109,6 +110,50 @@ public class ExamClassService implements BaseService<ExamClasses> {
         examClassDetailService.save(new ExamClassDetail(newExamClass.getClassId(), examClass.getNumberStudent()));
 
         return newExamClass;
+    }
+
+    public Object importExamClasses(@NotNull List<ImportExamClassRequest> examClasses, String semester) {
+        List listError = new ArrayList();
+
+        examClasses.forEach((examClass) -> {
+            Optional<Modules> moduleOptional = moduleService.findByCodeAndName(examClass.getCodeModule(), examClass.getNameModule());
+            if (moduleOptional.isEmpty()) {
+                listError.add("Mã học phần: " + examClass.getCodeModule() +
+                        " và tên học phần: " + examClass.getNameModule() + " không khớp.");
+                return;
+            }
+
+            Optional<Classes> classOptional = classService.findByCode(examClass.getCode());
+            if (classOptional.isPresent()) {
+                listError.add("Mã lớp: " + examClass.getCode() + " không tồn tại.");
+                return;
+            }
+
+            String maxExamCode = examClassRepository.findTopByOrderByExamCodeAsc().get().getExamCode();
+            int examCode = Integer.parseInt(maxExamCode) + 1;
+
+            ExamClasses newExamClass = new ExamClasses(
+                    classOptional.get().getId(),
+                    examClass.getExamShift(),
+                    examClass.getDate(),
+                    examClass.getWeek(),
+                    examClass.getOpeningPeriod(),
+                    examClass.getRoom(),
+                    semester,
+                    Integer.toString(examCode),
+                    examClass.getStatus(),
+                    examClass.getGroup()
+            );
+
+            if (!examClass.getNote().isEmpty()) {
+                newExamClass.setNote(examClass.getNote());
+            }
+
+            newExamClass = this.save(newExamClass);
+            examClassDetailService.save(new ExamClassDetail(newExamClass.getClassId(), examClass.getNumberStudent()));
+        });
+
+        return listError;
     }
 
     public ExamClasses update(Integer id, @NotNull ExamClassRequest examClass) {

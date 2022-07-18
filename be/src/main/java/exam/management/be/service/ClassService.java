@@ -72,4 +72,8 @@ public class ClassService implements BaseService<Classes> {
     public Optional<Classes> findByIdAndModuleId(Integer id, Integer moduleId) {
         return classRepository.findByIdAndModuleId(id, moduleId);
     }
+
+    public Optional<Classes> findByCode(String code) {
+        return classRepository.findByCode(code);
+    }
 }

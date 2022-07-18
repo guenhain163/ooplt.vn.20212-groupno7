@@ -60,7 +60,7 @@ public class UserService implements UserDetailsService, BaseService<Users> {
         userResponse.put("id", userOptional.get().getId());
 
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "Successfully retrieved user information.");
+        response.put("message", "Truy xuất thành công thông tin người dùng.");
         response.put("user", userResponse);
 
         return response;

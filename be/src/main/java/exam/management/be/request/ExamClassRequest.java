@@ -11,7 +11,7 @@ public class ExamClassRequest {
     private Integer moduleId;
 
     @NotNull(message = "Kíp không được bỏ trống.")
-    private Integer examShift;
+    private String examShift;
 
     @NotNull(message = "Ngày thi không được bỏ trống.")
     private Date date;
@@ -47,11 +47,11 @@ public class ExamClassRequest {
         this.classId = classId;
     }
 
-    public int getExamShift() {
+    public String getExamShift() {
         return examShift;
     }
 
-    public void setExamShift(int examShift) {
+    public void setExamShift(String examShift) {
         this.examShift = examShift;
     }
 
