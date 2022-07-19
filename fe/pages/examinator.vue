@@ -1,6 +1,6 @@
 <template>
   <div class="page-header-fixed page-quick-sidebar-over-content">
-    <SlideBar />
+    <SlideBar @getModuleList="getModuleList" />
     <div class="page-container">
       <div class="page-content-wrapper setting">
         <div class="page-content">
@@ -8,7 +8,7 @@
             <div>
               <el-row class="demo-autocomplete">
                 <el-col :span="12">
-                  <div class="sub-title mb-2 mx-3">Tìm giáo viên</div>
+                  <div class="sub-title mb-2 mx-3">Tìm cán bộ trông thi</div>
                   <el-autocomplete
                     v-model="state1"
                     class="inline-input mx-3"
@@ -22,7 +22,7 @@
 
             <el-row class="mt-3 mx-3">
               <el-button type="primary" @click="createTeacher()"
-                >Create Giang Vien</el-button
+                >Tạo cán bộ trông thi</el-button
               >
             </el-row>
 
@@ -81,7 +81,7 @@
               </el-table>
 
               <DiaglogExaminer ref="offerDetailDialog" />
-              <CreateDiaglogExaminer ref="CreateDiaglogExaminer" />
+              <CreateDiaglogExaminer ref="CreateDiaglogExaminer" :moduleData="moduleArrayData"/>
             </div>
           </div>
         </div>
@@ -110,6 +110,7 @@ export default {
       state1: '',
       state2: '',
       isLoading: false,
+      moduleArrayData: []
     }
   },
   watch: {
@@ -165,7 +166,7 @@ export default {
         .then((response) => {
           this.notifycation()
           this.$router.go({
-            path: '/',
+            path: '/examinator',
           })
         })
         .catch((e) => {
@@ -211,6 +212,11 @@ export default {
         message: 'Can not delete',
       })
     },
+    getModuleList(value) {
+                // this.$emit('getModuleList', value)
+                this.moduleArrayData = value
+
+    }
   },
 }
 </script>

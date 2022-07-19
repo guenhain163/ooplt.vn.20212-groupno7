@@ -1,18 +1,46 @@
 <template>
   <div class="page-header-fixed page-quick-sidebar-over-content">
-    <SlideBar ref="slideBarFunction"/>
+    <SlideBar ref="slideBarFunction" />
     <div class="page-container">
       <div class="page-content-wrapper setting">
         <div class="page-content">
           <div class="container">
-
-            <el-row class="mt-3 mx-3">
-              <!-- <el-button type="primary"><input type="file" @change="onChange" /></el-button> -->
+            <!-- <el-row class="mt-3 mx-3">
               <label for="file-upload" class="custom-file-upload">
                 <i class="fa fa-cloud-upload"></i> Custom Upload
               </label>
               <input id="file-upload" type="file" @change="onChange"/>
-            </el-row>
+            </el-row> -->
+
+            <el-button class="mt-3 mx-5" @click="dialogVisible = true"
+              >Lấy data từ file Excel</el-button
+            >
+
+            <el-dialog
+              title="Nhập thông tin file excel"
+              :visible.sync="dialogVisible"
+              width="30%"
+              :before-close="handleClose"
+            >
+              <el-input
+                v-model="semester"
+                placeholder="Hãy nhập Kỳ học"
+              ></el-input>
+
+              <el-row class="mt-3">
+                <label for="file-upload" class="custom-file-upload">
+                  <i class="fa fa-cloud-upload"></i> Custom Upload
+                </label>
+                <input id="file-upload" type="file" @change="onChange" />
+              </el-row>
+
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="dialogVisibleFunction"
+                  >Confirm</el-button
+                >
+              </span>
+            </el-dialog>
 
             <div class="my-5" style="margin-left: 3rem">
               <el-table
@@ -23,27 +51,59 @@
               >
                 <el-table-column prop="stt" label="STT" width="50">
                 </el-table-column>
-                <el-table-column prop="codeModule" label="Mã học phần" width="120">
+                <el-table-column
+                  prop="codeModule"
+                  label="Mã học phần"
+                  width="120"
+                >
                 </el-table-column>
-                <el-table-column prop="nameModule" label="Tên học phần" width="120">
+                <el-table-column
+                  prop="nameModule"
+                  label="Tên học phần"
+                  width="120"
+                >
                 </el-table-column>
-                <el-table-column prop="classExam.note" label="Ghi chú" width="80">
+                <el-table-column
+                  prop="classExam.note"
+                  label="Ghi chú"
+                  width="80"
+                >
                 </el-table-column>
-                <el-table-column prop="classExam.examGroup" label="Nhóm" width="100">
+                <el-table-column
+                  prop="classExam.examGroup"
+                  label="Nhóm"
+                  width="100"
+                >
                 </el-table-column>
-                <el-table-column prop="classExam.openingPeriod" label="Đợt mở" width="80">
+                <el-table-column
+                  prop="classExam.openingPeriod"
+                  label="Đợt mở"
+                  width="80"
+                >
                 </el-table-column>
                 <el-table-column prop="classExam.week" label="Tuần" width="100">
                 </el-table-column>
                 <el-table-column prop="classExam.date" label="Thứ" width="100">
                 </el-table-column>
-                <el-table-column prop="classExam.date" label="Ngày thi" width="100">
+                <el-table-column
+                  prop="classExam.date"
+                  label="Ngày thi"
+                  width="100"
+                >
                 </el-table-column>
-                <el-table-column prop="classExam.examShift" label="Kíp" width="80">
+                <el-table-column
+                  prop="classExam.examShift"
+                  label="Kíp"
+                  width="80"
+                >
                 </el-table-column>
                 <el-table-column prop="numberStudent" label="SLDK" width="100">
                 </el-table-column>
-                <el-table-column prop="classExam.room" label="Phòng thi" width="100">
+                <el-table-column
+                  prop="classExam.room"
+                  label="Phòng thi"
+                  width="100"
+                >
                 </el-table-column>
 
                 <el-table-column
@@ -101,7 +161,7 @@ export default {
   name: 'IndexPage',
   components: {
     SlideBar,
-    ExamRegister
+    ExamRegister,
   },
   data() {
     return {
@@ -111,6 +171,8 @@ export default {
       state1: '',
       state2: '',
       isLoading: false,
+      dialogVisible: false,
+      semester: '',
     }
   },
   watch: {
@@ -217,19 +279,36 @@ export default {
     onChange(event) {
       console.log(event)
       this.$refs.slideBarFunction.onChange(event)
+    },
+    handleClose(done) {
+      this.$confirm('Bạn chắc muốn thoát?')
+        .then((_) => {
+          done()
+        })
+        .catch((_) => {})
+    },
+    async dialogVisibleFunction() {
+      const importData = this.$refs.slideBarFunction.dataImport
+      console.log(importData)
+      console.log('asd')
+      await this.$axios.post(`/admin/examClasses/${this.semester}/import`, importData).then((response) => {
+        // console.log(response)
+      }).catch((error) => {
+        console.log(error)
+      })
     }
   },
 }
 </script>
 
 <style scoped>
-  input[type="file"] {
-    display: none;
+input[type='file'] {
+  display: none;
 }
 .custom-file-upload {
-    border: 1px solid #ccc;
-    display: inline-block;
-    padding: 6px 12px;
-    cursor: pointer;
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
 }
 </style>
