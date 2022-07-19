@@ -143,7 +143,7 @@ public class ExamClassService implements BaseService<ExamClasses> {
                         examClass.getRoom(),
                         semester,
                         Integer.toString(examCode),
-                        examClass.getStatus(),
+                        ExamClasses.Status.NEW.ordinal(),
                         examClass.getGroup()
                 );
 

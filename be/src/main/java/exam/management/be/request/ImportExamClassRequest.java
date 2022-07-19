@@ -28,8 +28,6 @@ public class ImportExamClassRequest {
     @NotNull(message = "Phòng thi không được bỏ trống.")
     private String room;
 
-    private Integer status;
-
     @NotNull(message = "SLĐK không được bỏ trống.")
     private Integer numberStudent;
 
@@ -100,14 +98,6 @@ public class ImportExamClassRequest {
 
     public void setRoom(String room) {
         this.room = room;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 
     public String getNote() {
