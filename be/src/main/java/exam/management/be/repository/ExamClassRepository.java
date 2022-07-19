@@ -1,10 +1,12 @@
 package exam.management.be.repository;
 
 import exam.management.be.model.ExamClasses;
+import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -55,4 +57,6 @@ public interface ExamClassRepository extends JpaRepository<ExamClasses, Integer>
             "INNER JOIN Users d ON d.id = c.userId " +
             "WHERE a.id = ?1")
     List<Map<String, Object>> getExaminersDivision(Integer id);
+
+    boolean existsByClassIdAndDateAndExamShiftAndRoom(String classId, Date date, String examShift, String room);
 }

@@ -115,4 +115,13 @@ public class ExamClassesController {
     public ResponseEntity<?> getExaminersDivision(@PathVariable Integer id) {
         return new ResponseEntity<>(examClassService.getExaminersDivision(id), HttpStatus.OK);
     }
+
+    @PostMapping(value = "/{id}/cost", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateCosts(@PathVariable Integer id, @RequestBody Map<String, Object> fields) {
+        try {
+            return new ResponseEntity<>(examClassService.updateCosts(id, fields), HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

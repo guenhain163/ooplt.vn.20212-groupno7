@@ -4,9 +4,7 @@ import exam.management.be.model.*;
 import exam.management.be.repository.ExamClassRepository;
 import exam.management.be.request.ExamClassRequest;
 import exam.management.be.request.ImportExamClassRequest;
-import net.bytebuddy.utility.nullability.MaybeNull;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +13,7 @@ import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static exam.management.be.model.ExamClasses.Status.REGISTERED;
 
@@ -116,41 +115,45 @@ public class ExamClassService implements BaseService<ExamClasses> {
         List listError = new ArrayList();
 
         examClasses.forEach((examClass) -> {
-            Optional<Modules> moduleOptional = moduleService.findByCodeAndName(examClass.getCodeModule(), examClass.getNameModule());
+            Optional<Modules> moduleOptional = moduleService.findByCodeAndName(examClass.getCodeModule().trim(),
+                    examClass.getNameModule());
             if (moduleOptional.isEmpty()) {
                 listError.add("Mã học phần: " + examClass.getCodeModule() +
                         " và tên học phần: " + examClass.getNameModule() + " không khớp.");
                 return;
             }
 
-            Optional<Classes> classOptional = classService.findByCode(examClass.getCode());
-            if (classOptional.isPresent()) {
+            Optional<Classes> classOptional = classService.findByCode(examClass.getCode().trim());
+            if (classOptional.isEmpty()) {
                 listError.add("Mã lớp: " + examClass.getCode() + " không tồn tại.");
                 return;
             }
 
-            String maxExamCode = examClassRepository.findTopByOrderByExamCodeAsc().get().getExamCode();
-            int examCode = Integer.parseInt(maxExamCode) + 1;
+            if (!examClassRepository.existsByClassIdAndDateAndExamShiftAndRoom(String.valueOf(classOptional.get().getId()),
+                    examClass.getDate(), examClass.getExamShift(), examClass.getRoom())) {
+                String maxExamCode = examClassRepository.findTopByOrderByExamCodeAsc().get().getExamCode();
+                int examCode = Integer.parseInt(maxExamCode) + 1;
 
-            ExamClasses newExamClass = new ExamClasses(
-                    classOptional.get().getId(),
-                    examClass.getExamShift(),
-                    examClass.getDate(),
-                    examClass.getWeek(),
-                    examClass.getOpeningPeriod(),
-                    examClass.getRoom(),
-                    semester,
-                    Integer.toString(examCode),
-                    examClass.getStatus(),
-                    examClass.getGroup()
-            );
+                ExamClasses newExamClass = new ExamClasses(
+                        classOptional.get().getId(),
+                        examClass.getExamShift(),
+                        examClass.getDate(),
+                        examClass.getWeek(),
+                        examClass.getOpeningPeriod(),
+                        examClass.getRoom(),
+                        semester,
+                        Integer.toString(examCode),
+                        examClass.getStatus(),
+                        examClass.getGroup()
+                );
 
-            if (!examClass.getNote().isEmpty()) {
-                newExamClass.setNote(examClass.getNote());
+                if (!examClass.getNote().isEmpty()) {
+                    newExamClass.setNote(examClass.getNote());
+                }
+
+                newExamClass = this.save(newExamClass);
+                examClassDetailService.save(new ExamClassDetail(newExamClass.getId(), examClass.getNumberStudent()));
             }
-
-            newExamClass = this.save(newExamClass);
-            examClassDetailService.save(new ExamClassDetail(newExamClass.getClassId(), examClass.getNumberStudent()));
         });
 
         return listError;
@@ -240,5 +243,30 @@ public class ExamClassService implements BaseService<ExamClasses> {
 
     public Object getExaminersDivision(Integer examClassId) {
         return examClassRepository.getExaminersDivision(examClassId);
+    }
+
+    public Object updateCosts(Integer examClassId, Map<String, Object> fields) {
+        Optional<ExamClasses> examClass = examClassRepository.findById(examClassId);
+
+        if (examClass.isEmpty()) {
+            return "Mã lớp thi không tồn tại";
+        }
+
+        final int[] examination_cost = {0};
+        List<Map<String, Object>> examiners = (List<Map<String, Object>>) fields.get("examination_cost");
+        examiners.forEach((lecturer) -> {
+            Integer lecturerId = (Integer) lecturer.get("lecturer_id");
+            ExamClassExaminerDetail examClassExaminerDetail = examClassExaminerDetailService
+                    .findByExamClassIdAndLecturerId(examClassId, lecturerId).get();
+            examClassExaminerDetail.setCost((Integer) lecturer.get("cost"));
+            examination_cost[0] += examClassExaminerDetail.getCost();
+        });
+
+        ExamClassDetail examClassDetail = examClassDetailService.findByExamClassId(examClassId).get();
+        examClassDetail.setCost((Integer) fields.get("cost"));
+        examClassDetail.setPrintingCost((Integer) fields.get("printing_cost"));
+        examClassDetail.setExaminationCost(examination_cost[0]);
+
+        return examClassDetailService.update(examClassDetail);
     }
 }

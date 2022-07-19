@@ -52,4 +52,8 @@ public class ExamClassExaminerDetailService implements BaseService<ExamClassExam
     public void removeAll(Iterable<ExamClassExaminerDetail> examClassExaminerDetails) {
         examClassExaminerDetailRepository.deleteAll(examClassExaminerDetails);
     }
+
+    public Optional<ExamClassExaminerDetail> findByExamClassIdAndLecturerId(Integer examClassId, Integer lecturerId) {
+        return examClassExaminerDetailRepository.findByExamClassIdAndLecturerId(examClassId,lecturerId);
+    }
 }
