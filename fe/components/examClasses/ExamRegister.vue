@@ -58,6 +58,9 @@ export default {
       maxLectureExam: ''
     }
   },
+  // created() {
+  //   this.submitForm()
+  // },
   methods: {
     async submitForm(formName) {
       console.log(this.value)

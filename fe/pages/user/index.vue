@@ -8,9 +8,9 @@
 
             <div class="border m-5 w-50">
               <h3 class="text-center mt-3">Thông tin cá nhân: </h3>
-              <div class="text-end" style="margin: 0px 10px 0px 0px">
+              <!-- <div class="text-end" style="margin: 0px 10px 0px 0px">
                 <el-button type="primary" @click="edit">Edit</el-button>
-              </div>
+              </div> -->
               <div class="py-2 px-3">
                   <div class="row mx-5 my-4 align-items-center;">
                     <div class="col-4">Tên:</div>
@@ -42,9 +42,9 @@
 
               </div>
 
-              <div class="text-end" style="margin: 0px 10px 0px 0px">
+              <!-- <div class="text-end" style="margin: 0px 10px 0px 0px">
                 <el-button v-show="!inputApear" type="primary" @click="saveData">Save</el-button>
-              </div>
+              </div> -->
             </div>
 
 
