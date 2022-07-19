@@ -28,7 +28,6 @@ public class ImportExamClassRequest {
     @NotNull(message = "Phòng thi không được bỏ trống.")
     private String room;
 
-    @NotNull(message = "Status không được bỏ trống.")
     private Integer status;
 
     @NotNull(message = "SLĐK không được bỏ trống.")
