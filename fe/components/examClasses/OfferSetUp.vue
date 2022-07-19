@@ -107,11 +107,6 @@ export default {
         .then((response) => {
           console.log(response)
           this.lectureData = response.data
-          // this.lectureData.forEach((element) => {
-          //   // console.log(element)
-          //   console.log(this.findCostByLecturerId(element.id))
-          //   element.cost = this.findCostByLecturerId(element.id)
-          // })
         })
         .catch((erorr) => {
           console.log(erorr)
@@ -119,20 +114,12 @@ export default {
       this.links = this.tableDataSearch
     },
     findCostByLecturerId(lecturerId) {
-      for (let index = 0; index < this.val.classExam.examClassExaminerDetailsById.length; index++) {
-        const element = this.val.classExam.examClassExaminerDetailsById[index];
-        if (element.id === lecturerId) {
-          console.log(element)
-          return element.cost
-        }
+      // eslint-disable-next-line array-callback-return
+      // this.val.classExam.examClassExaminerDetailsById.find((o, i) => {
+      //   if (o.lecturerId === lecturerId) {
 
-      }
-      // console.log(typ)
-      // const x = this.val.classExam.examClassExaminerDetailsById.filter(element => element.id === lecturerId)
-      // console.log(x)
-      // return x;
-      // this.val.classExam.examClassExaminerDetailsById.forEach((element) => {
-      //   element.filter(item => item.)
+      //     return o.cost;
+      //   }
       // })
     }
   },
