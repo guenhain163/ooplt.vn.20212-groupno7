@@ -106,6 +106,11 @@
                       </el-link>
                       <br />
 
+                      <el-link @click="setCost(scope.$index, scope.row)">
+                        <strong>Chi phí </strong>
+                      </el-link>
+                      <br />
+
                       <el-link
                         style="margin-top: 10px"
                         @click="pay(scope.$index, scope.row)"
@@ -123,6 +128,7 @@
 
               <DiaglogExamClasses ref="offerDetailDialog" />
               <ExamRegister ref="examRegister" />
+              <OfferSetUp ref="offerSetUp" />
             </div>
           </div>
         </div>
@@ -135,6 +141,7 @@
 import SlideBar from '../components/SlideBar'
 import DiaglogExamClasses from '../components/examClasses/DiaglogExamClasses'
 import ExamRegister from '../components/examClasses/ExamRegister'
+import OfferSetUp from '../components/examClasses/OfferSetUp'
 
 export default {
   name: 'IndexPage',
@@ -142,6 +149,7 @@ export default {
     SlideBar,
     DiaglogExamClasses,
     ExamRegister,
+    OfferSetUp
   },
   data() {
     return {
@@ -193,6 +201,16 @@ export default {
       this.$refs[`popover${index}`].doClose()
       this.$refs.offerDetailDialog.dialogVisible = true
       this.$refs.offerDetailDialog.val = val
+    },
+    setCost(index, val) {
+      this.$refs[`popover${index}`].doClose()
+      console.log(this.$refs)
+      this.$refs.offerSetUp.dialogVisible = true
+      this.$refs.offerSetUp.val = val
+      // this.$refs[`popover${index}`].doClose()
+      // console.log(this.$refs)
+      this.$refs.offerSetUp.getLectureData()
+      // this.$refs.offerSetUp.val = val
     },
     createTeacher() {
       this.$refs.CreateDiaglogExamClasses.dialogVisible = true
