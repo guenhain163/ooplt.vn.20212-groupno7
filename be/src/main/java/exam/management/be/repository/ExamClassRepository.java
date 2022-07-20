@@ -47,7 +47,7 @@ public interface ExamClassRepository extends JpaRepository<ExamClasses, Integer>
 
     Optional<ExamClasses> findByExamCode(String examCode);
 
-    Optional<ExamClasses> findTopByOrderByExamCodeAsc();
+    List<ExamClasses> findTopByOrderByExamCodeAsc();
 
     Iterable<ExamClasses> findBySemester(String semester);
 
@@ -58,5 +58,6 @@ public interface ExamClassRepository extends JpaRepository<ExamClasses, Integer>
             "WHERE a.id = ?1")
     List<Map<String, Object>> getExaminersDivision(Integer id);
 
-    boolean existsByClassIdAndDateAndExamShiftAndRoom(String classId, Date date, String examShift, String room);
+    @Query("SELECT COUNT(e) > 0 FROM ExamClasses e WHERE e.classId = ?1 AND e.date = ?2 AND e.examShift = ?3 AND e.room = ?4")
+    boolean existsByClassIdAndDateAndExamShiftAndRoom(Integer classId, Date date, String examShift, String room);
 }

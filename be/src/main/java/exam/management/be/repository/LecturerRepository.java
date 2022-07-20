@@ -28,7 +28,7 @@ public interface LecturerRepository extends JpaRepository<Lecturers, Integer > {
             "ON b.examClassId = c.id " +
             "WHERE c.date = ?1 AND c.examShift = ?2) " +
             "    AND a.id <> ?3 AND a.role IN (0, 2)")
-    List<Map<String, Object>> findExaminersIsFree(Date date, Integer examShift, Integer  lecturerId);
+    List<Map<String, Object>> findExaminersIsFree(Date date, String examShift, Integer  lecturerId);
 
     @Query("SELECT NEW map(a.id as id, a.name as name, b.email as email) FROM Lecturers a " +
             "INNER JOIN Users b ON b.id = a.userId " +

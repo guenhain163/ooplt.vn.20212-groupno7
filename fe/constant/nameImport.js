@@ -6,6 +6,7 @@ const nameImport = [
   "group",
   "openingPeriod",
   "week",
+  "dayOfWeek",
   "date",
   "examShift",
   "numberStudent",
