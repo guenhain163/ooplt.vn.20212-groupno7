@@ -16,6 +16,8 @@ public class ImportExamClassRequest {
     @NotNull(message = "Kíp không được bỏ trống.")
     private String examShift;
 
+    private String dayOfWeek;
+
     @NotNull(message = "Ngày thi không được bỏ trống.")
     private Date date;
 
@@ -27,6 +29,9 @@ public class ImportExamClassRequest {
 
     @NotNull(message = "Phòng thi không được bỏ trống.")
     private String room;
+
+//    @NotNull(message = "Status không được bỏ trống.")
+//    private Integer status;
 
     @NotNull(message = "SLĐK không được bỏ trống.")
     private Integer numberStudent;
@@ -100,6 +105,14 @@ public class ImportExamClassRequest {
         this.room = room;
     }
 
+//    public Integer getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(Integer status) {
+//        this.status = status;
+//    }
+
     public String getNote() {
         return note;
     }
@@ -122,5 +135,13 @@ public class ImportExamClassRequest {
 
     public void setNumberStudent(Integer numberStudent) {
         this.numberStudent = numberStudent;
+    }
+
+    public String getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 }

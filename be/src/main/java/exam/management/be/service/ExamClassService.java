@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.sql.Date;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -84,8 +85,11 @@ public class ExamClassService implements BaseService<ExamClasses> {
             return new ResponseEntity<>("Lớp thi đã tồn tại.", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
-        String maxExamCode = examClassRepository.findTopByOrderByExamCodeAsc().get().getExamCode();
-        int examCode = Integer.parseInt(maxExamCode) + 1;
+        int examCode = 100000;
+        List<ExamClasses> listExamClasses = examClassRepository.findTopByOrderByExamCodeAsc();
+        if (!listExamClasses.isEmpty()) {
+            examCode = Integer.parseInt(listExamClasses.get(0).getExamCode()) + 1;
+        }
 
         ExamClasses newExamClass = new ExamClasses(
                 examClass.getClassId(),
@@ -129,10 +133,13 @@ public class ExamClassService implements BaseService<ExamClasses> {
                 return;
             }
 
-            if (!examClassRepository.existsByClassIdAndDateAndExamShiftAndRoom(String.valueOf(classOptional.get().getId()),
+            if (!examClassRepository.existsByClassIdAndDateAndExamShiftAndRoom(classOptional.get().getId(),
                     examClass.getDate(), examClass.getExamShift(), examClass.getRoom())) {
-                String maxExamCode = examClassRepository.findTopByOrderByExamCodeAsc().get().getExamCode();
-                int examCode = Integer.parseInt(maxExamCode) + 1;
+                int examCode = 100000;
+                List<ExamClasses> listExamClasses = examClassRepository.findTopByOrderByExamCodeAsc();
+                if (!listExamClasses.isEmpty()) {
+                    examCode = Integer.parseInt(listExamClasses.get(0).getExamCode()) + 1;
+                }
 
                 ExamClasses newExamClass = new ExamClasses(
                         classOptional.get().getId(),

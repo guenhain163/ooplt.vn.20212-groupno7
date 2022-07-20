@@ -95,16 +95,19 @@ export default {
     },
     convertData(data) {
       const temp = []
+      console.log(data);
       data.splice(0, 3)
+
       data.forEach((element) => {
         const classObject = Object.assign({}, element)
-        // console.log(classObject)
         for (let index = 0; index < this.nameImport.length; index++) {
           const nameChanged = this.nameImport[index]
           delete Object.assign(classObject, {
             [nameChanged]: classObject[index],
           })[index]
         }
+        classObject.code = classObject.code.toString();
+        classObject.date = new Date(Math.round((classObject.date - (25566)) * 86400 * 1000));
         temp.push(classObject)
       })
       this.dataImport = temp
