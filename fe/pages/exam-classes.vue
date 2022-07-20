@@ -287,8 +287,12 @@ export default {
     async dialogVisibleFunction() {
       const importData = this.$refs.slideBarFunction.dataImport
       await this.$axios.post(`/admin/examClasses/${this.semester}/import`, importData).then((response) => {
-        // console.log(response)
+        this.notifycation()
+          this.$router.go({
+            path: '/exam-classes',
+          })
       }).catch(() => {
+        this.errorNotification()
       })
     }
   },
