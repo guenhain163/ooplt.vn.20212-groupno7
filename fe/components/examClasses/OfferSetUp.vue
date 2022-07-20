@@ -67,7 +67,6 @@ export default {
         printing_cost: this.val.classExam.examClassDetailsById.printingCost,
         examination_cost: this.lectureData
       }
-      console.log(this.data)
       await this.$axios
         .post(`/admin/examClasses/${this.val.classExam.id}/cost`, this.data)
         .then((response) => {
@@ -76,8 +75,7 @@ export default {
             path: '/exam-classes',
           })
         })
-        .catch((error) => {
-          console.log(error)
+        .catch(() => {
           this.errorNotification()
         })
     },
@@ -105,11 +103,9 @@ export default {
       await this.$axios
         .get(`/admin/examiners?examClassId=${this.val.classExam.id}`)
         .then((response) => {
-          console.log(response)
           this.lectureData = response.data
         })
-        .catch((erorr) => {
-          console.log(erorr)
+        .catch(() => {
         })
       this.links = this.tableDataSearch
     },

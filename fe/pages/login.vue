@@ -83,12 +83,10 @@ export default {
               this.notifycation()
               this.middleweare(response.data.user.role)
             })
-            .catch((e) => {
-              console.log(e)
+            .catch(() => {
               this.notifycation()
             })
         } else {
-          console.log('error submit!!')
           return false
         }
       })

@@ -53,8 +53,7 @@ export default {
           this.id = response.data.user.id
           this.$emit('getUserCode', this.id)
         })
-        .catch((e) => {
-          console.log(e)
+        .catch(() => {
         })
     },
   },

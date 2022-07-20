@@ -98,7 +98,6 @@ export default {
       data.splice(0, 3)
       data.forEach((element) => {
         const classObject = Object.assign({}, element)
-        // console.log(classObject)
         for (let index = 0; index < this.nameImport.length; index++) {
           const nameChanged = this.nameImport[index]
           delete Object.assign(classObject, {
@@ -115,8 +114,7 @@ export default {
         .then((response) => {
           this.$emit('getModuleList', response.data)
         })
-        .catch((error) => {
-          console.log(error)
+        .catch(() => {
         })
     },
   },
