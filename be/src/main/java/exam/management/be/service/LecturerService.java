@@ -62,7 +62,7 @@ public class LecturerService implements BaseService<Lecturers> {
         return lecturerRepository.findByIdAndRoleIn(id, roles);
     }
 
-    public ResponseEntity<?> listOfExaminersIsFree(Date date, Integer examShift, Integer examClassId) {
+    public ResponseEntity<?> listOfExaminersIsFree(Date date, String examShift, Integer examClassId) {
         Optional<Classes> classOptional =
                 classService.findByExamClassId(examClassId);
 
