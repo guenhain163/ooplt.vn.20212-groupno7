@@ -84,9 +84,7 @@ export default {
     async getUserInfo(value) {
       await this.$axios.get(`/user/${value}`).then((response) => {
         this.responseData = response.data
-        console.log(this.responseData)
-      }).catch((error) => {
-        console.log(error)
+      }).catch(() => {
       })
     },
 
@@ -114,7 +112,6 @@ export default {
       this.inputApear = false
     },
     saveData() {
-      console.log('hello')
     }
   },
 }

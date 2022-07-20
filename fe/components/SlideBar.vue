@@ -118,8 +118,7 @@ export default {
         .then((response) => {
           this.$emit('getModuleList', response.data)
         })
-        .catch((error) => {
-          console.log(error)
+        .catch(() => {
         })
     },
   },

@@ -140,8 +140,7 @@ export default {
             return { value: item.id, label: `${item.name} - ${item.email}` }
           })
         })
-        .catch((e) => {
-          console.log(e)
+        .catch(() => {
         })
     },
     async getStatisticLecture(lecture, semester) {
@@ -153,8 +152,7 @@ export default {
           element.stt = index + 1
           this.status(element)
         }
-      }).catch((error) => {
-        console.log(error)
+      }).catch(() => {
       })
     },
     status(data) {

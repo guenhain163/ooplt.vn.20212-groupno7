@@ -119,11 +119,9 @@ export default {
             const element = this.responseData[index];
             element.stt = index + 1
           }
-          console.log(this.responseData)
 
         })
-        .catch((e) => {
-          console.log(e)
+        .catch(() => {
         })
     },
     getUserCode(value) {

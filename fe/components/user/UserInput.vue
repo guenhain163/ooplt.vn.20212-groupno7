@@ -23,7 +23,6 @@ export default {
       set(value) {
         const key = this.type.split('_')
         console.log(key)
-        console.log(value)
       },
     },
   },

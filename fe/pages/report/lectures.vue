@@ -149,8 +149,7 @@ export default {
             return { value: item.id, label: `${item.name} - ${item.email}` }
           })
         })
-        .catch((e) => {
-          console.log(e)
+        .catch(() => {
         })
     },
     async getStatisticLecture(lecture, semester) {
@@ -164,8 +163,7 @@ export default {
           element.hostCost = element.cost * element.numberStudent
           element.total = element.examinationCost + element.printingCost + element.hostCost
         }
-      }).catch((error) => {
-        console.log(error)
+      }).catch(() => {
       })
     },
     status(data) {
