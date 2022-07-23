@@ -123,13 +123,11 @@ export default {
 
           }
         })
-        .catch((e) => {
-          console.log(e)
+        .catch(() => {
         })
     },
 
     status(data) {
-      console.log(data.status)
       switch (data.status) {
         case 1:
           if (Date.now() < Date.parse(data.classExam.date)) {
@@ -150,7 +148,6 @@ export default {
       }
     },
     registeExam(index, value) {
-      console.log(index, value)
     },
     getUserCode(value) {
       this.id = value

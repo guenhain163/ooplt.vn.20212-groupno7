@@ -56,8 +56,7 @@ export default {
             path: '/',
           })
         })
-        .catch((error) => {
-          console.log(error)
+        .catch(() => {
           this.errorNotification()
         })
     },

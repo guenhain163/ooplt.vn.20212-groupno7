@@ -145,6 +145,7 @@
               </el-table>
 
               <ExamRegister ref="examRegister" />
+              <DiaglogExamClasses ref="offerDetailDialog"/>
             </div>
           </div>
         </div>
@@ -156,12 +157,14 @@
 <script>
 import SlideBar from '../components/SlideBar'
 import ExamRegister from '../components/examClasses/ExamRegister'
+import DiaglogExamClasses from '../components/examClasses/DiaglogExamClasses'
 
 export default {
   name: 'IndexPage',
   components: {
     SlideBar,
     ExamRegister,
+    DiaglogExamClasses
   },
   data() {
     return {
@@ -209,7 +212,6 @@ export default {
       return this.tableDataSearch
     },
     handleSelect(item) {
-      console.log(item)
     },
     editData(index, val) {
       this.$refs[`popover${index}`].doClose()
@@ -249,10 +251,8 @@ export default {
           this.tableData = raw
           this.tableDataSearch = this.tableData
           this.isLoading = false
-          console.log(this.tableData)
         })
-        .catch((erorr) => {
-          console.log(erorr)
+        .catch(() => {
         })
       this.links = this.tableDataSearch
     },
@@ -277,7 +277,6 @@ export default {
       this.$refs.examRegister.setCondition(val.numberStudent)
     },
     onChange(event) {
-      console.log(event)
       this.$refs.slideBarFunction.onChange(event)
     },
     handleClose(done) {
@@ -289,12 +288,12 @@ export default {
     },
     async dialogVisibleFunction() {
       const importData = this.$refs.slideBarFunction.dataImport
-      console.log(importData)
-      console.log('asd')
       await this.$axios.post(`/admin/examClasses/${this.semester}/import`, importData).then((response) => {
-        // console.log(response)
-      }).catch((error) => {
-        console.log(error)
+        this.notifycation()
+        this.$router.go({
+            path: '/exam-classes',
+          })
+      }).catch(() => {
       })
     }
   },

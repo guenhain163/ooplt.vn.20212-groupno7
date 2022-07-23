@@ -11,7 +11,7 @@
           <el-input v-model="val.classExam.examCode"></el-input>
         </el-form-item>
         <el-form-item label="Ca thi">
-          <el-input-number v-model="val.classExam.examShift"></el-input-number>
+          <el-input v-model="val.classExam.examShift"></el-input>
         </el-form-item>
         <el-form-item label="Ghi chú">
           <el-input v-model="val.classExam.note"></el-input>
@@ -67,7 +67,6 @@ export default {
         numberStudent: this.val.numberStudent,
         examShift: this.val.classExam.examShift,
       }
-      console.log(this.data)
       await this.$axios
         .patch(`/admin/examClasses/${this.val.classExam.id}`, this.data)
         .then((response) => {
@@ -76,8 +75,7 @@ export default {
             path: '/exam-classes',
           })
         })
-        .catch((error) => {
-          console.log(error)
+        .catch(() => {
           this.errorNotification()
         })
     },

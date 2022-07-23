@@ -36,9 +36,8 @@
                       </a>
                     </ul>
                   </li>
-                  <li><a href="/contact">Liên hệ </a></li>
                   <li>
-                    <a href="/#" @click="logout">Thoát phiên làm việc </a>
+                    <a href="/login" @click="logout">Thoát phiên làm việc </a>
                   </li>
                 </ul>
               </li>
@@ -69,7 +68,7 @@ export default {
   methods: {
     async logout() {
       await this.$auth.logout().then(() => {
-        this.$router.push('/login')
+        this.$router.go('/login')
       })
     },
 
@@ -95,7 +94,6 @@ export default {
     },
     convertData(data) {
       const temp = []
-      console.log(data);
       data.splice(0, 3)
 
       data.forEach((element) => {
@@ -118,8 +116,7 @@ export default {
         .then((response) => {
           this.$emit('getModuleList', response.data)
         })
-        .catch((error) => {
-          console.log(error)
+        .catch(() => {
         })
     },
   },

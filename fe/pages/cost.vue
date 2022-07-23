@@ -195,7 +195,6 @@ export default {
       return this.tableDataSearch
     },
     handleSelect(item) {
-      console.log(item)
     },
     editData(index, val) {
       this.$refs[`popover${index}`].doClose()
@@ -204,11 +203,9 @@ export default {
     },
     setCost(index, val) {
       this.$refs[`popover${index}`].doClose()
-      console.log(this.$refs)
       this.$refs.offerSetUp.dialogVisible = true
       this.$refs.offerSetUp.val = val
       // this.$refs[`popover${index}`].doClose()
-      // console.log(this.$refs)
       this.$refs.offerSetUp.getLectureData()
       // this.$refs.offerSetUp.val = val
     },
@@ -243,8 +240,7 @@ export default {
 
           this.isLoading = false
         })
-        .catch((erorr) => {
-          console.log(erorr)
+        .catch(() => {
         })
       this.links = this.tableDataSearch
     },
@@ -262,7 +258,6 @@ export default {
       })
     },
     status(data) {
-      console.log(Date.now())
       switch (data.classExam.status) {
         case 1:
           if (Date.now() < Date.parse(data.classExam.date)) {
@@ -303,7 +298,6 @@ export default {
         })
     },
     callPayAPI(val) {
-      console.log(val)
       this.$axios
         .post(`/admin/examClasses/${val.classExam.id}/status/paid`)
         .then((response) => {
@@ -315,8 +309,7 @@ export default {
             path: '/cost',
           })
         })
-        .catch((error) => {
-          console.log(error)
+        .catch(() => {
           this.$message({
             type: 'info',
             message: 'Thanh toán thất bại',

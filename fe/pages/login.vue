@@ -83,12 +83,10 @@ export default {
               this.notifycation()
               this.middleweare(response.data.user.role)
             })
-            .catch((e) => {
-              console.log(e)
-              this.notifycation()
+            .catch(() => {
+              this.errorNotifycation()
             })
         } else {
-          console.log('error submit!!')
           return false
         }
       })
@@ -111,6 +109,13 @@ export default {
       this.$notify.success({
         title: 'Success',
         message: 'Login success',
+        showClose: false,
+      })
+    },
+    errorNotifycation() {
+      this.$notify.error({
+        title: 'Error',
+        message: 'Đăng nhập không thành công',
         showClose: false,
       })
     },

@@ -17,7 +17,7 @@
                   <li><a href="/user/exam">Các lớp thi </a></li>
                   <li><a href="/user/examinate">Các lớp coi thi </a></li>
                   <li>
-                    <a href="/#" @click="logout">Thoát phiên làm việc </a>
+                    <a href="/login" @click="logout">Thoát phiên làm việc </a>
                   </li>
                 </ul>
               </li>
@@ -53,8 +53,7 @@ export default {
           this.id = response.data.user.id
           this.$emit('getUserCode', this.id)
         })
-        .catch((e) => {
-          console.log(e)
+        .catch(() => {
         })
     },
   },

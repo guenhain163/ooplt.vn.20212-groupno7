@@ -101,9 +101,7 @@ export default {
         //     this.formData.push({...value, "code" : element.code, "index": this.formData.length + 1, "dayOfTheWeek": this.formatDay(value.date)});
         //   });
         // }
-        console.log(this.formData);
-      }).catch((error) => {
-        console.log(error)
+      }).catch(() => {
       })
     },
     formatDay(date) {

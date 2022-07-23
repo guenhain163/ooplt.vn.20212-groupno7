@@ -150,7 +150,6 @@ export default {
       return this.tableDataSearch
     },
     handleSelect(item) {
-      console.log(item)
     },
     editData(index, val) {
       this.$refs[`popover${index}`].doClose()
@@ -197,8 +196,7 @@ export default {
           this.tableDataSearch = this.tableData
           this.isLoading = false
         })
-        .catch((erorr) => {
-          console.log(erorr)
+        .catch(() => {
         })
       this.links = this.tableDataSearch
     },

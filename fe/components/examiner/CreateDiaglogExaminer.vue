@@ -127,12 +127,10 @@ export default {
             this.$router.go({
             path: '/',
           })
-          }).catch((error) => {
+          }).catch(() => {
             this.errorNotification()
-            console.log(error)
           })
         } else {
-          console.log('error submit!!')
           return false
         }
       })
@@ -162,7 +160,6 @@ export default {
       })
     },
     getModuleList(value) {
-      console.log(value)
     }
   },
 }

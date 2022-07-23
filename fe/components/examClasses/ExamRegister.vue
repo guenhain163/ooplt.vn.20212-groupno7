@@ -63,14 +63,12 @@ export default {
   // },
   methods: {
     async submitForm(formName) {
-      console.log(this.value)
       await this.$axios.post(`/admin/examClasses/${this.value.classExam.id}/examiners/division`, this.value2).then((response) => {
         this.notifycation()
         this.$router.go({
           path: '/exam-classes'
         })
-      }).catch((error) => {
-        console.log(error)
+      }).catch(() => {
         this.errorNotification()
       })
     },
@@ -116,15 +114,11 @@ export default {
           }
           this.options = data
         })
-        .catch((error) => {
-          console.log(error)
+        .catch(() => {
         })
 
-      console.log(this.value)
         await this.$axios.get(`/admin/examiners?examClassId=${this.value.classExam.classId}`).then((response) => {
-          console.log(response)
-        }).catch((error) => {
-          console.log(error)
+        }).catch(() => {
         })
     },
     setCondition(value) {
