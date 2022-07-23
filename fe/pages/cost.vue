@@ -207,7 +207,6 @@ export default {
       this.$refs.offerSetUp.val = val
       // this.$refs[`popover${index}`].doClose()
       this.$refs.offerSetUp.getLectureData()
-      // this.$refs.offerSetUp.val = val
     },
     createTeacher() {
       this.$refs.CreateDiaglogExamClasses.dialogVisible = true

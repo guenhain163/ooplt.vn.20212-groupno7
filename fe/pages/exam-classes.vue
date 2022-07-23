@@ -290,10 +290,11 @@ export default {
       const importData = this.$refs.slideBarFunction.dataImport
       await this.$axios.post(`/admin/examClasses/${this.semester}/import`, importData).then((response) => {
         this.notifycation()
-        this.$router.go({
+          this.$router.go({
             path: '/exam-classes',
           })
       }).catch(() => {
+        this.errorNotification()
       })
     }
   },
